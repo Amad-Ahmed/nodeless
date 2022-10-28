@@ -8,6 +8,7 @@ const handler: Handler = async (event, context) => {
     body: event.body,
     parsed: event.body && JSON.parse(event.body),
   };
+  console.log("I got a first request, how about that!!!!");
   return {
     statusCode: 200,
     body:
