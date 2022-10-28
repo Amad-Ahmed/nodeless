@@ -9,12 +9,10 @@ const handler: Handler = async (event, context) => {
     parsed: event.body && JSON.parse(event.body),
   };
   console.log("I got a first request, how about that!!!!");
+  console.log(JSON.stringify(output, null, 2));
   return {
     statusCode: 200,
-    body:
-      "<html><body><pre>" +
-      JSON.stringify(output, null, 2) +
-      "</pre></body></html>",
+    body: "Booyah",
   };
 };
 export { handler };
