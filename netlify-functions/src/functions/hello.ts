@@ -10,7 +10,10 @@ const handler: Handler = async (event, context) => {
   };
   return {
     statusCode: 200,
-    body: "<html><body><pre>" + JSON.stringify(output) + "</pre></body></html>",
+    body:
+      "<html><body><pre>" +
+      JSON.stringify(output, null, 2) +
+      "</pre></body></html>",
   };
 };
 export { handler };
