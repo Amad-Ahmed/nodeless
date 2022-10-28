@@ -9,7 +9,7 @@ const handler: Handler = async (event, context) => {
     parsed,
   };
   console.log("I got a first request, how about that!!!!");
-  const { data } = parsed[0];
+  const { data } = parsed.logs[0];
   console.log("My data is ", data);
   const parsedData = decode(data);
   console.log("My parsed data is ", parsedData);
