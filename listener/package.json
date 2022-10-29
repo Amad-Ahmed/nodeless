@@ -60,7 +60,8 @@
     "commander": "^6.2.1",
     "ethers": "^5.7.2",
     "inquirer": "^7.3.3",
-    "node-fetch": "2.6.7"
+    "node-fetch": "2.6.7",
+    "yarn": "^1.22.19"
   },
   "liveLink": {
     "ignoreMasks": [
