@@ -1,8 +1,15 @@
 import { Handler } from "@netlify/functions";
 import { decodeAllSync } from "cbor";
-import { BigNumber, utils } from "ethers";
+import {
+  BigNumber,
+  utils,
+  Contract,
+  ContractFactory,
+  Wallet,
+  providers,
+} from "ethers";
 import { isBytesLike } from "ethers/lib/utils";
-
+import fetch from "node-fetch";
 const abi = [
   {
     inputs: [{ internalType: "address", name: "_link", type: "address" }],
@@ -302,7 +309,12 @@ const handler: Handler = async (event, context) => {
 
   //Return the data to chain
   //Set up provider on that chain
+  const uri = "";
+  const privateKey = "";
+  const provider = new providers.JsonRpcProvider(uri);
+  const signer = new Wallet(privateKey, provider);
   //Connect to a oracle contract
+  const Oracle = new Contract(webHookObj.callbackAddr, abi, signer);
   //Send to fulfillOracleRequest
 
   return {
