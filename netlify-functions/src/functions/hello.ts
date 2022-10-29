@@ -259,6 +259,18 @@ const handler: Handler = async (event, context) => {
   const dataBuf = Buffer.from(dataData.slice(2), "hex");
   const decoded = decodeAllSync(dataBuf);
   console.log({ decoded });
+  //turn decoded into an object
+  let key: string | undefined;
+  const decodedObj: Record<string, any> = {};
+  for (let x = 0; x < decoded.length; x++) {
+    if (key) {
+      decodedObj[key] = decoded[x];
+      key = undefined;
+    } else {
+      key = decoded[x];
+    }
+  }
+  console.log({ decodedObj });
   return {
     statusCode: 200,
     body: "Booyah",
