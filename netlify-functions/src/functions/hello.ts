@@ -1,6 +1,7 @@
 import { Handler } from "@netlify/functions";
 import { decodeAllSync } from "cbor";
-import { utils } from "ethers";
+import { BigNumber, utils } from "ethers";
+import { isBytesLike } from "ethers/lib/utils";
 
 const abi = [
   {
@@ -259,7 +260,6 @@ const handler: Handler = async (event, context) => {
   const { data: dataData } = logData;
   const dataBuf = Buffer.from(dataData.slice(2), "hex");
   const decoded = decodeAllSync(dataBuf);
-  console.log({ decoded });
   //turn decoded into an object
   let key: string | undefined;
   const decodedObj: Record<string, any> = {};
@@ -273,10 +273,37 @@ const handler: Handler = async (event, context) => {
   }
   console.log({ decodedObj });
   //Compile this into a shape
-
+  //requester, requestId, payment, callbackAddr, callbackFunctionId, cancelExpiration, expiration, dataVersion, decodedData
+  const webHookObj = {
+    requester: logData.requester,
+    requestId: logData.requestId,
+    payment: logData.payment,
+    callbackAddr: logData.callbackAddr,
+    callbackFunctionId: logData.callbackFunctionId,
+    cancelExpiration: logData.cancelExpiration,
+    expiration: logData.expiration,
+    dataVersion: logData.dataVersion,
+    decodedData: decodedObj,
+    rawData: dataData,
+  };
+  console.log("Webhook object is ", webHookObj);
   //Run the code to manage the shape
 
+  //Do things based on the webhook object.
+  //Like, make a request to get the current price of the symbol
+  const symbol: string = webHookObj.decodedData.symbol;
+  const polygonKey = "kTQbYuAtj_P5xdAuDhzRtAfirmuRm8br";
+  const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/2020-06-01/2020-06-17?apiKey=${polygonKey}`;
+  const response = await fetch(url, {
+    headers: { Authentication: `Bearer ${polygonKey}` },
+  });
+  const json = await response.json();
+  console.log("My json is ", json);
+
   //Return the data to chain
+  //Set up provider on that chain
+  //Connect to a oracle contract
+  //Send to fulfillOracleRequest
 
   return {
     statusCode: 200,

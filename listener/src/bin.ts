@@ -2,7 +2,7 @@
 import commander from "commander";
 import fetch from "node-fetch";
 import cbor from "cbor";
-import { utils } from "ethers";
+import { BigNumber, utils } from "ethers";
 
 const abi = [
   {
@@ -262,6 +262,8 @@ commander.parseAsync(process.argv).then(async (commander) => {
   //decode with abi
   const iface = new utils.Interface(abi);
   const decodedLog = iface.decodeEventLog("OracleRequest", data);
+
+  console.log("decoded shape address is ", decodedShape.callbackAddr);
   console.log("Decoded Log", decodedLog);
   const { data: dataData } = decodedLog;
   const dataBuf = Buffer.from(dataData.slice(2), "hex");
