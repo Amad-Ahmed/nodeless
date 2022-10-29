@@ -250,6 +250,7 @@ const handler: Handler = async (event, context) => {
     parsed,
   };
   console.log("I got a first request, how about that!!!!");
+  console.log("Parsed is ", parsed);
   const { data } = parsed.logs[0];
   console.log("My data is ", data);
   const iface = new utils.Interface(abi);
@@ -271,6 +272,12 @@ const handler: Handler = async (event, context) => {
     }
   }
   console.log({ decodedObj });
+  //Compile this into a shape
+
+  //Run the code to manage the shape
+
+  //Return the data to chain
+
   return {
     statusCode: 200,
     body: "Booyah",
