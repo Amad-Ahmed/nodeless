@@ -298,17 +298,18 @@ const handler: Handler = async (event, context) => {
 
   //Do things based on the webhook object.
   //Like, make a request to get the current price of the symbol
-  const symbol: string = webHookObj.decodedData.symbol;
+  const symbol: string = webHookObj.decodedData.string_1;
   const polygonKey = "kTQbYuAtj_P5xdAuDhzRtAfirmuRm8br";
   const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/2020-06-01/2020-06-17?apiKey=${polygonKey}`;
   const response = await fetch(url, {
     headers: { Authentication: `Bearer ${polygonKey}` },
   });
   const json = await response.json();
-  console.log("My json is ", json);
+  console.log("My json is ", json, url);
 
   //Return the data to chain
   //Set up provider on that chain
+  /*
   const uri = "";
   const privateKey = "";
   const provider = new providers.JsonRpcProvider(uri);
@@ -316,7 +317,7 @@ const handler: Handler = async (event, context) => {
   //Connect to a oracle contract
   const Oracle = new Contract(webHookObj.callbackAddr, abi, signer);
   //Send to fulfillOracleRequest
-
+*/
   return {
     statusCode: 200,
     body: "Booyah",

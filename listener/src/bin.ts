@@ -281,7 +281,10 @@ commander.parseAsync(process.argv).then(async (commander) => {
     }
   }
   console.log({ decodedObj });
-  decodedObj.uint_4 = { type: "BigInt", data: decodedObj.uint_4.toString() };
+  decodedObj.uint_4 = {
+    type: "BigInt",
+    data: (decodedObj.uint_4 as BigNumber).toHexString(),
+  };
   console.log(JSON.stringify(decodedObj));
 });
 
