@@ -300,7 +300,7 @@ const handler: Handler = async (event, context) => {
   //Like, make a request to get the current price of the symbol
   const symbol: string = webHookObj.decodedData.string_1;
   const polygonKey = "kTQbYuAtj_P5xdAuDhzRtAfirmuRm8br";
-  const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/2020-06-01/2020-06-17?apiKey=${polygonKey}`;
+  const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/2022-10-15/2022-10-29?apiKey=${polygonKey}`;
   const response = await fetch(url, {
     headers: { Authentication: `Bearer ${polygonKey}` },
   });
