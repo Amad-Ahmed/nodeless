@@ -262,10 +262,23 @@ commander.parseAsync(process.argv).then(async (commander) => {
   //decode with abi
   const iface = new utils.Interface(abi);
   const decodedLog = iface.decodeEventLog("OracleRequest", data);
+  console.log("Decoded Log", decodedLog);
   const { data: dataData } = decodedLog;
   const dataBuf = Buffer.from(dataData.slice(2), "hex");
   const decoded = cbor.decodeAllSync(dataBuf);
   console.log({ decoded });
+  //turn decoded into an object
+  let key: string | undefined;
+  const decodedObj: Record<string, any> = {};
+  for (let x = 0; x < decoded.length; x++) {
+    if (key) {
+      decodedObj[key] = decoded[x];
+      key = undefined;
+    } else {
+      key = decoded[x];
+    }
+  }
+  console.log({ decodedObj });
 });
 
 export { commander };
