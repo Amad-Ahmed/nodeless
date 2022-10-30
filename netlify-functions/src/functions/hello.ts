@@ -256,59 +256,61 @@ const handler: Handler = async (event, context) => {
   const parsed = event.body && JSON.parse(event.body);
   console.log("I got a first request, how about that!!!!");
   console.log("Parsed is ", JSON.stringify(parsed));
-  const { data } = parsed.logs[0];
-  //console.log("My data is ", data);
-  const iface = new utils.Interface(abi);
-  const logData = iface.decodeEventLog("OracleRequest", data);
-  //console.log("My log data is ", logData);
-  const { data: dataData } = logData;
-  const dataBuf = Buffer.from(dataData.slice(2), "hex");
-  const decoded = decodeAllSync(dataBuf);
-  //turn decoded into an object
-  let key: string | undefined;
-  const decodedObj: Record<string, any> = {};
-  for (let x = 0; x < decoded.length; x++) {
-    if (key) {
-      decodedObj[key] = decoded[x];
-      key = undefined;
-    } else {
-      key = decoded[x];
-    }
-  }
-  //console.log({ decodedObj });
-  //Compile this into a shape
-  //requester, requestId, payment, callbackAddr, callbackFunctionId, cancelExpiration, expiration, dataVersion, decodedData
-  const webHookObj = {
-    requester: logData.requester,
-    requestId: logData.requestId,
-    payment: logData.payment,
-    callbackAddr: logData.callbackAddr,
-    callbackFunctionId: logData.callbackFunctionId,
-    cancelExpiration: logData.cancelExpiration,
-    expiration: logData.expiration,
-    dataVersion: logData.dataVersion,
-    decodedData: decodedObj,
-    rawData: dataData,
-  };
-  console.log("Webhook object is ", webHookObj);
-  //Run the code to manage the shape
+  if (parsed.logs && parsed.logs?.length > 0) {
+    const { data } = parsed.logs[0];
+    if (data) {
+      //console.log("My data is ", data);
+      const iface = new utils.Interface(abi);
+      const logData = iface.decodeEventLog("OracleRequest", data);
+      //console.log("My log data is ", logData);
+      const { data: dataData } = logData;
+      const dataBuf = Buffer.from(dataData.slice(2), "hex");
+      const decoded = decodeAllSync(dataBuf);
+      //turn decoded into an object
+      let key: string | undefined;
+      const decodedObj: Record<string, any> = {};
+      for (let x = 0; x < decoded.length; x++) {
+        if (key) {
+          decodedObj[key] = decoded[x];
+          key = undefined;
+        } else {
+          key = decoded[x];
+        }
+      }
+      //console.log({ decodedObj });
+      //Compile this into a shape
+      //requester, requestId, payment, callbackAddr, callbackFunctionId, cancelExpiration, expiration, dataVersion, decodedData
+      const webHookObj = {
+        requester: logData.requester,
+        requestId: logData.requestId,
+        payment: logData.payment,
+        callbackAddr: logData.callbackAddr,
+        callbackFunctionId: logData.callbackFunctionId,
+        cancelExpiration: logData.cancelExpiration,
+        expiration: logData.expiration,
+        dataVersion: logData.dataVersion,
+        decodedData: decodedObj,
+        rawData: dataData,
+      };
+      console.log("Webhook object is ", webHookObj);
+      //Run the code to manage the shape
 
-  //Do things based on the webhook object.
-  //Like, make a request to get the current price of the symbol
-  const symbol: string = webHookObj.decodedData.string_1;
-  const polygonKey = "kTQbYuAtj_P5xdAuDhzRtAfirmuRm8br";
-  const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/2022-10-15/2022-10-29?apiKey=${polygonKey}`;
-  const response = await fetch(url, {
-    headers: { Authentication: `Bearer ${polygonKey}` },
-  });
-  const json = (await response.json()) as { results: { c: number }[] };
-  console.log("My json is ", json, url);
-  const lastPrice = Math.floor((json.results.pop()?.c || 0) * 100);
-  console.log("My last price is ", lastPrice);
+      //Do things based on the webhook object.
+      //Like, make a request to get the current price of the symbol
+      const symbol: string = webHookObj.decodedData.string_1;
+      const polygonKey = "kTQbYuAtj_P5xdAuDhzRtAfirmuRm8br";
+      const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/2022-10-15/2022-10-29?apiKey=${polygonKey}`;
+      const response = await fetch(url, {
+        headers: { Authentication: `Bearer ${polygonKey}` },
+      });
+      const json = (await response.json()) as { results: { c: number }[] };
+      console.log("My json is ", json, url);
+      const lastPrice = Math.floor((json.results.pop()?.c || 0) * 100);
+      console.log("My last price is ", lastPrice);
 
-  //Return the data to chain
-  //Set up provider on that chain
-  /*
+      //Return the data to chain
+      //Set up provider on that chain
+      /*
   const uri = "";
   const privateKey = "";
   const provider = new providers.JsonRpcProvider(uri);
@@ -321,6 +323,8 @@ const handler: Handler = async (event, context) => {
   // const rcpt =  await Oracle.fulfillOracleRequest(...args)
   await rcpt.wait();
 /**/
+    }
+  }
   return {
     statusCode: 200,
     body: "Booyah",
