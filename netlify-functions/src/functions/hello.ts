@@ -254,12 +254,16 @@ const handler: Handler = async (event, context) => {
   // your server-side functionality
   //console.log("environment variables", process.env);
   const parsed = event.body && JSON.parse(event.body);
+  const { chainId } = parsed as { chainId: string };
   // console.log("I got a first request, how about that!!!!");
   // console.log("Parsed is ", JSON.stringify(parsed));
   if (parsed.logs && parsed.logs?.length > 0) {
     console.log("my parsed logs are", JSON.stringify(parsed.logs));
     console.log("those were my parsed logs");
-    const { data } = parsed.logs[0];
+    const { data, address: oracleAddress } = parsed.logs[0] as {
+      data: string;
+      address: string;
+    };
     if (data) {
       //console.log("My data is ", data);
       const iface = new utils.Interface(abi);
@@ -310,7 +314,8 @@ const handler: Handler = async (event, context) => {
       //console.log("My json is ", json, url);
       const lastPrice = Math.floor((json.results.pop()?.c || 0) * 100);
       console.log("My last price is ", lastPrice);
-
+      console.log("I must tell the oracle at address", oracleAddress);
+      console.log("On chain", chainId);
       //Return the data to chain
       //Set up provider on that chain
       /*
