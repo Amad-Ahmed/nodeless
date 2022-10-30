@@ -10,6 +10,7 @@ import {
 } from "ethers";
 import { isBytesLike } from "ethers/lib/utils";
 import fetch from "node-fetch";
+import { OracleABI__factory } from "../contracts";
 const abi = [
   {
     inputs: [{ internalType: "address", name: "_link", type: "address" }],
@@ -253,18 +254,13 @@ const handler: Handler = async (event, context) => {
   // your server-side functionality
   console.log("environment variables", process.env);
   const parsed = event.body && JSON.parse(event.body);
-  const output = {
-    event,
-    body: event.body,
-    parsed,
-  };
   console.log("I got a first request, how about that!!!!");
   console.log("Parsed is ", parsed);
   const { data } = parsed.logs[0];
-  console.log("My data is ", data);
+  //console.log("My data is ", data);
   const iface = new utils.Interface(abi);
   const logData = iface.decodeEventLog("OracleRequest", data);
-  console.log("My log data is ", logData);
+  //console.log("My log data is ", logData);
   const { data: dataData } = logData;
   const dataBuf = Buffer.from(dataData.slice(2), "hex");
   const decoded = decodeAllSync(dataBuf);
@@ -279,7 +275,7 @@ const handler: Handler = async (event, context) => {
       key = decoded[x];
     }
   }
-  console.log({ decodedObj });
+  //console.log({ decodedObj });
   //Compile this into a shape
   //requester, requestId, payment, callbackAddr, callbackFunctionId, cancelExpiration, expiration, dataVersion, decodedData
   const webHookObj = {
@@ -318,9 +314,11 @@ const handler: Handler = async (event, context) => {
   const provider = new providers.JsonRpcProvider(uri);
   const signer = new Wallet(privateKey, provider);
   //Connect to a oracle contract
-  const Oracle = new Contract(webHookObj.callbackAddr, abi, signer);
-  //Send to fulfillOracleRequest
-  const rcpt =  await Oracle.fulfillOracleRequest(...args)
+  const oracle = OracleABI__factory.connect(webHookObj.callbackAddr, signer);
+  oracle.fulfillOracleRequest()
+  // const Oracle = new Contract(webHookObj.callbackAddr, abi, signer);
+  // //Send to fulfillOracleRequest
+  // const rcpt =  await Oracle.fulfillOracleRequest(...args)
   await rcpt.wait();
 /**/
   return {
