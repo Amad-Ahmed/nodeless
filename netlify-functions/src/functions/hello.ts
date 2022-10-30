@@ -7,6 +7,7 @@ import {
   ContractFactory,
   Wallet,
   providers,
+  ethers,
 } from "ethers";
 import { isBytesLike } from "ethers/lib/utils";
 import fetch from "node-fetch";
@@ -318,19 +319,39 @@ const handler: Handler = async (event, context) => {
       console.log("On chain", chainId);
       //Return the data to chain
       //Set up provider on that chain
-      /*
-  const uri = "";
-  const privateKey = "";
-  const provider = new providers.JsonRpcProvider(uri);
-  const signer = new Wallet(privateKey, provider);
-  //Connect to a oracle contract
-  const oracle = OracleABI__factory.connect(webHookObj.callbackAddr, signer);
-  oracle.fulfillOracleRequest()
-  // const Oracle = new Contract(webHookObj.callbackAddr, abi, signer);
-  // //Send to fulfillOracleRequest
-  // const rcpt =  await Oracle.fulfillOracleRequest(...args)
-  await rcpt.wait();
-/**/
+      /** */
+
+      const chains: Record<string, { uri: string; privateKey: string }> = {
+        "0x13881": {
+          uri: "https://polygon-mumbai.g.alchemy.com/v2/GtbvioX6lQQWHnSyvX3Lnj1y4uyxXNDt",
+          privateKey:
+            "f77ab59a543e322fc29c604aeb51f74bf7f3bb483dd53d3e274ac8521ac4f22e",
+        },
+      };
+      // const uri = "https://polygon-mumbai.g.alchemy.com/v2/GtbvioX6lQQWHnSyvX3Lnj1y4uyxXNDt";
+      // const privateKey = "f77ab59a543e322fc29c604aeb51f74bf7f3bb483dd53d3e274ac8521ac4f22e";
+      const { uri, privateKey } = chains[chainId];
+      const provider = new providers.JsonRpcProvider(uri);
+      const signer = new Wallet(privateKey, provider);
+      //Connect to a oracle contract
+      const oracle = OracleABI__factory.connect(
+        webHookObj.callbackAddr,
+        signer
+      );
+      const rcpt = await oracle.fulfillOracleRequest(
+        webHookObj.requestId,
+        webHookObj.payment,
+        webHookObj.callbackAddr,
+        webHookObj.callbackFunctionId,
+        webHookObj.expiration,
+        utils.hexZeroPad(utils.hexlify(lastPrice), 32),
+        { gasLimit: 1000000 }
+      );
+      // const Oracle = new Contract(webHookObj.callbackAddr, abi, signer);
+      // //Send to fulfillOracleRequest
+      // const rcpt =  await Oracle.fulfillOracleRequest(...args)
+      await rcpt.wait();
+      /**/
     }
   }
   return {
