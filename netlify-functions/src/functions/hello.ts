@@ -304,9 +304,10 @@ const handler: Handler = async (event, context) => {
   const response = await fetch(url, {
     headers: { Authentication: `Bearer ${polygonKey}` },
   });
-  const json = await response.json();
+  const json = (await response.json()) as { results: { c: number }[] };
   console.log("My json is ", json, url);
-
+  const lastPrice = json.results.pop()?.c;
+  console.log("My last price is ", lastPrice);
   //Return the data to chain
   //Set up provider on that chain
   /*
@@ -317,7 +318,9 @@ const handler: Handler = async (event, context) => {
   //Connect to a oracle contract
   const Oracle = new Contract(webHookObj.callbackAddr, abi, signer);
   //Send to fulfillOracleRequest
-*/
+  const rcpt =  await Oracle.fulfillOracleRequest(...args)
+  await rcpt.wait();
+/**/
   return {
     statusCode: 200,
     body: "Booyah",
