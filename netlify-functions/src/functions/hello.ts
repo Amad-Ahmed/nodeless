@@ -251,6 +251,7 @@ const abi = [
 
 const handler: Handler = async (event, context) => {
   // your server-side functionality
+  console.log("environment variables", process.env);
   const parsed = event.body && JSON.parse(event.body);
   const output = {
     event,
@@ -308,6 +309,7 @@ const handler: Handler = async (event, context) => {
   console.log("My json is ", json, url);
   const lastPrice = Math.floor((json.results.pop()?.c || 0) * 100);
   console.log("My last price is ", lastPrice);
+
   //Return the data to chain
   //Set up provider on that chain
   /*
