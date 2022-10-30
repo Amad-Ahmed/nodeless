@@ -252,10 +252,10 @@ const abi = [
 
 const handler: Handler = async (event, context) => {
   // your server-side functionality
-  console.log("environment variables", process.env);
+  //console.log("environment variables", process.env);
   const parsed = event.body && JSON.parse(event.body);
   console.log("I got a first request, how about that!!!!");
-  console.log("Parsed is ", parsed);
+  console.log("Parsed is ", JSON.stringify(parsed));
   const { data } = parsed.logs[0];
   //console.log("My data is ", data);
   const iface = new utils.Interface(abi);
