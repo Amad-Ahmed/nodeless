@@ -307,7 +307,7 @@ const handler: Handler = async (event, context) => {
         headers: { Authentication: `Bearer ${polygonKey}` },
       });
       const json = (await response.json()) as { results: { c: number }[] };
-      console.log("My json is ", json, url);
+      //console.log("My json is ", json, url);
       const lastPrice = Math.floor((json.results.pop()?.c || 0) * 100);
       console.log("My last price is ", lastPrice);
 
