@@ -254,15 +254,16 @@ const handler: Handler = async (event, context) => {
   // your server-side functionality
   //console.log("environment variables", process.env);
   const parsed = event.body && JSON.parse(event.body);
-  console.log("I got a first request, how about that!!!!");
-  console.log("Parsed is ", JSON.stringify(parsed));
+  // console.log("I got a first request, how about that!!!!");
+  // console.log("Parsed is ", JSON.stringify(parsed));
   if (parsed.logs && parsed.logs?.length > 0) {
     const { data } = parsed.logs[0];
     if (data) {
       //console.log("My data is ", data);
       const iface = new utils.Interface(abi);
       const logData = iface.decodeEventLog("OracleRequest", data);
-      //console.log("My log data is ", logData);
+      console.log("My log data is ", JSON.stringify({ logData }));
+      console.log("That was my log data");
       const { data: dataData } = logData;
       const dataBuf = Buffer.from(dataData.slice(2), "hex");
       const decoded = decodeAllSync(dataBuf);
