@@ -257,6 +257,8 @@ const handler: Handler = async (event, context) => {
   // console.log("I got a first request, how about that!!!!");
   // console.log("Parsed is ", JSON.stringify(parsed));
   if (parsed.logs && parsed.logs?.length > 0) {
+    console.log("my parsed logs are", JSON.stringify(parsed.logs));
+    console.log("those were my parsed logs");
     const { data } = parsed.logs[0];
     if (data) {
       //console.log("My data is ", data);
