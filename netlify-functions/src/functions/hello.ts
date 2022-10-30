@@ -306,7 +306,7 @@ const handler: Handler = async (event, context) => {
   });
   const json = (await response.json()) as { results: { c: number }[] };
   console.log("My json is ", json, url);
-  const lastPrice = json.results.pop()?.c;
+  const lastPrice = Math.floor((json.results.pop()?.c || 0) * 100);
   console.log("My last price is ", lastPrice);
   //Return the data to chain
   //Set up provider on that chain
