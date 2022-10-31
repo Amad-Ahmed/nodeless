@@ -271,7 +271,7 @@ const handler: Handler = async (event, context) => {
         if (key) {
           decodedObj[key] =
             typeof decoded[x] == "bigint"
-              ? decoded[x].toHexString()
+              ? "0x" + (decoded[x] as BigInt).toString(16)
               : decoded[x];
           key = undefined;
         } else {
