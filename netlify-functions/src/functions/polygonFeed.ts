@@ -33,9 +33,9 @@ const handler: Handler = async (event, context) => {
   const response = await fetch(url, {
     headers: { Authentication: `Bearer ${polygonKey}` },
   });
-  const json = (await response.json()) as { results: { p: number } };
+  const json = (await response.json()) as { results: { c: number }[] };
   console.log("My json is ", json, url);
-  const lastPrice = Math.floor((json.results?.p || 0) * 100);
+  const lastPrice = Math.floor((json.results.pop()?.c || 0) * 100);
   console.log("My last price is ", lastPrice);
   console.log("I must tell the oracle at address", parsed.oracleAddress);
   console.log("On chain", parsed.chainId);
