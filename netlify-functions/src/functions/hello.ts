@@ -285,7 +285,7 @@ const handler: Handler = async (event, context) => {
           key = decoded[x];
         }
       }
-      console.log({ decodedObj });
+      // console.log({ decodedObj });
       //Compile this into a shape
       //requester, requestId, payment, callbackAddr, callbackFunctionId, cancelExpiration, expiration, dataVersion, decodedData
       const webHookObj = {
@@ -295,7 +295,6 @@ const handler: Handler = async (event, context) => {
         callbackAddr: logData.callbackAddr,
         callbackFunctionId: logData.callbackFunctionId,
         cancelExpiration: logData.cancelExpiration,
-        expiration: logData.expiration,
         dataVersion: logData.dataVersion,
         decodedData: decodedObj,
         rawData: dataData,
@@ -349,7 +348,7 @@ const handler: Handler = async (event, context) => {
         webHookObj.payment,
         webHookObj.callbackAddr,
         webHookObj.callbackFunctionId,
-        webHookObj.expiration,
+        webHookObj.cancelExpiration,
         hexPrice,
         { gasLimit: 1000000 }
       );
