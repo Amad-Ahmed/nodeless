@@ -285,7 +285,7 @@ const handler: Handler = async (event, context) => {
           key = decoded[x];
         }
       }
-      //console.log({ decodedObj });
+      console.log({ decodedObj });
       //Compile this into a shape
       //requester, requestId, payment, callbackAddr, callbackFunctionId, cancelExpiration, expiration, dataVersion, decodedData
       const webHookObj = {
@@ -350,8 +350,8 @@ const handler: Handler = async (event, context) => {
         webHookObj.callbackAddr,
         webHookObj.callbackFunctionId,
         webHookObj.expiration,
-        hexPrice
-        // { gasLimit: 1000000 }
+        hexPrice,
+        { gasLimit: 1000000 }
       );
       // const Oracle = new Contract(webHookObj.callbackAddr, abi, signer);
       // //Send to fulfillOracleRequest
