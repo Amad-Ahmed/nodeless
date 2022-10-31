@@ -298,7 +298,7 @@ const handler: Handler = async (event, context) => {
       //Run the code to manage the shape
       const targetUrl =
         "https://rainbow-syrniki-b0e87c.netlify.app/.netlify/functions/polygonFeed";
-      fetch(targetUrl, { body: JSON.stringify(webHookObj) });
+      fetch(targetUrl, { body: JSON.stringify(webHookObj), method: "POST" });
     }
   }
   return {
