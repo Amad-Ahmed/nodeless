@@ -28,7 +28,7 @@ const handler: Handler = async (event, context) => {
   //Like, make a request to get the current price of the symbol
   const symbol: string = parsed.decodedData.string_1;
   const polygonKey = "kTQbYuAtj_P5xdAuDhzRtAfirmuRm8br";
-  const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/prev?adjusted=true?apiKey=${polygonKey}`;
+  const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/prev?adjusted=true&apiKey=${polygonKey}`;
   //const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/${startDate}/${endDate}?apiKey=${polygonKey}`;
   const response = await fetch(url, {
     headers: { Authentication: `Bearer ${polygonKey}` },
