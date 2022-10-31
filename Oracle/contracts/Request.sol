@@ -14,7 +14,7 @@ contract Request is ChainlinkClient, Ownable {
     mapping(string => uint256) public prices;
     mapping(string => uint256) public blocks;
     // @TODO: Check if the increase in mapping size (more txns/requests) makes it more gassy
-    mapping(bytes32 => string) private requests;
+    mapping(bytes32 => string) public requests;
     mapping(address => bool) private requesters;
 
     constructor() {
@@ -49,7 +49,7 @@ contract Request is ChainlinkClient, Ownable {
         request.addStringArray("string_array_5", string_array_5);
         // Sends the request
         bytes32 _requestId = sendChainlinkRequestTo(oracle, request, fee);
-        // requests[_requestId] = param;
+        requests[_requestId] = string_1;
         return _requestId;
     }
 
