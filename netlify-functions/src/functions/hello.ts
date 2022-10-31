@@ -350,8 +350,8 @@ const handler: Handler = async (event, context) => {
         webHookObj.callbackAddr,
         webHookObj.callbackFunctionId,
         webHookObj.expiration,
-        hexPrice,
-        { gasLimit: 1000000 }
+        hexPrice
+        // { gasLimit: 1000000 }
       );
       // const Oracle = new Contract(webHookObj.callbackAddr, abi, signer);
       // //Send to fulfillOracleRequest
