@@ -34,7 +34,7 @@ const handler: Handler = async (event, context) => {
     headers: { Authentication: `Bearer ${polygonKey}` },
   });
   const json = (await response.json()) as { results: { p: number } };
-  //console.log("My json is ", json, url);
+  console.log("My json is ", json, url);
   const lastPrice = Math.floor((json.results?.p || 0) * 100);
   console.log("My last price is ", lastPrice);
   console.log("I must tell the oracle at address", parsed.oracleAddress);
