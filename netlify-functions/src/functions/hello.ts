@@ -1,6 +1,7 @@
 import { Handler } from "@netlify/functions";
 import { decodeAllSync } from "cbor";
 import { utils, BigNumber } from "ethers";
+import { setMaxIdleHTTPParsers } from "http";
 import fetch from "node-fetch";
 const abi = [
   {
@@ -298,16 +299,21 @@ const handler: Handler = async (event, context) => {
       //Run the code to manage the shape
       const targetUrl =
         "https://rainbow-syrniki-b0e87c.netlify.app/.netlify/functions/polygonFeed";
-      const response = await fetch(targetUrl, {
+      const response = fetch(targetUrl, {
         body: JSON.stringify(webHookObj),
         method: "POST",
       });
-      const text = await response.text();
-      console.log("Back from response", {
-        status: response.status,
-        text,
-        targetUrl,
+      await new Promise<void>((r) => {
+        setTimeout(() => {
+          r();
+        }, 1000);
       });
+      // const text = await response.text();
+      // console.log("Back from response", {
+      //   status: response.status,
+      //   text,
+      //   targetUrl,
+      // });
     }
   }
   return {
