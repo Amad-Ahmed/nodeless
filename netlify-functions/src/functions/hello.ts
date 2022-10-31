@@ -338,13 +338,19 @@ const handler: Handler = async (event, context) => {
         webHookObj.callbackAddr,
         signer
       );
+      console.log("My payment is", webHookObj.payment);
+      console.log("My payment tostring is", webHookObj.payment.toString());
+      const hexlified = utils.hexlify(lastPrice);
+      console.log("hexlified", hexlified);
+      const hexPrice = utils.hexZeroPad(hexlified, 32);
+      console.log("hexprice", hexPrice);
       const rcpt = await oracle.fulfillOracleRequest(
         webHookObj.requestId,
         webHookObj.payment,
         webHookObj.callbackAddr,
         webHookObj.callbackFunctionId,
         webHookObj.expiration,
-        utils.hexZeroPad(utils.hexlify(lastPrice), 32),
+        hexPrice,
         { gasLimit: 1000000 }
       );
       // const Oracle = new Contract(webHookObj.callbackAddr, abi, signer);
