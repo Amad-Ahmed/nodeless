@@ -1,17 +1,7 @@
 import { Handler } from "@netlify/functions";
 import { decodeAllSync } from "cbor";
-import {
-  BigNumber,
-  utils,
-  Contract,
-  ContractFactory,
-  Wallet,
-  providers,
-  ethers,
-} from "ethers";
-import { isBytesLike } from "ethers/lib/utils";
+import { utils } from "ethers";
 import fetch from "node-fetch";
-import { OracleABI__factory } from "../contracts";
 const abi = [
   {
     inputs: [{ internalType: "address", name: "_link", type: "address" }],
@@ -298,62 +288,14 @@ const handler: Handler = async (event, context) => {
         dataVersion: logData.dataVersion,
         decodedData: decodedObj,
         rawData: dataData,
+        oracleAddress,
+        chainId,
       };
       console.log("Webhook object is ", webHookObj);
       //Run the code to manage the shape
-
-      //Do things based on the webhook object.
-      //Like, make a request to get the current price of the symbol
-      const symbol: string = webHookObj.decodedData.string_1;
-      const polygonKey = "kTQbYuAtj_P5xdAuDhzRtAfirmuRm8br";
-      const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/2022-10-15/2022-10-29?apiKey=${polygonKey}`;
-      const response = await fetch(url, {
-        headers: { Authentication: `Bearer ${polygonKey}` },
-      });
-      const json = (await response.json()) as { results: { c: number }[] };
-      //console.log("My json is ", json, url);
-      const lastPrice = Math.floor((json.results.pop()?.c || 0) * 100);
-      console.log("My last price is ", lastPrice);
-      console.log("I must tell the oracle at address", oracleAddress);
-      console.log("On chain", chainId);
-      //Return the data to chain
-      //Set up provider on that chain
-      /** */
-
-      const chains: Record<string, { uri: string; privateKey: string }> = {
-        "0x13881": {
-          uri: "https://polygon-mumbai.g.alchemy.com/v2/GtbvioX6lQQWHnSyvX3Lnj1y4uyxXNDt",
-          privateKey:
-            "f77ab59a543e322fc29c604aeb51f74bf7f3bb483dd53d3e274ac8521ac4f22e",
-        },
-      };
-      // const uri = "https://polygon-mumbai.g.alchemy.com/v2/GtbvioX6lQQWHnSyvX3Lnj1y4uyxXNDt";
-      // const privateKey = "f77ab59a543e322fc29c604aeb51f74bf7f3bb483dd53d3e274ac8521ac4f22e";
-      const { uri, privateKey } = chains[chainId];
-      const provider = new providers.JsonRpcProvider(uri);
-      const signer = new Wallet(privateKey, provider);
-      //Connect to a oracle contract
-      const oracle = OracleABI__factory.connect(oracleAddress, signer);
-      console.log("My payment is", webHookObj.payment);
-      console.log("My payment tostring is", webHookObj.payment.toString());
-      const hexlified = utils.hexlify(lastPrice);
-      console.log("hexlified", hexlified);
-      const hexPrice = utils.hexZeroPad(hexlified, 32);
-      console.log("hexprice", hexPrice);
-      const rcpt = await oracle.fulfillOracleRequest(
-        webHookObj.requestId,
-        webHookObj.payment,
-        webHookObj.callbackAddr,
-        webHookObj.callbackFunctionId,
-        webHookObj.cancelExpiration,
-        hexPrice,
-        { gasLimit: 1000000 }
-      );
-      // const Oracle = new Contract(webHookObj.callbackAddr, abi, signer);
-      // //Send to fulfillOracleRequest
-      // const rcpt =  await Oracle.fulfillOracleRequest(...args)
-      await rcpt.wait();
-      /**/
+      const targetUrl =
+        "https://rainbow-syrniki-b0e87c.netlify.app/.netlify/functions/polygonFeed";
+      fetch(targetUrl, { body: JSON.stringify(webHookObj) });
     }
   }
   return {
