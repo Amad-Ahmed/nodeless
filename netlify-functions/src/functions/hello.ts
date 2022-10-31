@@ -333,10 +333,7 @@ const handler: Handler = async (event, context) => {
       const provider = new providers.JsonRpcProvider(uri);
       const signer = new Wallet(privateKey, provider);
       //Connect to a oracle contract
-      const oracle = OracleABI__factory.connect(
-        webHookObj.callbackAddr,
-        signer
-      );
+      const oracle = OracleABI__factory.connect(oracleAddress, signer);
       console.log("My payment is", webHookObj.payment);
       console.log("My payment tostring is", webHookObj.payment.toString());
       const hexlified = utils.hexlify(lastPrice);
