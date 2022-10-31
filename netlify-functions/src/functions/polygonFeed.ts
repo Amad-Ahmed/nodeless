@@ -28,13 +28,14 @@ const handler: Handler = async (event, context) => {
   //Like, make a request to get the current price of the symbol
   const symbol: string = parsed.decodedData.string_1;
   const polygonKey = "kTQbYuAtj_P5xdAuDhzRtAfirmuRm8br";
-  const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/2022-10-15/2022-10-29?apiKey=${polygonKey}`;
+  const url = `https://api.polygon.io/v2/last/nbbo/${symbol}?apiKey=${polygonKey}`;
+  //const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/${startDate}/${endDate}?apiKey=${polygonKey}`;
   const response = await fetch(url, {
     headers: { Authentication: `Bearer ${polygonKey}` },
   });
-  const json = (await response.json()) as { results: { c: number }[] };
+  const json = (await response.json()) as { results: { p: number } };
   //console.log("My json is ", json, url);
-  const lastPrice = Math.floor((json.results.pop()?.c || 0) * 100);
+  const lastPrice = Math.floor((json.results?.p || 0) * 100);
   console.log("My last price is ", lastPrice);
   console.log("I must tell the oracle at address", parsed.oracleAddress);
   console.log("On chain", parsed.chainId);
