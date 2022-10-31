@@ -1,6 +1,6 @@
 import { Handler } from "@netlify/functions";
 import { decodeAllSync } from "cbor";
-import { utils } from "ethers";
+import { utils, BigNumber } from "ethers";
 import fetch from "node-fetch";
 const abi = [
   {
@@ -269,7 +269,10 @@ const handler: Handler = async (event, context) => {
       const decodedObj: Record<string, any> = {};
       for (let x = 0; x < decoded.length; x++) {
         if (key) {
-          decodedObj[key] = decoded[x];
+          decodedObj[key] =
+            typeof decoded[x] == "bigint"
+              ? decoded[x].toHexString()
+              : decoded[x];
           key = undefined;
         } else {
           key = decoded[x];
@@ -281,10 +284,10 @@ const handler: Handler = async (event, context) => {
       const webHookObj = {
         requester: logData.requester,
         requestId: logData.requestId,
-        payment: logData.payment,
+        payment: (logData.payment as BigNumber).toHexString(),
         callbackAddr: logData.callbackAddr,
         callbackFunctionId: logData.callbackFunctionId,
-        cancelExpiration: logData.cancelExpiration,
+        cancelExpiration: (logData.cancelExpiration as BigNumber).toHexString(),
         dataVersion: logData.dataVersion,
         decodedData: decodedObj,
         rawData: dataData,
