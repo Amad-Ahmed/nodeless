@@ -1,3 +1,4 @@
+import fetch from "node-fetch";
 export function parseWebhook(body: string | null | undefined) {
   const parsed =
     body &&
