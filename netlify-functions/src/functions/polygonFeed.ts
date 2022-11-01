@@ -25,7 +25,7 @@ const handler: Handler = async (event, context) => {
 
   //send result home
   //fetch the oracle remitter
-  remitToChain(lastPrice, event.body);
+  await remitToChain(lastPrice, event.body);
   return {
     statusCode: 200,
     body: "Booyah",
