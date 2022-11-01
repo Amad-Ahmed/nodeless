@@ -1,25 +1,11 @@
 import { Handler } from "@netlify/functions";
 import { BigNumber, utils, Wallet, providers } from "ethers";
 import { OracleABI__factory } from "../contracts";
+import { parseWebhook } from "../functions";
 const handler: Handler = async (event, context) => {
   // your server-side functionality
   //console.log("environment variables", process.env);
-  const parsed =
-    event.body &&
-    (JSON.parse(event.body) as {
-      requester: string;
-      requestId: string;
-      payment: string; //Convert to bignumber
-      callbackAddr: string;
-      callbackFunctionId: string;
-      cancelExpiration: string; //Convert ot bigNumber
-      dataVersion: string;
-      decodedData: Record<string, any>;
-      rawData: string;
-      oracleAddress: string;
-      chainId: string;
-      data: any;
-    });
+  const parsed = parseWebhook(event.body);
   if (!parsed) return { statusCode: 400, body: "Bad Request" };
   console.log("Webhook object is ", parsed);
   //Run the code to manage the shape

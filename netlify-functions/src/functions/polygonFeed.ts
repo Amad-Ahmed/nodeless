@@ -1,23 +1,10 @@
 import { Handler } from "@netlify/functions";
 import fetch from "node-fetch";
+import { parseWebhook, remitToChain } from "../functions";
 const handler: Handler = async (event, context) => {
   // your server-side functionality
   //console.log("environment variables", process.env);
-  const parsed =
-    event.body &&
-    (JSON.parse(event.body) as {
-      requester: string;
-      requestId: string;
-      payment: string; //Convert to bignumber
-      callbackAddr: string;
-      callbackFunctionId: string;
-      cancelExpiration: string; //Convert ot bigNumber
-      dataVersion: string;
-      decodedData: Record<string, any>;
-      rawData: string;
-      oracleAddress: string;
-      chainId: string;
-    });
+  const parsed = parseWebhook(event.body);
   if (!parsed) return { statusCode: 400, body: "Bad Request" };
   console.log("Webhook object is ", parsed);
   //Run the code to manage the shape
@@ -37,19 +24,8 @@ const handler: Handler = async (event, context) => {
   console.log("My last price is ", lastPrice);
 
   //send result home
-  const remitterUri =
-    "https://rainbow-syrniki-b0e87c.netlify.app/.netlify/functions/remitter";
-
   //fetch the oracle remitter
-  fetch(remitterUri, {
-    body: JSON.stringify({ ...parsed, data: lastPrice }),
-    method: "POST",
-  });
-  await new Promise<void>((r) => {
-    setTimeout(() => {
-      r();
-    }, 1000);
-  });
+  remitToChain(lastPrice, event.body);
   return {
     statusCode: 200,
     body: "Booyah",
