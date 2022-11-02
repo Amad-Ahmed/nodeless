@@ -44,7 +44,7 @@ const handler: Handler = async (event, context) => {
         chainId,
       };
       const targetUrl =
-        "https://rainbow-syrniki-b0e87c.netlify.app/.netlify/functions/polygonFeed";
+        "https://xw8v-tcfi-85ay.n7.xano.io/api:58vCnoV0/newrequest";
       fetch(targetUrl, {
         body: JSON.stringify(webHookObj),
         method: "POST",
