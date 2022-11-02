@@ -16,6 +16,8 @@ export function parseWebhook(body: string | null | undefined) {
       oracleAddress: string;
       chainId: string;
       data: any;
+      private_key: string;
+      providerUri: string;
     });
   if (!parsed) return undefined;
   return parsed;
