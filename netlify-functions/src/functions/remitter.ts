@@ -14,16 +14,16 @@ const handler: Handler = async (event, context) => {
   console.log("On chain", parsed.chainId);
   //Return the data to chain
   //Set up provider on that chain
-  const chains: Record<string, { uri: string; privateKey: string }> = {
-    "0x13881": {
-      uri: "https://polygon-mumbai.g.alchemy.com/v2/GtbvioX6lQQWHnSyvX3Lnj1y4uyxXNDt",
-      privateKey:
-        "f77ab59a543e322fc29c604aeb51f74bf7f3bb483dd53d3e274ac8521ac4f22e",
-    },
-  };
-  const { uri, privateKey } = chains[parsed.chainId];
-  const provider = new providers.JsonRpcProvider(uri);
-  const signer = new Wallet(privateKey, provider);
+  // const chains: Record<string, { uri: string; privateKey: string }> = {
+  //   "0x13881": {
+  //     uri: "https://polygon-mumbai.g.alchemy.com/v2/GtbvioX6lQQWHnSyvX3Lnj1y4uyxXNDt",
+  //     privateKey:
+  //       "f77ab59a543e322fc29c604aeb51f74bf7f3bb483dd53d3e274ac8521ac4f22e",
+  //   },
+  // };
+  // const { uri, privateKey } = chains[parsed.chainId];
+  const provider = new providers.JsonRpcProvider(parsed.providerUri);
+  const signer = new Wallet(parsed.private_key, provider);
   //Connect to a oracle contract
   const oracle = OracleABI__factory.connect(parsed.oracleAddress, signer);
   console.log("My payment is", parsed.payment);
