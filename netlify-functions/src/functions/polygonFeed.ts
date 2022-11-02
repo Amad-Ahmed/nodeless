@@ -25,10 +25,10 @@ const handler: Handler = async (event, context) => {
 
   //send result home
   //fetch the oracle remitter
-  await remitToChain(lastPrice, event.body);
+  // remitToChain(lastPrice, event.body);
   return {
     statusCode: 200,
-    body: "Booyah",
+    body: lastPrice.toString(),
   };
 };
 export { handler };
