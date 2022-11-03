@@ -32,3 +32,10 @@ const handler: Handler = async (event, context) => {
   };
 };
 export { handler };
+
+/*
+Emitter -> Xano
+Xano saves the request payload to db and sends to polygonFeed, marking request as in process
+Polygonfeed replies with the answer. 
+Xano sends the data to the remitter, who sends it to the proper oracle using the right account. 
+*/

@@ -2,15 +2,33 @@ import { Handler } from "@netlify/functions";
 import { decodeAllSync } from "cbor";
 import { utils, BigNumber } from "ethers";
 import { OracleABI__factory } from "../contracts";
+import Moralis from "moralis";
+import { IWebhook } from "@moralisweb3/streams-typings";
 import fetch from "node-fetch";
 const handler: Handler = async (event, context) => {
-  const parsed = event.body && JSON.parse(event.body);
-  const { chainId } = parsed as { chainId: string };
+  const { "x-signature": xSignature } = event.headers;
+  const { body } = event;
+  //check the signatures
+  const parsed = body && (JSON.parse(body) as IWebhook);
+  if (xSignature) {
+    const apiKey = process.env.MORALIS_API_KEY;
+    Moralis.start({ apiKey });
+    if (parsed && apiKey) {
+      if (
+        !Moralis.Streams.verifySignature({
+          body: parsed,
+          signature: xSignature,
+        })
+      ) {
+        console.error("Bad Signature: ", body, apiKey, xSignature);
+        return { statusCode: 400, body: "Bad Signature" };
+      }
+    }
+  }
+  if (!parsed) return { statusCode: 400, body: "Bad Request" };
+  const { chainId, confirmed, logs } = parsed;
   if (parsed.logs && parsed.logs?.length > 0) {
-    const { data, address: oracleAddress } = parsed.logs[0] as {
-      data: string;
-      address: string;
-    };
+    const { data, address: oracleAddress } = logs[0];
     if (data) {
       const iface = new utils.Interface(OracleABI__factory.abi);
       const logData = iface.decodeEventLog("OracleRequest", data);
@@ -42,6 +60,7 @@ const handler: Handler = async (event, context) => {
         rawData: dataData,
         oracleAddress,
         chainId,
+        confirmed,
       };
       const targetUrl =
         "https://xw8v-tcfi-85ay.n7.xano.io/api:58vCnoV0/newrequest";

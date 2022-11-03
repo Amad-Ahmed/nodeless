@@ -4,6 +4,7 @@ export function parseWebhook(body: string | null | undefined) {
   const parsed =
     body &&
     (JSON.parse(body) as {
+      confirmed: boolean;
       requester: string;
       requestId: string;
       payment: string; //Convert to bignumber
