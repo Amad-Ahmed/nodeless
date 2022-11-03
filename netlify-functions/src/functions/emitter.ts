@@ -55,7 +55,7 @@ const handler: Handler = async (event, context) => {
         callbackAddr: logData.callbackAddr,
         callbackFunctionId: logData.callbackFunctionId,
         cancelExpiration: (logData.cancelExpiration as BigNumber).toHexString(),
-        dataVersion: logData.dataVersion,
+        dataVersion: logData.dataVersion.toHexString(),
         decodedData: decodedObj,
         rawData: dataData,
         oracleAddress,
