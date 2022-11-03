@@ -69,6 +69,7 @@ const handler: Handler = async (event, context) => {
       fetch(targetUrl, {
         body,
         method: "POST",
+        headers: {"Content-Type": "application/json"}
       });
       await new Promise<void>((r) => {
         setTimeout(() => {
