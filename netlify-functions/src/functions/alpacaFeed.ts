@@ -15,7 +15,7 @@ const handler: Handler = async (event, context) => {
 //   const polygonKey = "kTQbYuAtj_P5xdAuDhzRtAfirmuRm8br";
   const Header = {'APCA-API-KEY-ID': 'PKIKYC0IWKVRTLYLBQ22',
            'APCA-API-SECRET-KEY': 'M3mGd7FWqkftgXlom3usORD6wSGmQRBhfgkY12oA'}
-  const url = `https://data.alpaca.markets//v2/stocks/${symbol}/quotes/latest`;
+  const url = `https://data.alpaca.markets/v2/stocks/${symbol}/quotes/latest`;
   //const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/${startDate}/${endDate}?apiKey=${polygonKey}`;
   const response = await fetch(url, {
     headers: Header,
