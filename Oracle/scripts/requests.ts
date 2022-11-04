@@ -6,7 +6,7 @@ import { ethers } from "hardhat";
 async function main() {
 
     const Request = await ethers.getContractFactory("Request");
-    const request = await Request.attach("0x757822fBc77401E8D16bdC18E0D59327935De38f");
+    const request = await Request.attach("0x01a108E114D58Ecf7C086ab2D382884946cd35d0");
     // const test_id = await request.callStatic.requestPrice("QQQ",11 , -1600000000000123n, 10100001010101000n, ["this is a test", "array of strings"]);
     // console.log(`test_id: ${JSON.stringify(test_id, null, 2)}`);
     const request_txn = await request.requestPrice("BBBY",11 , -1600000000000123n, 10100001010101000n, ["this is a test", "array of strings"]);
