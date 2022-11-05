@@ -26,6 +26,7 @@ const handler: Handler = async (event, context) => {
     }
   }
   if (!parsed) return { statusCode: 400, body: "Bad Request" };
+  console.log("Parsed is ", JSON.stringify(parsed, null, 2));
   const { chainId, confirmed, logs } = parsed;
   if (parsed.logs && parsed.logs?.length > 0) {
     const { data, address: oracleAddress } = logs[0];
@@ -69,7 +70,7 @@ const handler: Handler = async (event, context) => {
       fetch(targetUrl, {
         body,
         method: "POST",
-        headers: {"Content-Type": "application/json"}
+        headers: { "Content-Type": "application/json" },
       });
       await new Promise<void>((r) => {
         setTimeout(() => {
