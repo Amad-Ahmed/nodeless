@@ -1,5 +1,31 @@
 import fetch from "node-fetch";
 
+export function parseRequestBody(body: string | null | undefined) {
+  const parsed =
+    body &&
+    (JSON.parse(body) as {
+      id: number;
+      key: string;
+      decodedData: Record<string, any>;
+    });
+
+  if (!parsed) return undefined;
+  return parsed;
+}
+
+export async function sendResult(
+  data: any,
+  { id, key }: { id: number; key: string }
+) {
+  await fetch(`https://xw8v-tcfi-85ay.n7.xano.io/api:58vCnoV0/requests/${id}`, {
+    method: "POST",
+    body: JSON.stringify({
+      key,
+      data,
+    }),
+  });
+}
+
 export function parseWebhook(body: string | null | undefined) {
   const parsed =
     body &&
