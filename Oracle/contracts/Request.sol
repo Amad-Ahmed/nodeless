@@ -20,7 +20,7 @@ contract Request is ChainlinkClient, Ownable {
     constructor() {
         requesters[msg.sender] = true;
         setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB); // for mumbai network
-        oracle = 0x5FA9D6c1391adac5eB36a5319C2da4e34D3eC9e3;
+        oracle = 0x57858402413b9fadC961459e9509a253A57885C6;
         priceJobId = "e94cc2e6281545058d45470bb3a9ae16";
         fee = 0.1 * 10**18; // (Varies by network and job)
     }
@@ -29,27 +29,21 @@ contract Request is ChainlinkClient, Ownable {
      * Create a Chainlink request to retrieve API response, find the target
      * data, then multiply by 1000000000000000000 (to remove decimal places from data).
      */
-    function requestPrice(
-        string memory string_1,
-        bytes memory bytes_2,
-        int int_3,
-        uint uint_4,
-        string[] memory string_array_5
-    ) public onlyRequester returns (bytes32 requestId) {
+    function requestPrice(string memory symbol)
+        public
+        onlyRequester
+        returns (bytes32 requestId)
+    {
         Chainlink.Request memory request = buildChainlinkRequest(
             priceJobId,
             address(this),
             this.fulfill.selector
         );
 
-        request.add("string_1", string_1);
-        request.addBytes("bytes_2", bytes_2);
-        request.addInt("int_3", int_3);
-        request.addUint("uint_4", uint_4);
-        request.addStringArray("string_array_5", string_array_5);
+        request.add("string_1", symbol);
         // Sends the request
         bytes32 _requestId = sendChainlinkRequestTo(oracle, request, fee);
-        requests[_requestId] = string_1;
+        requests[_requestId] = symbol;
         return _requestId;
     }
 
