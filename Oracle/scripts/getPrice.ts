@@ -6,9 +6,9 @@ import { ethers } from "hardhat";
 async function main() {
 
     const Request = await ethers.getContractFactory("Request");
-    const request = await Request.attach("0x01a108E114D58Ecf7C086ab2D382884946cd35d0");
+    const request = await Request.attach("0x29c568c4256422B775b37D29651f1C65287E3962");
 
-    const result = await request.getPriceandBlock("BBBY");
+    const result = await request.getPriceandBlock("QQQ");
     console.log(`result: ${JSON.stringify(result, null, 2)}`);
 }
 

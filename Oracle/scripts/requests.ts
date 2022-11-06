@@ -6,10 +6,10 @@ import { ethers } from "hardhat";
 async function main() {
 
     const Request = await ethers.getContractFactory("Request");
-    const request = await Request.attach("0x01a108E114D58Ecf7C086ab2D382884946cd35d0");
+    const request = await Request.attach("0x29c568c4256422B775b37D29651f1C65287E3962");
     // const test_id = await request.callStatic.requestPrice("QQQ",11 , -1600000000000123n, 10100001010101000n, ["this is a test", "array of strings"]);
     // console.log(`test_id: ${JSON.stringify(test_id, null, 2)}`);
-    const request_txn = await request.requestPrice("BBBY",11 , -1600000000000123n, 10100001010101000n, ["this is a test", "array of strings"]);
+    const request_txn = await request.requestPrice("QQQ");
     console.log(`Request deployed to ${JSON.stringify(request_txn, null, 2)}`);
     const request_txn_receipt = await request_txn.wait();
     console.log(`Request txn receipt: ${JSON.stringify(request_txn_receipt,null, 2)}`);
