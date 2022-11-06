@@ -23,6 +23,7 @@ export async function sendResult(
       key,
       data,
     }),
+    headers: { "Content-Type": "application/json" },
   });
 }
 
