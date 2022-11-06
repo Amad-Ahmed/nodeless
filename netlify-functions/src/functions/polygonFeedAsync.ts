@@ -15,7 +15,7 @@ const handler: Handler = async (event, context) => {
   const lastPrice = Math.floor((json.results.pop()?.c || 0) * 100);
   // await new Promise((r) => setTimeout(r, 20000));
   const { id, key } = parsed;
-  await sendResult(lastPrice, { id, key });
+  await sendResult(lastPrice.toString(), { id, key });
   return { statusCode: 200 };
 };
 export { handler };

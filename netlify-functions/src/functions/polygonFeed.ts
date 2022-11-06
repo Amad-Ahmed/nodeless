@@ -16,7 +16,7 @@ const handler: Handler = async (event, context) => {
   // await new Promise((r) => setTimeout(r, 20000));
   // const { id, key } = parsed;
   // await sendResult(lastPrice, { id, key });
-  return { statusCode: 200, body: lastPrice };
+  return { statusCode: 200, body: lastPrice.toString() };
 };
 export { handler };
 
