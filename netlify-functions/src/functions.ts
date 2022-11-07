@@ -18,13 +18,18 @@ export async function sendResult(
   data: any,
   { id, key }: { id: number; key: string }
 ) {
-  await fetch(`https://xw8v-tcfi-85ay.n7.xano.io/api:58vCnoV0/requests/${id}`, {
+  fetch(`https://xw8v-tcfi-85ay.n7.xano.io/api:58vCnoV0/requests/${id}`, {
     method: "POST",
     body: JSON.stringify({
       key,
       data,
     }),
     headers: { "Content-Type": "application/json" },
+  });
+  await new Promise<void>((r) => {
+    setTimeout(() => {
+      r();
+    }, 1000);
   });
 }
 

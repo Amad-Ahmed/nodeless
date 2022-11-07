@@ -15,7 +15,7 @@ const handler: Handler = async (event, context) => {
     console.log("My json is ", json, url);
     const volume = json.results.reduce((acc, cur) => acc + cur.v, 0);
     console.log("My volume is ", volume);
-    sendResult(volume, { id: parsed.id, key: parsed.key });
+    await sendResult(volume, { id: parsed.id, key: parsed.key });
     return { statusCode: 200 };
   } else {
     // const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/prev?adjusted=true&apiKey=${polygonKey}`;
