@@ -8,15 +8,27 @@ const handler: Handler = async (event, context) => {
   const symbol: string = parsed.decodedData.string_1;
   const polygonKey = "kTQbYuAtj_P5xdAuDhzRtAfirmuRm8br";
   const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/prev?adjusted=true&apiKey=${polygonKey}`;
-  const response = await fetch(url, {
-    headers: { Authentication: `Bearer ${polygonKey}` },
-  });
-  const json = (await response.json()) as { results: { c: number }[] };
-  const lastPrice = Math.floor((json.results.pop()?.c || 0) * 100);
-  // await new Promise((r) => setTimeout(r, 20000));
-  const { id, key } = parsed;
-  await sendResult(lastPrice, { id, key });
-  return { statusCode: 200 };
+  const response = await fetch(url);
+    
+  if (parsed.jobId == "volume") {
+    const json = (await response.json()) as { results: { v: number }[] };
+    console.log("My json is ", json, url);
+    const volume = json.results.reduce((acc, cur) => acc + cur.v, 0);
+    console.log("My volume is ", volume);
+    sendResult(volume, { id: parsed.id, key: parsed.key });
+    return { statusCode: 200 };
+  } else {
+    // const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/prev?adjusted=true&apiKey=${polygonKey}`;
+    // const response = await fetch(url, {
+    //   headers: { Authentication: `Bearer ${polygonKey}` },
+    // });
+    const json = (await response.json()) as { results: { c: number }[] };
+    const lastPrice = Math.floor((json.results.pop()?.c || 0) * 100);
+    // await new Promise((r) => setTimeout(r, 20000));
+    const { id, key } = parsed;
+    await sendResult(lastPrice, { id, key });
+    return { statusCode: 200 };
+  }
 };
 export { handler };
 
