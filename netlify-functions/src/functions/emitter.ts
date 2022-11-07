@@ -29,8 +29,9 @@ const handler: Handler = async (event, context) => {
   console.log("Parsed is ", JSON.stringify(parsed, null, 2));
   const { chainId, confirmed, logs } = parsed;
   if (parsed.logs && parsed.logs?.length > 0) {
-    const { data, address: oracleAddress } = logs[0];
+    const { data, address: oracleAddress, topic1: rawJobId } = logs[0];
     if (data) {
+      const jobId = Buffer.from(rawJobId.slice(2), "hex").toString("utf8");
       const iface = new utils.Interface(OracleABI__factory.abi);
       const logData = iface.decodeEventLog("OracleRequest", data);
       const { data: dataData } = logData;
@@ -62,6 +63,7 @@ const handler: Handler = async (event, context) => {
         oracleAddress,
         chainId,
         confirmed,
+        jobId,
       };
       const targetUrl =
         "https://xw8v-tcfi-85ay.n7.xano.io/api:58vCnoV0/requests";

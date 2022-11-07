@@ -7,6 +7,7 @@ export function parseRequestBody(body: string | null | undefined) {
       id: number;
       key: string;
       decodedData: Record<string, any>;
+      jobId: string;
     });
 
   if (!parsed) return undefined;
@@ -46,6 +47,7 @@ export function parseWebhook(body: string | null | undefined) {
       data: any;
       private_key: string;
       providerUri: string;
+      jobId: string;
     });
   if (!parsed) return undefined;
   return parsed;
