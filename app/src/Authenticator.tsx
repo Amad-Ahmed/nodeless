@@ -1,6 +1,5 @@
 import {
   FC,
-  Fragment,
   ReactElement,
   createContext,
   useContext,
@@ -8,9 +7,7 @@ import {
   useState,
   useEffect,
   useCallback,
-  ReactNode,
 } from "react";
-import { useConnected, useAccount } from "@raydeck/usemetamask";
 import { eth_requestAccounts } from "@raydeck/metamask-ts";
 import { ethers } from "ethers";
 const ethereum = (window as unknown as { ethereum: any }).ethereum;
@@ -177,4 +174,53 @@ export const useAuthentication = () => {
   return contextValue;
 };
 
+export const useAuthenticatedFetch = () => {
+  const { token } = useAuthentication();
+  return useCallback(
+    async (path: string, options: RequestInit = {}) => {
+      const url = baseUrl + path;
+      const response = await fetch(url, {
+        ...options,
+        headers: {
+          ...(options.headers || {}),
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.status === 401) {
+        throw new Error("Unauthorized");
+      }
+      return response;
+    },
+    [token]
+  );
+};
+
+export const useAuthenticatedQuery = <T,>(
+  path: string,
+  options: RequestInit
+) => {
+  const fetch = useAuthenticatedFetch();
+  const [data, setData] = useState<T | undefined>();
+  const [error, setError] = useState<Error>();
+  const [loading, setLoading] = useState(true);
+  const refresh = useCallback(async () => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(path, options);
+        const data: T = await response.json();
+        setData(data);
+      } catch (e) {
+        setError(e as Error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [fetch, path, options]);
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+  return { data, error, loading, refresh };
+};
 export default Authenticator;
