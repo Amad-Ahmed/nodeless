@@ -44,7 +44,7 @@ const Login: FC = () => {
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
               <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                <form className="space-y-6" action="#" method="POST">
+                <div className="space-y-6">
                   <div>
                     <label
                       htmlFor="email"
@@ -118,7 +118,7 @@ const Login: FC = () => {
                       Sign in
                     </button>
                   </div>
-                </form>
+                </div>
 
                 <div className="mt-6">
                   <div className="relative">

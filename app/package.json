@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@graywolfai/react-heroicons": "^2.0.1",
     "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^2.0.13",
     "@metamask/onboarding": "^1.0.1",
@@ -35,6 +36,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^9.1.1",
     "typescript": "^4.8.4",
+    "valid-url": "^1.0.9",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -60,5 +62,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/valid-url": "^1.0.3"
   }
 }

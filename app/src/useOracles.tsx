@@ -9,6 +9,8 @@ export type Oracle = {
   fee: string;
   webhookUrl: string;
   id: number;
+  confirmed: boolean;
+  async: boolean;
 };
 export const useOracles = () => {
   const fetch = useAuthenticatedFetch();
@@ -64,7 +66,10 @@ export const useOracles = () => {
     [fetch, refresh]
   );
 
-  return { oracles, error, loading, create, refresh, validate, remove };
+  return useMemo(
+    () => ({ oracles, error, loading, create, refresh, validate, remove }),
+    [oracles, error, loading, create, refresh, validate, remove]
+  );
 };
 
 export const useCreateOracle = () => {
@@ -145,5 +150,8 @@ export const useOracle = (id: string) => {
     }
   }, [fetch, id]);
 
-  return { oracle, error, loading, update, refresh, remove };
+  return useMemo(
+    () => ({ oracle, error, loading, update, refresh, remove }),
+    [oracle, error, loading, update, refresh, remove]
+  );
 };
