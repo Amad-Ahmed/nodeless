@@ -19,6 +19,7 @@
     "@types/node": "^16.18.3",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
+    "@types/react-helmet": "^6.1.5",
     "autoprefixer": "^10.4.13",
     "clipboard-copy": "^4.0.1",
     "dotenv": "^16.0.3",

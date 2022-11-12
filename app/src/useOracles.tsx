@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useAuthenticatedFetch, useAuthenticatedQuery } from "./Authenticator";
 import { BigNumber } from "ethers";
-type Oracle = {
+export type Oracle = {
   name: string;
   contractAddress: string;
   chainId: string;
@@ -12,16 +12,13 @@ type Oracle = {
 };
 export const useOracles = () => {
   const fetch = useAuthenticatedFetch();
-  const { data, error, loading, refresh } = useAuthenticatedQuery<Oracle[]>(
-    "/oracles",
-    {
-      method: "GET",
-    }
-  );
+  const { data, error, loading, refresh } =
+    useAuthenticatedQuery<Oracle[]>("/oracles");
   const oracles: Oracle[] = useMemo(() => {
     if (data) return data;
     else return [];
   }, [data]);
+  const createOracle = useCreateOracle();
   const create = useCallback(
     async (options: {
       name: string;
@@ -32,28 +29,12 @@ export const useOracles = () => {
       confirmed?: boolean;
       async?: boolean;
     }) => {
-      const body = {
-        name: options.name,
-        address: options.address,
-        webhookUrl: options.webhookUrl,
-        chainId: options.chainId,
-        async: typeof options.async === "undefined" ? false : options.async,
-        confirmed:
-          typeof options.confirmed === "undefined" ? false : options.confirmed,
-        fee: options.fee ? BigNumber.from(options.fee) : undefined,
-      };
-      const response = await fetch("/oracles", {
-        method: "POST",
-        body: JSON.stringify(body),
-      });
-      if (response.status === 200) {
-        refresh();
-        const json: { id: string } = await response.json();
-        return json;
-      } else throw new Error(response.statusText);
+      await createOracle(options);
+      refresh();
     },
-    [fetch, refresh]
+    [createOracle, refresh]
   );
+
   const validate = useCallback(
     async (options: { address: string; chainId?: string }) => {
       const response = await fetch("/oracles/validate", {
@@ -84,6 +65,42 @@ export const useOracles = () => {
   );
 
   return { oracles, error, loading, create, refresh, validate, remove };
+};
+
+export const useCreateOracle = () => {
+  const fetch = useAuthenticatedFetch();
+  const create = useCallback(
+    async (options: {
+      name: string;
+      address?: string;
+      webhookUrl: string;
+      chainId: string;
+      fee?: BigNumber;
+      confirmed?: boolean;
+      async?: boolean;
+    }) => {
+      const body = {
+        name: options.name,
+        address: options.address,
+        webhookUrl: options.webhookUrl,
+        chainId: options.chainId,
+        async: typeof options.async === "undefined" ? false : options.async,
+        confirmed:
+          typeof options.confirmed === "undefined" ? false : options.confirmed,
+        fee: options.fee ? BigNumber.from(options.fee) : undefined,
+      };
+      const response = await fetch("/oracles", {
+        method: "POST",
+        body: JSON.stringify(body),
+      });
+      if (response.status === 200) {
+        const json: { id: string } = await response.json();
+        return json;
+      } else throw new Error(response.statusText);
+    },
+    [fetch]
+  );
+  return create;
 };
 
 export const useOracle = (id: string) => {

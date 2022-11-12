@@ -198,7 +198,7 @@ export const useAuthenticatedFetch = () => {
 
 export const useAuthenticatedQuery = <T,>(
   path: string,
-  options: RequestInit
+  options?: RequestInit
 ) => {
   const fetch = useAuthenticatedFetch();
   const [data, setData] = useState<T | undefined>();

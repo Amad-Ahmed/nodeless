@@ -17,6 +17,7 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
 import { useOracles } from "./useOracles";
+import { Helmet } from "react-helmet";
 /**
  * Todo :
  * Add oracle creation form/wizard
@@ -100,9 +101,12 @@ const Main: FC = () => {
   const { token, logout } = useAuthentication();
   //What are the pieces we need for nodeless
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
   return (
     <>
+      <Helmet
+        // htmlAttributes={{ className: "bg-black" }}
+        bodyAttributes={{ class: "bg-black", bibble: "bob" }}
+      />
       {/*
         This example requires updating your template:
 

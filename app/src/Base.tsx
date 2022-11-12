@@ -1,8 +1,9 @@
-import { Fragment } from "react";
+import { createContext, Fragment, useState, useMemo, useContext } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import AppRouter from "./AppRouter";
-
+const context = createContext({ title: "", setTitle: (title: string) => {} });
+const { Provider } = context;
 const user = {
   name: "Tom Cook",
   email: "tom@example.com",
@@ -27,6 +28,10 @@ function classNames(...classes: string[]) {
 }
 
 export default function Base() {
+  const [title, setTitle] = useState("My Oracles");
+  const value = useMemo(() => {
+    return { title, setTitle };
+  }, [title, setTitle]);
   return (
     <>
       {/*
@@ -210,7 +215,7 @@ export default function Base() {
           <header className="py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h1 className="text-3xl font-bold tracking-tight text-white">
-                Dashboard
+                {title}
               </h1>
             </div>
           </header>
@@ -220,7 +225,9 @@ export default function Base() {
           <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
             {/* Replace with your content */}
             <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
-              <AppRouter />
+              <Provider value={value}>
+                <AppRouter />
+              </Provider>
             </div>
             {/* /End replace */}
           </div>
@@ -229,3 +236,7 @@ export default function Base() {
     </>
   );
 }
+export const useBase = () => {
+  const baseContext = useContext(context);
+  return baseContext;
+};
