@@ -175,7 +175,7 @@ export const useAuthentication = () => {
 };
 
 export const useAuthenticatedFetch = () => {
-  const { token } = useAuthentication();
+  const { token, logout } = useAuthentication();
   return useCallback(
     async (path: string, options: RequestInit = {}) => {
       const url = baseUrl + path;
@@ -188,7 +188,7 @@ export const useAuthenticatedFetch = () => {
         },
       });
       if (response.status === 401) {
-        throw new Error("Unauthorized");
+        logout();
       }
       return response;
     },
@@ -217,7 +217,7 @@ export const useAuthenticatedQuery = <T,>(
       }
     };
     fetchData();
-  }, [fetch, path, options]);
+  }, [fetch, path]);
   useEffect(() => {
     refresh();
   }, [refresh]);

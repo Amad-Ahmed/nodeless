@@ -5,6 +5,7 @@ import Authenticator from "./Authenticator";
 import Main from "./Main";
 import Login from "./Login";
 import Signup from "./Signup";
+import Base from "./Base";
 function App() {
   return (
     <BrowserRouter>
@@ -16,7 +17,7 @@ function App() {
           </Routes>
         }
       >
-        <Main />
+        <Base />
       </Authenticator>
       <ToastContainer />
     </BrowserRouter>

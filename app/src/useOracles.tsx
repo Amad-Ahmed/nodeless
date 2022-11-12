@@ -3,10 +3,12 @@ import { useAuthenticatedFetch, useAuthenticatedQuery } from "./Authenticator";
 import { BigNumber } from "ethers";
 type Oracle = {
   name: string;
-  address: string;
+  contractAddress: string;
   chainId: string;
   jobId: string;
   fee: string;
+  webhookUrl: string;
+  id: number;
 };
 export const useOracles = () => {
   const fetch = useAuthenticatedFetch();
@@ -27,12 +29,17 @@ export const useOracles = () => {
       webhookUrl: string;
       chainId: string;
       fee?: BigNumber;
+      confirmed?: boolean;
+      async?: boolean;
     }) => {
       const body = {
         name: options.name,
         address: options.address,
         webhookUrl: options.webhookUrl,
         chainId: options.chainId,
+        async: typeof options.async === "undefined" ? false : options.async,
+        confirmed:
+          typeof options.confirmed === "undefined" ? false : options.confirmed,
         fee: options.fee ? BigNumber.from(options.fee) : undefined,
       };
       const response = await fetch("/oracles", {

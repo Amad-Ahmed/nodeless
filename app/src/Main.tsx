@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { useAuthentication } from "./Authenticator";
 
 import { Fragment, useState } from "react";
@@ -16,6 +16,7 @@ import {
   EllipsisVerticalIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
+import { useOracles } from "./useOracles";
 /**
  * Todo :
  * Add oracle creation form/wizard
@@ -80,6 +81,22 @@ function classNames(...classes: string[]) {
 }
 
 const Main: FC = () => {
+  const { oracles, loading } = useOracles();
+  const teams = useMemo(() => {
+    console.log("Oracles now are", oracles);
+    return oracles.map((oracle) => {
+      return {
+        name: oracle.webhookUrl,
+        href: "#",
+        bgColorClass: "bg-indigo-500",
+      };
+    });
+  }, [oracles]);
+  // const teams = [
+  //   { name: "Engineering", href: "#", bgColorClass: "bg-indigo-500" },
+  //   { name: "Human Resources", href: "#", bgColorClass: "bg-green-500" },
+  //   { name: "Customer Success", href: "#", bgColorClass: "bg-yellow-500" },
+  // ];
   const { token, logout } = useAuthentication();
   //What are the pieces we need for nodeless
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -182,36 +199,40 @@ const Main: FC = () => {
                           </a>
                         ))}
                       </div>
-                      <div className="mt-8">
-                        <h3
-                          className="px-3 text-sm font-medium text-gray-500"
-                          id="mobile-teams-headline"
-                        >
-                          Teams
-                        </h3>
-                        <div
-                          className="mt-1 space-y-1"
-                          role="group"
-                          aria-labelledby="mobile-teams-headline"
-                        >
-                          {teams.map((team) => (
-                            <a
-                              key={team.name}
-                              href={team.href}
-                              className="group flex items-center rounded-md px-3 py-2 text-base font-medium leading-5 text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                            >
-                              <span
-                                className={classNames(
-                                  team.bgColorClass,
-                                  "w-2.5 h-2.5 mr-4 rounded-full"
-                                )}
-                                aria-hidden="true"
-                              />
-                              <span className="truncate">{team.name}</span>
-                            </a>
-                          ))}
+                      {loading ? (
+                        "Loading..."
+                      ) : (
+                        <div className="mt-8">
+                          <h3
+                            className="px-3 text-sm font-medium text-gray-500"
+                            id="mobile-teams-headline"
+                          >
+                            Teams
+                          </h3>
+                          <div
+                            className="mt-1 space-y-1"
+                            role="group"
+                            aria-labelledby="mobile-teams-headline"
+                          >
+                            {teams.map((team) => (
+                              <a
+                                key={team.name}
+                                href={team.href}
+                                className="group flex items-center rounded-md px-3 py-2 text-base font-medium leading-5 text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                              >
+                                <span
+                                  className={classNames(
+                                    team.bgColorClass,
+                                    "w-2.5 h-2.5 mr-4 rounded-full"
+                                  )}
+                                  aria-hidden="true"
+                                />
+                                <span className="truncate">{team.name}</span>
+                              </a>
+                            ))}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </nav>
                   </div>
                 </Dialog.Panel>
