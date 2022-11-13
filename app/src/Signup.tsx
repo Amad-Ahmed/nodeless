@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { useAuthentication } from "./Authenticator";
 import { Formik, Form, Field } from "formik";
+import { Link } from "react-router-dom";
 const Login: FC = () => {
   const { loginWithPassword, loginWithWallet } = useAuthentication();
   return (
@@ -33,12 +34,12 @@ const Login: FC = () => {
               </h2>
               <p className="mt-2 text-center text-sm text-gray-600">
                 Or{" "}
-                <a
-                  href="#"
+                <Link
+                  to="/"
                   className="font-medium text-indigo-600 hover:text-indigo-500"
                 >
                   start your 14-day free trial
-                </a>
+                </Link>
               </p>
             </div>
 
@@ -99,14 +100,14 @@ const Login: FC = () => {
                       </label>
                     </div> */}
 
-                    <div className="text-sm">
-                      <a
-                        href="#"
+                    {/* <div className="text-sm">
+                      <Link
+                        href="/forgot-password"
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
                         Forgot your password?
-                      </a>
-                    </div>
+                      </Link>
+                    </div> */}
                   </div>
 
                   <div>
