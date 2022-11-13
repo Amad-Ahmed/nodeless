@@ -38,7 +38,9 @@ const CreateOracle: FC<{
       }}
       onSubmit={async (values, form) => {
         console.log("submitting the form with ", values);
-        const id = toast.info("Requesting the oracle...", { autoClose: false });
+        const id = toast.info("Requesting the oracle (can take up to 30s)...", {
+          autoClose: false,
+        });
         try {
           await create({
             name: values.name,
@@ -157,12 +159,17 @@ const CreateOracle: FC<{
                     </div>
                     <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                       <button
+                        disabled={isSubmitting}
                         onClick={() => {
                           if (onCreated) {
                             onCreated();
                           }
                         }}
-                        className="mr-2 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className={
+                          isSubmitting
+                            ? "inline-flex justify-center rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            : "inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        }
                       >
                         Cancel
                       </button>
