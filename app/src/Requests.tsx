@@ -94,7 +94,10 @@ const Requests: FC = () => {
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 truncate">
                         {request.requestId.substring(0, 6)}...
-                        {request.requestId.substring(-4)}
+                        {request.requestId.substring(
+                          request.requestId.length - 4,
+                          4
+                        )}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {request.transaction ? (
