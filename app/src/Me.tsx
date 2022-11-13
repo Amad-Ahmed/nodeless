@@ -1,8 +1,7 @@
 import { FC } from "react";
-import { useAuthentication, useMe } from "./Authenticator";
+import { useMe } from "./Authenticator";
 
 const Me: FC = () => {
-  const { token } = useAuthentication();
   const { data, loading } = useMe();
   if (loading) return <div>Loading...</div>;
   const { address, email, name } = data || {};
