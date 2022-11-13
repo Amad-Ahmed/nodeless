@@ -193,7 +193,7 @@ export const useAuthenticatedFetch = () => {
       }
       return response;
     },
-    [token]
+    [token, logout]
   );
 };
 

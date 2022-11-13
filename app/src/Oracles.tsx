@@ -8,7 +8,7 @@ import { DocumentDuplicateIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { useOracles } from "./useOracles";
 import { Link } from "react-router-dom";
 import { useBase } from "./Base";
-import { ChainLogo } from "./ChainLogo";
+import { ChainLogo, chainSvgs } from "./ChainLogo";
 import CreateOracle from "./CreateOracle";
 import copy from "clipboard-copy";
 import { toast } from "react-toastify";
@@ -29,11 +29,11 @@ const Oracles: FC = () => {
     } else {
       setTitle("Oracles (" + oracles.length + ")");
     }
-  }, [loading]);
+  }, [loading, oracles.length, setTitle]);
   return (
     <Fragment>
       <div className="overflow-hidden bg-white shadow sm:rounded-md">
-        <ul role="list" className="divide-y divide-gray-200">
+        <ul className="divide-y divide-gray-200">
           {oracles.map((oracle) => (
             <li key={oracle.id}>
               <div className="flex items-center">
@@ -44,7 +44,18 @@ const Oracles: FC = () => {
                   <div className="min-w-0 flex-1 px-4 ">
                     <div>
                       <h2 className="text-medium font-bold text-gray-800 my-2">
-                        {oracle.name}
+                        {oracle.name}{" "}
+                        <div
+                          onClick={() => {
+                            window.open(
+                              chainSvgs[oracle.chainId].blockExplorer +
+                                oracle.contractAddress
+                            );
+                          }}
+                          className="inline cursor-pointer hover:text-black text-blue-600 text-xs font-medium p-1 "
+                        >
+                          Open In Block Explorer
+                        </div>
                       </h2>
                       <p
                         className="truncate flex text-sm font-medium text-blue-600 cursor-pointer group"
@@ -61,7 +72,7 @@ const Oracles: FC = () => {
                         <span className="truncate">
                           {oracle.contractAddress}
                         </span>
-                        <DocumentDuplicateIcon
+                        <SmallDocumentDuplicateIcon
                           className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-800"
                           aria-hidden="true"
                         />
@@ -79,7 +90,7 @@ const Oracles: FC = () => {
                           aria-hidden="true"
                         />
                         <span className="truncate">{oracle.webhookUrl}</span>
-                        <DocumentDuplicateIcon
+                        <SmallDocumentDuplicateIcon
                           className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-800"
                           aria-hidden="true"
                         />
@@ -125,7 +136,7 @@ const Oracles: FC = () => {
                   <span className="hidden md:inline ml-2">Copy</span>
                 </button>
                 <Link
-                  to={`oracle/${oracle.id}`}
+                  to={`/oracle/${oracle.id}`}
                   className="mx-4 p-2 hover:text-black text-gray-400 flex"
 
                   // className="block hover:bg-blue-800 h-20 w-20 p-8 animated hover:fadeIn  text-gray-400 group-hover hover:text-white"

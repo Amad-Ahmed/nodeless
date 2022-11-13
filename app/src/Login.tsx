@@ -34,7 +34,7 @@ const Login: FC = () => {
               <p className="mt-2 text-center text-sm text-gray-600">
                 Or{" "}
                 <a
-                  href="#"
+                  href="/signup"
                   className="font-medium text-indigo-600 hover:text-indigo-500"
                 >
                   start your 14-day free trial
@@ -99,14 +99,14 @@ const Login: FC = () => {
                       </label>
                     </div> */}
 
-                    <div className="text-sm">
+                    {/* <div className="text-sm">
                       <a
                         href="#"
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
                         Forgot your password?
                       </a>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div>

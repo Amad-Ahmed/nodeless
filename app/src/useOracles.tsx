@@ -157,3 +157,21 @@ export const useOracle = (id: number) => {
     [oracle, error, loading, update, refresh, remove]
   );
 };
+
+export type Request = {
+  id: number;
+  requester: string;
+  requestId: string;
+  payment: string;
+  status: "remitting" | "complete" | "pending" | "error";
+  _oracle: Oracle;
+  created_at: number;
+};
+export const useRequests = () => {
+  const { data, error, loading, refresh } =
+    useAuthenticatedQuery<Request[]>("/requests");
+  return useMemo(
+    () => ({ data, error, loading, refresh }),
+    [data, error, loading, refresh]
+  );
+};

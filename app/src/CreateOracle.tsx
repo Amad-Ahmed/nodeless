@@ -40,7 +40,7 @@ const CreateOracle: FC<{
         console.log("submitting the form with ", values);
         const id = toast.info("Requesting the oracle...", { autoClose: false });
         try {
-          const oracle = await create({
+          await create({
             name: values.name,
             chainId: values.chainId,
             webhookUrl: values.webhookUrl,

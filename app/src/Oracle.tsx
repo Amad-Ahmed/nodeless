@@ -1,23 +1,22 @@
-import { create } from "domain";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import { FC, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { isWebUri } from "valid-url";
-import { TinyChainLogo } from "./ChainLogo";
-import { chains } from "./chains";
+// import { TinyChainLogo } from "./ChainLogo";
+// import { chains } from "./chains";
 import { useOracle } from "./useOracles";
 import { useBase } from "./Base";
 import { chainSvgs } from "./ChainLogo";
 const Oracle: FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { oracle, loading, refresh, error, remove, update } = useOracle(
+  const { oracle, loading, refresh, remove, update } = useOracle(
     parseInt(id || "0")
   );
   useEffect(() => {
     if (!oracle && !loading) navigate("/");
-  }, [oracle, loading]);
+  }, [oracle, loading, navigate]);
   const { setTitle } = useBase();
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
@@ -176,7 +175,7 @@ const Oracle: FC = () => {
                         }}
                         className="mr-2 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                       >
-                        Cancel
+                        Go Back
                       </button>
 
                       <button

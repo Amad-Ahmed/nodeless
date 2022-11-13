@@ -5,8 +5,8 @@ import bnb from "./assets/bnb-bnb-logo.svg";
 import eth from "./assets/ethereum-eth-logo.svg";
 import fantom from "./assets/fantom-ftm-logo.svg";
 import harmony from "./assets/harmony-one-logo.svg";
-import klaytn from "./assets/klaytn-klay-logo.svg";
-import rsk from "./assets/rsk-infrastructure-framework-rif-logo.svg";
+// import klaytn from "./assets/klaytn-klay-logo.svg";
+// import rsk from "./assets/rsk-infrastructure-framework-rif-logo.svg";
 export const chainSvgs: Record<
   string,
   { name: string; svg: string; testnet: boolean; blockExplorer?: string }
