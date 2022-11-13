@@ -232,6 +232,6 @@ export type User = {
   address: string;
 };
 export const useMe = () => {
-  return useAuthenticatedQuery<{ me: User }>(`/auth/me`);
+  return useAuthenticatedQuery<User>(`/auth/me`);
 };
 export default Authenticator;

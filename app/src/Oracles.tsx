@@ -4,7 +4,11 @@ import {
   LinkIcon,
   DocumentDuplicateIcon as SmallDocumentDuplicateIcon,
 } from "@heroicons/react/20/solid";
-import { DocumentDuplicateIcon, PencilIcon } from "@heroicons/react/24/outline";
+import {
+  DocumentDuplicateIcon,
+  HashtagIcon,
+  PencilIcon,
+} from "@heroicons/react/24/outline";
 import { useOracles } from "./useOracles";
 import { Link } from "react-router-dom";
 import { useBase, useUpdatePath } from "./Base";
@@ -45,7 +49,7 @@ const Oracles: FC = () => {
                   <div className="min-w-0 flex-1 px-4 ">
                     <div>
                       <h2 className="text-medium font-bold text-gray-800 my-2">
-                        {oracle.name}{" "}
+                        {oracle.name || "No label"}{" "}
                         <div
                           onClick={() => {
                             window.open(
@@ -58,6 +62,35 @@ const Oracles: FC = () => {
                           Open In Block Explorer
                         </div>
                       </h2>
+                      {oracle.jobId ? (
+                        <p
+                          className="truncate flex text-sm font-medium text-blue-600 cursor-pointer group"
+                          onClick={() => {
+                            copy(oracle.jobId);
+                            toast.success("Copied job ID to clipboard");
+                          }}
+                        >
+                          <HashtagIcon
+                            className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
+                          <span className="truncate">
+                            {oracle.jobId || "[All Jobids]"}
+                          </span>
+                          <SmallDocumentDuplicateIcon
+                            className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-800"
+                            aria-hidden="true"
+                          />
+                        </p>
+                      ) : (
+                        <p className="truncate flex text-sm font-medium text-gray-400 cursor-pointer group">
+                          <HashtagIcon
+                            className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
+                          <span className="truncate ">[All Jobids]</span>
+                        </p>
+                      )}
                       <p
                         className="truncate flex text-sm font-medium text-blue-600 cursor-pointer group"
                         onClick={() => {

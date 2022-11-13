@@ -1,12 +1,12 @@
+import { chainSvgs } from "./ChainLogo";
+
 export const chains = [
-  { name: "Ethereum", value: "0x01" },
-  { name: "Goerli (Ethereum Testnet)", value: "0x02" },
-  { name: "Binance Smart Chain", value: "0x38" },
-  { name: "Binance Testnet", value: "0x61" },
-  { name: "Polygon", value: "0x89" },
-  { name: "Polygon Testnet", value: "0x13881" },
-  { name: "Fantom", value: "0x46" },
-  { name: "Fantom Testnet", value: "0xfa2" },
-  { name: "Avalanche", value: "0xa8" },
-  { name: "Avalanche Testnet", value: "0xa86a" },
+  { ...chainSvgs["0x01"], value: "0x01" },
+  { ...chainSvgs["0x05"], value: "0x05" },
+  { ...chainSvgs["0x38"], value: "0x38" },
+  { ...chainSvgs["0x89"], value: "0x89" },
+  { ...chainSvgs["0x13881"], value: "0x13881" },
+  { ...chainSvgs["0xFA"], value: "0xFA" },
+  { ...chainSvgs["0xA86A"], value: "0xA86A" },
+  { ...chainSvgs["0xA869"], value: "0xA869" },
 ];

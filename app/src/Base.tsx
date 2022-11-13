@@ -11,7 +11,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import AppRouter from "./AppRouter";
 import { Link } from "react-router-dom";
-import { useAuthentication } from "./Authenticator";
+import { useAuthentication, useMe } from "./Authenticator";
 import { Helmet } from "react-helmet";
 import Logo from "./Logo";
 const context = createContext({
@@ -34,10 +34,17 @@ function classNames(...classes: string[]) {
 
 export default function Base() {
   const { logout } = useAuthentication();
+  const { data: me } = useMe();
+  const initial = useMemo(() => {
+    if (me) {
+      const { name, email, address } = me;
+      const resolvedName = name || email || address?.substring(0, 6);
+      return resolvedName?.substring(0, 1).toUpperCase();
+    } else return "";
+  }, [me]);
   const userNavigation = useMemo(
     () => [
-      { name: "Your Profile", href: "#" },
-      { name: "Settings", href: "#" },
+      { name: "Settings", href: "/me" },
       {
         name: "Sign out",
         onClick: () => {
@@ -141,11 +148,9 @@ export default function Base() {
                             <div>
                               <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                 <span className="sr-only">Open user menu</span>
-                                <img
-                                  className="h-8 w-8 rounded-full"
-                                  src={user.imageUrl}
-                                  alt=""
-                                />
+                                <div className="h-6 w-6 rounded-full bg-blue-600 text-white font-medium">
+                                  {initial}
+                                </div>
                               </Menu.Button>
                             </div>
                             <Transition
