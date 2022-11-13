@@ -9,61 +9,76 @@ import harmony from "./assets/harmony-one-logo.svg";
 // import rsk from "./assets/rsk-infrastructure-framework-rif-logo.svg";
 export const chainSvgs: Record<
   string,
-  { name: string; svg: string; testnet: boolean; blockExplorer?: string }
+  {
+    name: string;
+    svg: string;
+    testnet: boolean;
+    blockExplorer?: string;
+    transactionExplorer?: string;
+  }
 > = {
   "0x13881": {
     name: "Polygon Mumbai Testnet",
     svg: polygon,
     testnet: true,
     blockExplorer: "https://mumbai.polygonscan.com/address/",
+    transactionExplorer: "https://mumbai.polygonscan.com/tx/",
   },
   "0xA869": {
     name: "Avalanche Fuji Testnet",
     svg: avalanche,
     testnet: true,
     blockExplorer: "https://testnet.snowtrace.io/address/",
+    transactionExplorer: "https://testnet.snowtrace.io/tx/",
   },
   "0x38": {
     name: "Binance Smart Chain",
     svg: bnb,
     testnet: false,
     blockExplorer: "https://bscscan.com/address/",
+    transactionExplorer: "https://bscscan.com/tx/",
   },
   "0x01": {
     name: "Ethereum Mainnet",
     svg: eth,
     testnet: false,
     blockExplorer: "https://etherscan.io/address/",
+    transactionExplorer: "https://etherscan.io/tx/",
   },
   "0xFA": {
     name: "Fantom",
     svg: fantom,
     testnet: false,
     blockExplorer: "https://ftmscan.com/address/",
+    transactionExplorer: "https://ftmscan.com/tx/",
   },
   "0x63564C40": {
     name: "Harmony",
     svg: harmony,
     testnet: false,
     blockExplorer: "https://explorer.harmony.one/address/",
+    transactionExplorer: "https://explorer.harmony.one/tx/",
   },
   "0xA86A": {
     name: "Avalanche",
     svg: avalanche,
     testnet: false,
     blockExplorer: "https://snowtrace.io/address/",
+    transactionExplorer: "https://snowtrace.io/tx/",
   },
   "0x89": {
     name: "Polygon",
     svg: polygon,
     testnet: false,
     blockExplorer: "https://polygonscan.com/address/",
+    transactionExplorer: "https://polygonscan.com/tx/",
   },
   "0x05": {
     name: "Ethereum Goerli Testnet",
     svg: eth,
     testnet: true,
     blockExplorer: "https://goerli.etherscan.io/address/",
+    transactionExplorer: "https://goerli.etherscan.io/tx/",
   },
 };
 

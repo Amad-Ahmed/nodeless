@@ -7,13 +7,14 @@ import {
 import { DocumentDuplicateIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { useOracles } from "./useOracles";
 import { Link } from "react-router-dom";
-import { useBase } from "./Base";
+import { useBase, useUpdatePath } from "./Base";
 import { ChainLogo, chainSvgs } from "./ChainLogo";
 import CreateOracle from "./CreateOracle";
 import copy from "clipboard-copy";
 import { toast } from "react-toastify";
 
 const Oracles: FC = () => {
+  useUpdatePath();
   const { oracles, refresh, loading } = useOracles();
   const [createName, setCreateName] = useState("My First Oracle");
   const [createChainId, setCreateChainId] = useState("0x13881");

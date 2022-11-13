@@ -5,9 +5,11 @@ import Authenticator from "./Authenticator";
 import Login from "./Login";
 import Signup from "./Signup";
 import Base from "./Base";
+import { Helmet } from "react-helmet";
 function App() {
   return (
     <BrowserRouter>
+      <Helmet title="Nodeless Link" />
       <Authenticator
         fallback={
           <Routes>

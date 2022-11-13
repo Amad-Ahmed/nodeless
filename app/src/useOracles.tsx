@@ -166,6 +166,7 @@ export type Request = {
   status: "remitting" | "complete" | "pending" | "error";
   _oracle: Oracle;
   created_at: number;
+  transaction: string;
 };
 export const useRequests = () => {
   const { data, error, loading, refresh } =

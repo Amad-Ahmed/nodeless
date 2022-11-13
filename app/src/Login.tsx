@@ -2,6 +2,7 @@ import { FC } from "react";
 import { useAuthentication } from "./Authenticator";
 import { Formik, Form, Field } from "formik";
 import { Link } from "react-router-dom";
+import Logo from "./Logo";
 const Login: FC = () => {
   const { loginWithPassword, loginWithWallet } = useAuthentication();
   return (
@@ -14,31 +15,19 @@ const Login: FC = () => {
     >
       {({ values, handleChange, handleBlur, submitForm }) => (
         <Form>
-          {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-50">
-        <body class="h-full">
-        ```
-      */}
           <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
-              <img
-                className="mx-auto h-12 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt="Your Company"
-              />
-              <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+              <Logo className="mx-auto h-12 w-12" />
+              <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-100">
                 Sign in to your account
               </h2>
-              <p className="mt-2 text-center text-sm text-gray-600">
+              <p className="mt-2 text-center text-sm text-gray-200">
                 Or{" "}
                 <Link
                   to="/signup"
-                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                  className="font-medium text-blue-200 hover:text-blue-100"
                 >
-                  start your 14-day free trial
+                  Sign Up
                 </Link>
               </p>
             </div>

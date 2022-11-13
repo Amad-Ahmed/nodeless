@@ -226,4 +226,12 @@ export const useAuthenticatedQuery = <T,>(
   }, [refresh]);
   return { data, error, loading, refresh };
 };
+export type User = {
+  name: string;
+  email: string;
+  address: string;
+};
+export const useMe = () => {
+  return useAuthenticatedQuery<{ me: User }>(`/auth/me`);
+};
 export default Authenticator;
