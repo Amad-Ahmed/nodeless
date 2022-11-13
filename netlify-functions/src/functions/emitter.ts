@@ -33,8 +33,8 @@ const handler: Handler = async (event, context) => {
     console.log("My raw job id was", rawJobId);
     if (data) {
       let processedId = rawJobId;
-      while(processedId?.endsWith("00") {
-         processedId = processedId.substring(0,processedId.length-2);
+      while (processedId?.endsWith("00")) {
+        processedId = processedId.substring(0, processedId.length - 2);
       }
       const jobId = processedId
         ? Buffer.from(processedId.slice(2), "hex").toString().trim()
