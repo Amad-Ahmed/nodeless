@@ -9,7 +9,7 @@ import klaytn from "./assets/klaytn-klay-logo.svg";
 import rsk from "./assets/rsk-infrastructure-framework-rif-logo.svg";
 export const chainSvgs: Record<
   string,
-  { name: string; svg: string; testnet: boolean; blockExplorer: string }
+  { name: string; svg: string; testnet: boolean; blockExplorer?: string }
 > = {
   "0x13881": {
     name: "Polygon Mumbai Testnet",
