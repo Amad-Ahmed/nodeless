@@ -6,7 +6,15 @@ import { Link } from "react-router-dom";
 import { chainSvgs } from "./ChainLogo";
 const Requests: FC = () => {
   useUpdatePath();
-  const { data, loading } = useRequests();
+  const { data, loading, refresh } = useRequests();
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refresh();
+    }, 3000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [refresh]);
   const { setTitle } = useBase();
   useEffect(() => {
     setTitle("Recent Requests");
