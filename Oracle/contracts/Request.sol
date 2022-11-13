@@ -20,8 +20,8 @@ contract Request is ChainlinkClient, Ownable {
     constructor() {
         requesters[msg.sender] = true;
         setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB); // for mumbai network
-        oracle = 0x57858402413b9fadC961459e9509a253A57885C6;
-        priceJobId = "e94cc2e6281545058d45470bb3a9ae16";
+        oracle = 0xe9eF1f50fa2748864B7c78Da60C609e1eD567D9f;
+        priceJobId = "bb6c3660d0b2479990b1028fc04d1e";
         fee = 0.1 * 10**18; // (Varies by network and job)
     }
 
