@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 import {
   GlobeAmericasIcon,
   LinkIcon,
@@ -21,6 +21,7 @@ const Oracles: FC = () => {
   const [createConfirmed, setCreateConfirmed] = useState(false);
   const [createAsync, setCreateAsync] = useState(false);
   const [createAddress, setCreateAddress] = useState("");
+  const [showOracle, setShowOracle] = useState(false);
   const { setTitle } = useBase();
   useEffect(() => {
     if (loading) {
@@ -30,55 +31,61 @@ const Oracles: FC = () => {
     }
   }, [loading]);
   return (
-    <div className="overflow-hidden bg-white shadow sm:rounded-md">
-      <ul role="list" className="divide-y divide-gray-200">
-        {oracles.map((oracle) => (
-          <li key={oracle.id}>
-            <div className="flex items-center">
-              <div className="flex min-w-0 flex-1 items-center  px-4 py-4 sm:px-6">
-                <div className="flex-shrink-0">
-                  <ChainLogo chainId={oracle.chainId} />
-                </div>
-                <div className="min-w-0 flex-1 px-4 ">
-                  <div>
-                    <p
-                      className="truncate flex text-sm font-medium text-indigo-600 cursor-pointer group"
-                      onClick={() => {
-                        console.log("Hello");
-                        copy(oracle.contractAddress);
-                        toast.success("Copied address to clipboard");
-                      }}
-                    >
-                      <LinkIcon
-                        className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                        aria-hidden="true"
-                      />
-                      <span className="truncate">{oracle.contractAddress}</span>
-                      <DocumentDuplicateIcon
-                        className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-800"
-                        aria-hidden="true"
-                      />
-                    </p>
-                    <p
-                      className="mt-2 flex items-center text-sm text-gray-500 cursor-pointer group"
-                      onClick={() => {
-                        console.log("Hello");
-                        copy(oracle.webhookUrl);
-                        toast.success("Copied URL to clipboard");
-                      }}
-                    >
-                      <GlobeAmericasIcon
-                        className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 "
-                        aria-hidden="true"
-                      />
-                      <span className="truncate">{oracle.webhookUrl}</span>
-                      <DocumentDuplicateIcon
-                        className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-800"
-                        aria-hidden="true"
-                      />
-                    </p>
+    <Fragment>
+      <div className="overflow-hidden bg-white shadow sm:rounded-md">
+        <ul role="list" className="divide-y divide-gray-200">
+          {oracles.map((oracle) => (
+            <li key={oracle.id}>
+              <div className="flex items-center">
+                <div className="flex min-w-0 flex-1 items-center  px-4 py-4 sm:px-6">
+                  <div className="flex-shrink-0">
+                    <ChainLogo chainId={oracle.chainId} />
                   </div>
-                  {/* <div className="hidden md:block">
+                  <div className="min-w-0 flex-1 px-4 ">
+                    <div>
+                      <h2 className="text-medium font-bold text-gray-800 my-2">
+                        {oracle.name}
+                      </h2>
+                      <p
+                        className="truncate flex text-sm font-medium text-blue-600 cursor-pointer group"
+                        onClick={() => {
+                          console.log("Hello");
+                          copy(oracle.contractAddress);
+                          toast.success("Copied address to clipboard");
+                        }}
+                      >
+                        <LinkIcon
+                          className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                          aria-hidden="true"
+                        />
+                        <span className="truncate">
+                          {oracle.contractAddress}
+                        </span>
+                        <DocumentDuplicateIcon
+                          className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-800"
+                          aria-hidden="true"
+                        />
+                      </p>
+                      <p
+                        className="mt-2 flex items-center text-sm text-gray-500 cursor-pointer group"
+                        onClick={() => {
+                          console.log("Hello");
+                          copy(oracle.webhookUrl);
+                          toast.success("Copied URL to clipboard");
+                        }}
+                      >
+                        <GlobeAmericasIcon
+                          className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 "
+                          aria-hidden="true"
+                        />
+                        <span className="truncate">{oracle.webhookUrl}</span>
+                        <DocumentDuplicateIcon
+                          className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-800"
+                          aria-hidden="true"
+                        />
+                      </p>
+                    </div>
+                    {/* <div className="hidden md:block">
                       <div>
                         <p className="text-sm text-gray-900">
                           Applied on{" "}
@@ -95,52 +102,75 @@ const Oracles: FC = () => {
                         </p>
                       </div>
                     </div> */}
+                  </div>
                 </div>
+                <button
+                  title="Duplicate contract"
+                  className="mx-4 p-2 hover:text-black text-gray-400 flex"
+                  onClick={() => {
+                    console.log(oracle.contractAddress);
+                    setCreateAddress(oracle.contractAddress);
+                    setCreateName(oracle.name + " copy");
+                    setCreateConfirmed(oracle.confirmed);
+                    setCreateAsync(oracle.async);
+                    setCreateChainId(oracle.chainId);
+                    setCreateWebhookUrl(oracle.webhookUrl);
+                    setShowOracle(true);
+                    setTimeout(() => {
+                      window.location.href = "#create-oracle-form";
+                    }, 100);
+                  }}
+                >
+                  <DocumentDuplicateIcon className="h-5 w-5" />
+                  <span className="hidden md:inline ml-2">Copy</span>
+                </button>
+                <Link
+                  to={`oracle/${oracle.id}`}
+                  className="mx-4 p-2 hover:text-black text-gray-400 flex"
+
+                  // className="block hover:bg-blue-800 h-20 w-20 p-8 animated hover:fadeIn  text-gray-400 group-hover hover:text-white"
+                >
+                  <PencilIcon className="h-5 w-5" />
+                  <span className="hidden md:inline ml-2">Edit</span>
+
+                  {/* <ChevronRightIcon className="h-5 w-5" aria-hidden="true" /> */}
+                </Link>
               </div>
-              <button
-                title="Duplicate contract"
-                className="mx-4 p-2 hover:text-black text-gray-400 flex"
-                onClick={() => {
-                  console.log(oracle.contractAddress);
-                  setCreateAddress(oracle.contractAddress);
-                  setCreateName(oracle.name + " copy");
-                  setCreateConfirmed(oracle.confirmed);
-                  setCreateAsync(oracle.async);
-                  setCreateChainId(oracle.chainId);
-                  setCreateWebhookUrl(oracle.webhookUrl);
-                  window.location.href = "#create-oracle-form";
-                }}
-              >
-                <DocumentDuplicateIcon className="h-5 w-5" />
-                <span className="hidden md:inline ml-2">Copy</span>
-              </button>
-              <Link
-                to={`oracle/${oracle.id}`}
-                className="mx-4 p-2 hover:text-black text-gray-400 flex"
-
-                // className="block hover:bg-blue-800 h-20 w-20 p-8 animated hover:fadeIn  text-gray-400 group-hover hover:text-white"
-              >
-                <PencilIcon className="h-5 w-5" />
-                <span className="hidden md:inline ml-2">Edit</span>
-
-                {/* <ChevronRightIcon className="h-5 w-5" aria-hidden="true" /> */}
-              </Link>
-            </div>
-          </li>
-        ))}
-      </ul>
-      {!loading && (
-        <CreateOracle
-          name={createName}
-          chainId={createChainId}
-          webhookUrl={createWebhookUrl}
-          confirmed={createConfirmed}
-          async={createAsync}
-          address={createAddress}
-          onCreated={refresh}
-        />
+            </li>
+          ))}
+        </ul>
+      </div>
+      {!showOracle && (
+        <button
+          onClick={() => {
+            setShowOracle(true);
+            setTimeout(() => {
+              window.location.href = "#create-oracle-form";
+            }, 100);
+          }}
+          className="block bg-blue-600 rounded-md hover:bg-blue-800 my-3 w-full p-2 animated hover:fadeIn text-gray-200 hover:text-white"
+        >
+          Create an Oracle
+        </button>
       )}
-    </div>
+      {showOracle && (
+        <Fragment>
+          <hr className="mt-8" />
+          <CreateOracle
+            name={createName}
+            chainId={createChainId}
+            webhookUrl={createWebhookUrl}
+            confirmed={createConfirmed}
+            async={createAsync}
+            address={createAddress}
+            onCreated={() => {
+              setShowOracle(false);
+              refresh();
+            }}
+          />
+        </Fragment>
+      )}
+    </Fragment>
   );
 };
 

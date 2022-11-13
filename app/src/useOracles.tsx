@@ -108,7 +108,7 @@ export const useCreateOracle = () => {
   return create;
 };
 
-export const useOracle = (id: string) => {
+export const useOracle = (id: number) => {
   const fetch = useAuthenticatedFetch();
   const { data, error, loading, refresh } = useAuthenticatedQuery<Oracle>(
     `/oracles/${id}`,
@@ -126,6 +126,8 @@ export const useOracle = (id: string) => {
       address?: string;
       webhookUrl?: string;
       chainId?: string;
+      confirmed?: boolean;
+      async?: boolean;
     }) => {
       const response = await fetch(`/oracles/${id}`, {
         method: "POST",

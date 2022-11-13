@@ -7,6 +7,7 @@ import {
   useState,
   useEffect,
   useCallback,
+  useRef,
 } from "react";
 import { eth_requestAccounts } from "@raydeck/metamask-ts";
 import { ethers } from "ethers";
@@ -204,19 +205,21 @@ export const useAuthenticatedQuery = <T,>(
   const [data, setData] = useState<T | undefined>();
   const [error, setError] = useState<Error>();
   const [loading, setLoading] = useState(true);
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
   const refresh = useCallback(async () => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(path, options);
-        const data: T = await response.json();
-        setData(data);
-      } catch (e) {
-        setError(e as Error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
+    // const fetchData = async () => {
+    try {
+      const response = await fetch(path, optionsRef.current);
+      const data: T = await response.json();
+      setData(data);
+    } catch (e) {
+      setError(e as Error);
+    } finally {
+      setLoading(false);
+    }
+    // };
+    // fetchData();
   }, [fetch, path]);
   useEffect(() => {
     refresh();

@@ -7,14 +7,15 @@ import fantom from "./assets/fantom-ftm-logo.svg";
 import harmony from "./assets/harmony-one-logo.svg";
 import klaytn from "./assets/klaytn-klay-logo.svg";
 import rsk from "./assets/rsk-infrastructure-framework-rif-logo.svg";
-const chainSvgs: Record<
+export const chainSvgs: Record<
   string,
-  { name: string; svg: string; testnet: boolean }
+  { name: string; svg: string; testnet: boolean; blockExplorer: string }
 > = {
   "0x13881": {
     name: "Polygon Mumbai Testnet",
     svg: polygon,
     testnet: true,
+    blockExplorer: "https://mumbai.polygonscan.com/address/",
   },
   "0xa86a": { name: "Avalanche Fuji Testnet", svg: avalanche, testnet: true },
   "0x61": { name: "Binance Smart Chain", svg: bnb, testnet: false },

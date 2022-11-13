@@ -3,18 +3,8 @@ import { FC } from "react";
 import { Oracle, useCreateOracle } from "./useOracles";
 import { isWebUri } from "valid-url";
 import { TinyChainLogo } from "./ChainLogo";
-const chains = [
-  { name: "Ethereum", value: "0x01" },
-  { name: "Goerli (Ethereum Testnet)", value: "0x02" },
-  { name: "Binance Smart Chain", value: "0x38" },
-  { name: "Binance Testnet", value: "0x61" },
-  { name: "Polygon", value: "0x89" },
-  { name: "Polygon Testnet", value: "0x13881" },
-  { name: "Fantom", value: "0x46" },
-  { name: "Fantom Testnet", value: "0xfa2" },
-  { name: "Avalanche", value: "0xa8" },
-  { name: "Avalanche Testnet", value: "0xa86a" },
-];
+import { toast } from "react-toastify";
+import { chains } from "./chains";
 
 const CreateOracle: FC<{
   name?: string;
@@ -23,7 +13,7 @@ const CreateOracle: FC<{
   confirmed?: boolean;
   async?: boolean;
   address?: string;
-  onCreated?: (oracle: Oracle) => void;
+  onCreated?: (oracle?: Oracle) => void;
 }> = ({
   name = "My oracle",
   chainId = "0x13381",
@@ -31,6 +21,7 @@ const CreateOracle: FC<{
   confirmed = false,
   async = false,
   address = "",
+  onCreated,
 }) => {
   const create = useCreateOracle();
   console.log("address", address);
@@ -47,15 +38,26 @@ const CreateOracle: FC<{
       }}
       onSubmit={async (values, form) => {
         console.log("submitting the form with ", values);
-        create({
-          name: values.name,
-          chainId: values.chainId,
-          webhookUrl: values.webhookUrl,
-          address: values.address,
-          confirmed: values.confirmed,
-          async: values.async,
-        });
-        form.resetForm();
+        const id = toast.info("Requesting the oracle...", { autoClose: false });
+        try {
+          const oracle = await create({
+            name: values.name,
+            chainId: values.chainId,
+            webhookUrl: values.webhookUrl,
+            address: values.address,
+            confirmed: values.confirmed,
+            async: values.async,
+          });
+          form.resetForm();
+          onCreated && onCreated();
+          toast.dismiss(id);
+          toast.success("Created the oracle!");
+        } catch (e) {
+          toast.dismiss(id);
+          toast.error(
+            "Could not create the oracle: " + (e as Error).toString()
+          );
+        }
       }}
       enableReinitialize
       validate={(values) => {
@@ -154,6 +156,17 @@ const CreateOracle: FC<{
                       </fieldset>
                     </div>
                     <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
+                      <button
+                        onClick={() => {
+                          if (onCreated) {
+                            onCreated();
+                          }
+                        }}
+                        className="mr-2 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      >
+                        Cancel
+                      </button>
+
                       <button
                         type="submit"
                         onClick={() => {
