@@ -69,16 +69,18 @@ const handler: Handler = async (event, context) => {
         "https://xw8v-tcfi-85ay.n7.xano.io/api:58vCnoV0/requests";
       const body = JSON.stringify(webHookObj);
       console.log("Body is ", body);
-      fetch(targetUrl, {
+      const response = await fetch(targetUrl, {
         body,
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
+      console.log("Response is ", response.status, response.statusText);
       await new Promise<void>((r) => {
         setTimeout(() => {
           r();
         }, 1000);
       });
+      console.log("All Done!!!!");
     }
   }
   return {
