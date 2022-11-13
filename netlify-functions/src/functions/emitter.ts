@@ -30,8 +30,12 @@ const handler: Handler = async (event, context) => {
   const { chainId, confirmed, logs } = parsed;
   if (parsed.logs && parsed.logs?.length > 0) {
     const { data, address: oracleAddress, topic1: rawJobId } = logs[0];
+    console.log("My raw job id was", rawJobId);
     if (data) {
-      const jobId = Buffer.from(rawJobId.slice(2), "hex").toString("utf8");
+      const jobId = rawJobId
+        ? Buffer.from(rawJobId.slice(2), "hex").toString("utf8").trim()
+        : "";
+      console.log("My parsed job id was", jobId, JSON.stringify(jobId));
       const iface = new utils.Interface(OracleABI__factory.abi);
       const logData = iface.decodeEventLog("OracleRequest", data);
       const { data: dataData } = logData;
