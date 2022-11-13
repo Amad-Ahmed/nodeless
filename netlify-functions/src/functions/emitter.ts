@@ -34,7 +34,7 @@ const handler: Handler = async (event, context) => {
     if (data) {
       let processedId = rawJobId;
       while(processedId?.endsWith("00") {
-        processedId = processedId.slice(0, -2);
+         processedId = processedId.substring(0,processedId.length-2);
       }
       const jobId = processedId
         ? Buffer.from(processedId.slice(2), "hex").toString().trim()
