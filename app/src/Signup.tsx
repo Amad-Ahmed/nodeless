@@ -4,13 +4,13 @@ import { Formik, Form, Field } from "formik";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
 const Login: FC = () => {
-  const { loginWithPassword, loginWithWallet } = useAuthentication();
+  const { signupWithPassword, signupWithWallet } = useAuthentication();
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
       onSubmit={async ({ email, password }) => {
         // console.log("I be submitting good sir");
-        await loginWithPassword(email, password);
+        await signupWithPassword(email, password);
       }}
     >
       {({ values, handleChange, handleBlur, submitForm }) => (
@@ -125,7 +125,7 @@ const Login: FC = () => {
                   <div>
                     <button
                       type="button"
-                      onClick={loginWithWallet}
+                      onClick={signupWithWallet}
                       className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                       Sign Up with Wallet
