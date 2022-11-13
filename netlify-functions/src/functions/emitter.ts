@@ -67,6 +67,7 @@ const handler: Handler = async (event, context) => {
       };
       const targetUrl =
         "https://xw8v-tcfi-85ay.n7.xano.io/api:58vCnoV0/requests";
+      console.log("Sending to ", targetUrl);
       const body = JSON.stringify(webHookObj);
       console.log("Body is ", body);
       const response = await fetch(targetUrl, {
