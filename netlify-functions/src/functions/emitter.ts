@@ -76,6 +76,8 @@ const handler: Handler = async (event, context) => {
         headers: { "Content-Type": "application/json" },
       });
       console.log("Response is ", response.status, response.statusText);
+      const text = await response.text();
+      console.log("Text is ", text);
       await new Promise<void>((r) => {
         setTimeout(() => {
           r();
