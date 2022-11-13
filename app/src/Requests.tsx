@@ -4,6 +4,7 @@ import { DateTime } from "luxon";
 import { useBase, useUpdatePath } from "./Base";
 import { Link } from "react-router-dom";
 import { chainSvgs } from "./ChainLogo";
+import { GlobeAltIcon } from "@heroicons/react/24/outline";
 const Requests: FC = () => {
   useUpdatePath();
   const { data, loading, refresh } = useRequests();
@@ -102,8 +103,10 @@ const Requests: FC = () => {
                               chainSvgs[request._oracle.chainId]
                                 .transactionExplorer + request.transaction
                             }
+                            className="text-blue-600 hover:text-blue-800"
                           >
-                            {request.status} (explorer)
+                            {request.status}{" "}
+                            <GlobeAltIcon className="h-4 w-4 inline" />
                           </a>
                         ) : (
                           request.status
