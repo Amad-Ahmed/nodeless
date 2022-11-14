@@ -54,7 +54,7 @@ export const ModalMD: FC<{
             }}
             className={"fixed inset-0 flex items-center justify-center p-4"}
           >
-            <Dialog.Panel className="flex-row justify-around flex h-screen ">
+            <Dialog.Panel className="flex-row justify-around flex h-screen relative ">
               {/* <article className="prose dark:prose-invert p-4 text-gray-900 dark:text-gray-100 bg-white dark:bg-black bg-opacity-40 m-4 rounded-lg max-h-full  overflow-scroll border-gray-300 shadow-md dark:border-gray-600 border-opacity-40 border-2">
                 {markdown}
                 <ReactMarkdown linkTarget={"_blank"}>{markdown}</ReactMarkdown>
@@ -75,26 +75,26 @@ export const ModalMD: FC<{
                   showLineNumbers
                   //   wrapLines
                 /> */}
-                <button
-                  className="h-8 w-8 absolute top-5 right-20 hover:text-gray-800 text-gray-400"
-                  title="Copy to Clipboard"
-                  onClick={() => {
-                    copy(code);
-                    toast.success("Copied code to Clipboard");
-                  }}
-                >
-                  <DocumentDuplicateIcon />
-                </button>
-                <button
-                  className="h-8 w-8 absolute top-5 right-5 hover:text-gray-800 text-gray-400"
-                  title="Closed"
-                  onClick={() => {
-                    setShow(false);
-                  }}
-                >
-                  <XCircleIcon />
-                </button>
               </div>
+              <button
+                className="h-8 w-8 absolute top-5 right-20 hover:text-gray-800 text-gray-400"
+                title="Copy to Clipboard"
+                onClick={() => {
+                  copy(code);
+                  toast.success("Copied code to Clipboard");
+                }}
+              >
+                <DocumentDuplicateIcon />
+              </button>
+              <button
+                className="h-8 w-8 absolute top-5 right-5 hover:text-gray-800 text-gray-400"
+                title="Closed"
+                onClick={() => {
+                  setShow(false);
+                }}
+              >
+                <XCircleIcon />
+              </button>
             </Dialog.Panel>
           </div>
         </Transition.Child>
