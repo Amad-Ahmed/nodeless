@@ -59,42 +59,44 @@ export const ModalMD: FC<{
                 {markdown}
                 <ReactMarkdown linkTarget={"_blank"}>{markdown}</ReactMarkdown>
               </article> */}
-              <div className="my-auto h-3/4 overflow-scroll relative flex-1 rounded-md">
-                <SyntaxHighlighter
-                  language="solidity"
-                  style={codeStyle}
-                  showLineNumbers
-                  lineNumberContainerStyle={{ backgroundColor: "#999" }}
-                >
-                  {code}
-                </SyntaxHighlighter>
-                {/* <CopyBlock
+              <div>
+                <div className="my-auto h-3/4 overflow-scroll relative flex-1 rounded-md">
+                  <SyntaxHighlighter
+                    language="solidity"
+                    style={codeStyle}
+                    showLineNumbers
+                    lineNumberContainerStyle={{ backgroundColor: "#999" }}
+                  >
+                    {code}
+                  </SyntaxHighlighter>
+                  {/* <CopyBlock
                   text={code}
                   language={"solidity"}
                   theme={dracula}
                   showLineNumbers
                   //   wrapLines
                 /> */}
+                </div>
+                <button
+                  className="h-8 w-8 absolute top-5 right-20 hover:text-gray-800 text-gray-400"
+                  title="Copy to Clipboard"
+                  onClick={() => {
+                    copy(code);
+                    toast.success("Copied code to Clipboard");
+                  }}
+                >
+                  <DocumentDuplicateIcon />
+                </button>
+                <button
+                  className="h-8 w-8 absolute top-5 right-5 hover:text-gray-800 text-gray-400"
+                  title="Closed"
+                  onClick={() => {
+                    setShow(false);
+                  }}
+                >
+                  <XCircleIcon />
+                </button>
               </div>
-              <button
-                className="h-8 w-8 absolute top-5 right-20 hover:text-gray-800 text-gray-400"
-                title="Copy to Clipboard"
-                onClick={() => {
-                  copy(code);
-                  toast.success("Copied code to Clipboard");
-                }}
-              >
-                <DocumentDuplicateIcon />
-              </button>
-              <button
-                className="h-8 w-8 absolute top-5 right-5 hover:text-gray-800 text-gray-400"
-                title="Closed"
-                onClick={() => {
-                  setShow(false);
-                }}
-              >
-                <XCircleIcon />
-              </button>
             </Dialog.Panel>
           </div>
         </Transition.Child>
