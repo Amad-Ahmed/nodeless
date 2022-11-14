@@ -117,6 +117,8 @@ const Requests: FC = () => {
                               chainSvgs[request._oracle.chainId]
                                 .transactionExplorer + request.transaction
                             }
+                            target="_blank"
+                            rel="noreferrer"
                             className="text-blue-600 hover:text-blue-800"
                           >
                             {request.status}{" "}

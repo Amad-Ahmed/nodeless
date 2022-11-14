@@ -62,17 +62,17 @@ const Oracles: FC = () => {
                     <div>
                       <h2 className="text-medium font-bold text-gray-800 my-2">
                         {oracle.name || "No label"}{" "}
-                        <div
-                          onClick={() => {
-                            window.open(
-                              chainSvgs[oracle.chainId].blockExplorer +
-                                oracle.contractAddress
-                            );
-                          }}
+                        <a
+                          href={
+                            chainSvgs[oracle.chainId].blockExplorer +
+                            oracle.contractAddress
+                          }
+                          target="_blank"
+                          rel="noreferrer"
                           className="inline cursor-pointer hover:text-black text-blue-600 text-xs font-medium p-1 "
                         >
                           Open In Block Explorer
-                        </div>
+                        </a>
                       </h2>
                       {oracle.jobId ? (
                         <p
