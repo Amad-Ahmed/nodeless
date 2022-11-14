@@ -1,22 +1,25 @@
-import { FC, Fragment, useEffect, useState } from "react";
+import { FC, Fragment, useCallback, useEffect, useState } from "react";
 import {
   GlobeAmericasIcon,
   LinkIcon,
   DocumentDuplicateIcon as SmallDocumentDuplicateIcon,
 } from "@heroicons/react/20/solid";
 import {
+  CodeBracketIcon,
   DocumentDuplicateIcon,
   HashtagIcon,
   PencilIcon,
 } from "@heroicons/react/24/outline";
-import { useOracles } from "./useOracles";
+import { Oracle, useOracles } from "./useOracles";
 import { Link } from "react-router-dom";
 import { useBase, useUpdatePath } from "./Base";
 import { ChainLogo, chainSvgs } from "./ChainLogo";
 import CreateOracle from "./CreateOracle";
 import copy from "clipboard-copy";
 import { toast } from "react-toastify";
-
+import CodeModal from "./CodeModal";
+import templateCode from "./templateCode";
+import mustache from "mustache";
 const Oracles: FC = () => {
   useUpdatePath();
   const { oracles, refresh, loading } = useOracles();
@@ -28,6 +31,15 @@ const Oracles: FC = () => {
   const [createAddress, setCreateAddress] = useState("");
   const [showOracle, setShowOracle] = useState(false);
   const { setTitle } = useBase();
+  const [code, setCode] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const makeCode = useCallback((oracle: Oracle) => {
+    return mustache.render(templateCode, {
+      oracleId: oracle.contractAddress,
+      jobId: oracle.jobId,
+    });
+  }, []);
   useEffect(() => {
     if (loading) {
       setTitle("Loading...");
@@ -150,6 +162,17 @@ const Oracles: FC = () => {
                   </div>
                 </div>
                 <button
+                  title="Show Code"
+                  className="mx-4 p-2 hover:text-black text-gray-400 flex"
+                  onClick={() => {
+                    setCode(makeCode(oracle));
+                    setModalOpen(true);
+                  }}
+                >
+                  <CodeBracketIcon className="h-5 w-5" />
+                  <span className="hidden md:inline ml-2">Code</span>
+                </button>
+                <button
                   title="Duplicate contract"
                   className="mx-4 p-2 hover:text-black text-gray-400 flex"
                   onClick={() => {
@@ -215,6 +238,7 @@ const Oracles: FC = () => {
           />
         </Fragment>
       )}
+      <CodeModal show={modalOpen} setShow={setModalOpen} code={code} />
     </Fragment>
   );
 };

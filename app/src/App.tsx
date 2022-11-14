@@ -9,7 +9,7 @@ import { Helmet } from "react-helmet";
 function App() {
   return (
     <BrowserRouter>
-      <Helmet title="Nodeless Link" />
+      <Helmet title="Nodeless.Link" />
       <Authenticator
         fallback={
           <Routes>
@@ -23,7 +23,7 @@ function App() {
       <ToastContainer
         limit={4}
         hideProgressBar
-        autoClose={1000}
+        autoClose={2000}
         position="bottom-right"
         bodyClassName={"text-sm font-medium"}
       />
