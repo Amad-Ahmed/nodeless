@@ -90,7 +90,10 @@ const Requests: FC = () => {
                       className={personIdx % 2 === 0 ? undefined : "bg-gray-50"}
                     >
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                        <Link to={`/oracle/${request._oracle.id}`}>
+                        <Link
+                          to={`/oracle/${request._oracle.id}`}
+                          className="hover:text-gray-600"
+                        >
                           {request._oracle.name || "[No Name]"}
                         </Link>
                       </td>
