@@ -87,7 +87,9 @@ const Requests: FC = () => {
                   {data.map((request, personIdx) => (
                     <tr
                       key={request.id}
-                      className={personIdx % 2 === 0 ? undefined : "bg-gray-50"}
+                      className={
+                        personIdx % 2 === 0 ? undefined : "bg-gray-100"
+                      }
                     >
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                         <Link
