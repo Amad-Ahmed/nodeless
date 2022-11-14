@@ -5,6 +5,8 @@ import { useBase, useUpdatePath } from "./Base";
 import { Link } from "react-router-dom";
 import { chainSvgs } from "./ChainLogo";
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
+import copy from "clipboard-copy";
+import { toast } from "react-toastify";
 const Requests: FC = () => {
   useUpdatePath();
   const { data, loading, refresh } = useRequests();
@@ -92,11 +94,17 @@ const Requests: FC = () => {
                           {request._oracle.name || "[No Name]"}
                         </Link>
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 truncate">
+                      <td
+                        className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 truncate hover:text-gray-900 cursor-pointer"
+                        title={request.requestId}
+                        onClick={() => {
+                          copy(request.requestId);
+                          toast.success("Copied requestId to clipboard");
+                        }}
+                      >
                         {request.requestId.substring(0, 6)}...
                         {request.requestId.substring(
-                          request.requestId.length - 4,
-                          4
+                          request.requestId.length - 4
                         )}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
