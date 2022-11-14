@@ -148,7 +148,7 @@ export default function Base() {
                             <div>
                               <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                 <span className="sr-only">Open user menu</span>
-                                <div className="pt-1 h-6 w-6 rounded-full bg-blue-600 text-white font-medium text-sm">
+                                <div className="p-1 h-8 w-8 rounded-full bg-blue-600 text-white font-medium text-lg">
                                   {initial}
                                 </div>
                               </Menu.Button>

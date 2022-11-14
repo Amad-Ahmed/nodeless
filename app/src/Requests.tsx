@@ -4,12 +4,14 @@ import { DateTime } from "luxon";
 import { useBase, useUpdatePath } from "./Base";
 import { Link } from "react-router-dom";
 import { chainSvgs } from "./ChainLogo";
-import { GlobeAltIcon } from "@heroicons/react/24/outline";
+import { GlobeAltIcon, TrashIcon } from "@heroicons/react/24/outline";
 import copy from "clipboard-copy";
 import { toast } from "react-toastify";
+import { useAlert } from "./Alert";
 const Requests: FC = () => {
+  const alert = useAlert();
   useUpdatePath();
-  const { data, loading, refresh } = useRequests();
+  const { data, loading, refresh, remove } = useRequests();
   useEffect(() => {
     const interval = setInterval(() => {
       refresh();
@@ -20,8 +22,11 @@ const Requests: FC = () => {
   }, [refresh]);
   const { setTitle } = useBase();
   useEffect(() => {
-    setTitle("Recent Requests");
-  }, [setTitle]);
+    if (loading) setTitle("Recent Requests");
+    else if (data && data?.length)
+      setTitle(`Most Recent ${data?.length} Requests`);
+    else setTitle("No Recent Requests");
+  }, [setTitle, data, loading]);
   if (loading) return <div>Loading...</div>;
   if (!data) return <div>No Requests!</div>;
   return (
@@ -75,10 +80,7 @@ const Requests: FC = () => {
                     >
                       Date
                     </th>
-                    {/* <th
-                      scope="col"
-                      className="relative py-3.5 pl-3 pr-4 sm:pr-6"
-                    >
+                    {/* <th scope="col" className="relative w-10">
                       <span className="sr-only">Edit</span>
                     </th> */}
                   </tr>
@@ -92,6 +94,24 @@ const Requests: FC = () => {
                       }
                     >
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                        <button
+                          onClick={() => {
+                            alert(
+                              "Remove this request?",
+                              "This just removes the log. The actual transaction remains on-chain. This action cannot be undone"
+                            ).then((result) => {
+                              if (result === "accept") {
+                                remove(request.id);
+                                toast.success("Removed request log");
+                              }
+                            });
+                          }}
+                          className="text-red-400 hover:text-red-800 inline mr-2 h-4 w-4"
+                          title="Remove Request"
+                        >
+                          <TrashIcon className="" aria-hidden="true" />
+                        </button>
+
                         <Link
                           to={`/oracle/${request._oracle.id}`}
                           className="hover:text-gray-600"
@@ -136,13 +156,7 @@ const Requests: FC = () => {
                           .toLocaleString()}
                       </td>
                       {/* <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900"
-                        > 
-                        Edit<span className="sr-only">, {request.id}</span>
-                         </a> 
-                      </td> */}
+                       */}
                     </tr>
                   ))}
                 </tbody>

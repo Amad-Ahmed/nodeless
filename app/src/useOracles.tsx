@@ -169,10 +169,20 @@ export type Request = {
   transaction: string;
 };
 export const useRequests = () => {
+  const fetch = useAuthenticatedFetch();
   const { data, error, loading, refresh } =
     useAuthenticatedQuery<Request[]>("/requests");
+  const remove = useCallback(
+    async (id: number) => {
+      await fetch(`/requests/${id}`, {
+        method: "DELETE",
+      });
+      refresh();
+    },
+    [fetch, refresh]
+  );
   return useMemo(
-    () => ({ data, error, loading, refresh }),
-    [data, error, loading, refresh]
+    () => ({ data, error, loading, refresh, remove }),
+    [data, error, loading, refresh, remove]
   );
 };
