@@ -8,7 +8,9 @@ import { isWebUri } from "valid-url";
 import { useOracle } from "./useOracles";
 import { useBase } from "./Base";
 import { chainSvgs } from "./ChainLogo";
+import { useAlert } from "./Alert";
 const Oracle: FC = () => {
+  const alert = useAlert();
   const { id } = useParams();
   const navigate = useNavigate();
   const { oracle, loading, refresh, remove, update } = useOracle(
@@ -161,8 +163,17 @@ const Oracle: FC = () => {
                         onClick={(event) => {
                           event.stopPropagation();
                           event.preventDefault();
-                          remove().then(() => {
-                            navigate("/");
+                          alert(
+                            "Delete this Oracle?",
+                            "Are you sure you want to delete the oracle? This action cannot be undone."
+                          ).then(async (action) => {
+                            if (action === "accept") {
+                              await remove();
+                              toast.success("Removed oracle");
+                              navigate("/");
+                            } else {
+                              toast.info("Cancelled remove");
+                            }
                           });
                         }}
                         className="mr-2 inline-flex justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"

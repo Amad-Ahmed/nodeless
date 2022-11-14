@@ -6,20 +6,23 @@ import Login from "./Login";
 import Signup from "./Signup";
 import Base from "./Base";
 import { Helmet } from "react-helmet";
+import AlertProvider from "./Alert";
 function App() {
   return (
     <BrowserRouter>
       <Helmet title="Nodeless.Link" />
-      <Authenticator
-        fallback={
-          <Routes>
-            <Route path="/signup" element={<Signup />} />
-            <Route path="*" element={<Login />} />
-          </Routes>
-        }
-      >
-        <Base />
-      </Authenticator>
+      <AlertProvider>
+        <Authenticator
+          fallback={
+            <Routes>
+              <Route path="/signup" element={<Signup />} />
+              <Route path="*" element={<Login />} />
+            </Routes>
+          }
+        >
+          <Base />
+        </Authenticator>
+      </AlertProvider>
       <ToastContainer
         limit={4}
         hideProgressBar
