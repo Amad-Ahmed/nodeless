@@ -10,6 +10,8 @@ export type Oracle = {
   webhookUrl: string;
   id: number;
   confirmed: boolean;
+  inputs: Record<string, string>;
+  outputs: Record<string, string>;
   async: boolean;
 };
 export const useOracles = () => {
@@ -82,6 +84,8 @@ export const useCreateOracle = () => {
       chainId: string;
       fee?: BigNumber;
       confirmed?: boolean;
+      inputs?: Record<string, string>;
+      outputs?: Record<string, string>;
       async?: boolean;
     }) => {
       const body = {
@@ -92,6 +96,8 @@ export const useCreateOracle = () => {
         async: typeof options.async === "undefined" ? false : options.async,
         confirmed:
           typeof options.confirmed === "undefined" ? false : options.confirmed,
+        inputs: options.inputs,
+        outputs: options.outputs,
         fee: options.fee ? BigNumber.from(options.fee) : undefined,
       };
       const response = await fetch("/oracles", {

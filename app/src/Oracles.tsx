@@ -29,11 +29,28 @@ const Oracles: FC = () => {
   const [createConfirmed, setCreateConfirmed] = useState(false);
   const [createAsync, setCreateAsync] = useState(false);
   const [createAddress, setCreateAddress] = useState("");
+  const [createInputs, setCreateInputs] = useState<Record<string, string>>({
+    symbol: "string",
+  });
+  const [createOutputs, setCreateOutputs] = useState<Record<string, string>>({
+    value: "uint256",
+  });
   const [showOracle, setShowOracle] = useState(false);
   const { setTitle } = useBase();
   const [code, setCode] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-
+  useEffect(() => {
+    if (!modalOpen) {
+      setCreateName("My First Oracle");
+      setCreateChainId("0x13881");
+      setCreateWebhookUrl("");
+      setCreateConfirmed(false);
+      setCreateAsync(false);
+      setCreateAddress("");
+      setCreateInputs({ symbol: "string" });
+      setCreateOutputs({ price: "uint256" });
+    }
+  }, [modalOpen]);
   const makeCode = useCallback((oracle: Oracle) => {
     return mustache.render(templateCode, {
       oracleId: oracle.contractAddress,
@@ -173,7 +190,7 @@ const Oracles: FC = () => {
                   <span className="hidden md:inline ml-2">Code</span>
                 </button>
                 <button
-                  title="Duplicate contract"
+                  title="Make a duplicate contract"
                   className="mx-4 p-2 hover:text-black text-gray-400 flex"
                   onClick={() => {
                     console.log(oracle.contractAddress);
@@ -183,6 +200,8 @@ const Oracles: FC = () => {
                     setCreateAsync(oracle.async);
                     setCreateChainId(oracle.chainId);
                     setCreateWebhookUrl(oracle.webhookUrl);
+                    setCreateInputs(oracle.inputs);
+                    setCreateOutputs(oracle.outputs);
                     setShowOracle(true);
                     setTimeout(() => {
                       window.location.href = "#create-oracle-form";
@@ -190,7 +209,7 @@ const Oracles: FC = () => {
                   }}
                 >
                   <DocumentDuplicateIcon className="h-5 w-5" />
-                  <span className="hidden md:inline ml-2">Copy</span>
+                  <span className="hidden md:inline ml-2">Clone</span>
                 </button>
                 <Link
                   to={`/oracle/${oracle.id}`}
@@ -231,6 +250,8 @@ const Oracles: FC = () => {
             confirmed={createConfirmed}
             async={createAsync}
             address={createAddress}
+            inputs={createInputs}
+            outputs={createOutputs}
             onCreated={() => {
               setShowOracle(false);
               refresh();

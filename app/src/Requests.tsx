@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { useRequests } from "./useOracles";
+import { useRequests, Request as OracleRequest } from "./useOracles";
 import { DateTime } from "luxon";
 import { useBase, useUpdatePath } from "./Base";
 import { Link } from "react-router-dom";
@@ -8,6 +8,12 @@ import { GlobeAltIcon, TrashIcon } from "@heroicons/react/24/outline";
 import copy from "clipboard-copy";
 import { toast } from "react-toastify";
 import { useAlert } from "./Alert";
+const statusStrings: Record<OracleRequest["status"], string> = {
+  pending: "Pending",
+  error: "Error",
+  complete: "Complete",
+  remitting: "Remitting",
+};
 const Requests: FC = () => {
   const alert = useAlert();
   useUpdatePath();
@@ -147,7 +153,7 @@ const Requests: FC = () => {
                             <GlobeAltIcon className="h-4 w-4 inline" />
                           </a>
                         ) : (
-                          request.status
+                          statusStrings[request.status]
                         )}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">

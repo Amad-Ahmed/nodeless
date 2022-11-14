@@ -1,10 +1,19 @@
-import { Formik, Field, ErrorMessage, Form } from "formik";
+import {
+  Formik,
+  Field,
+  ErrorMessage,
+  Form,
+  FieldArray,
+  useFormikContext,
+  useField,
+} from "formik";
 import { FC } from "react";
 import { Oracle, useCreateOracle } from "./useOracles";
 import { isWebUri } from "valid-url";
 import { TinyChainLogo } from "./ChainLogo";
 import { toast } from "react-toastify";
 import { chains } from "./chains";
+import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const CreateOracle: FC<{
   name?: string;
@@ -13,6 +22,8 @@ const CreateOracle: FC<{
   confirmed?: boolean;
   async?: boolean;
   address?: string;
+  inputs?: Record<string, string>;
+  outputs?: Record<string, string>;
   onCreated?: (oracle?: Oracle) => void;
 }> = ({
   name = "My oracle",
@@ -21,6 +32,8 @@ const CreateOracle: FC<{
   confirmed = false,
   async = false,
   address = "",
+  inputs = { symbol: "string" },
+  outputs = { price: "uint256" },
   onCreated,
 }) => {
   const create = useCreateOracle();
@@ -35,6 +48,14 @@ const CreateOracle: FC<{
         confirmed,
         async,
         address,
+        inputs: Object.entries(inputs).map(([name, type]) => ({
+          name,
+          type: type,
+        })),
+        outputs: Object.entries(outputs).map(([name, type]) => ({
+          name,
+          type: type,
+        })),
       }}
       onSubmit={async (values, form) => {
         console.log("submitting the form with ", values);
@@ -49,6 +70,14 @@ const CreateOracle: FC<{
             address: values.address,
             confirmed: values.confirmed,
             async: values.async,
+            inputs: values.inputs.reduce(
+              (o, { name, type }) => ({ ...o, [name]: type }),
+              {} as Record<string, string>
+            ),
+            outputs: values.inputs.reduce(
+              (o, { name, type }) => ({ ...o, [name]: type }),
+              {} as Record<string, string>
+            ),
           });
           form.resetForm();
           onCreated && onCreated();
@@ -93,11 +122,11 @@ const CreateOracle: FC<{
               <div className="md:grid md:grid-cols-3 md:gap-6">
                 <div className="md:col-span-1">
                   <div className="px-4 sm:px-0">
-                    <h3 className="text-lg font-medium leading-6 text-gray-900">
+                    <h3 className="text-xl font-medium leading-6 text-gray-900">
                       Create an Oracle
                     </h3>
                     <p className="mt-1 text-sm text-gray-600">
-                      Make a new oracle
+                      Make a new oracle job
                     </p>
                   </div>
                 </div>
@@ -106,8 +135,27 @@ const CreateOracle: FC<{
                     <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
                       <div className="grid grid-cols-3 gap-6">
                         <TextField title="Name/label" name="name" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="md:grid md:grid-cols-3 md:gap-6">
+                <div className="md:col-span-1">
+                  <div className="px-4 sm:px-0">
+                    <h3 className="text-lg font-medium leading-6 text-gray-900">
+                      Webhook - where does the request go?
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-600">
+                      The URL and arguments for the request
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-5 md:col-span-2 md:mt-0">
+                  <div className="shadow sm:overflow-hidden sm:rounded-md">
+                    <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
+                      <div className="grid grid-cols-3 gap-6">
                         <TextField title="Webhook url" name="webhookUrl" />
-
                         <Checkbox
                           name="async"
                           title="Asynchronous"
@@ -119,43 +167,51 @@ const CreateOracle: FC<{
                           subTitle="Run the webhook after the transaction has 30-100 blocks of confirmation. Slower but more reliable."
                         />
                       </div>
+                      <h4 className="text-lg font-medium leading-6 text-gray-900">
+                        Inputs
+                      </h4>
+                      <div className="grid grid-cols-3 gap-6">
+                        <CodeParameters name="inputs" />
+                      </div>
+                      <h4 className="text-lg font-medium leading-6 text-gray-900">
+                        Outputs
+                      </h4>
+                      <div className="grid grid-cols-3 gap-6">
+                        <CodeParameters name="outputs" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="md:grid md:grid-cols-3 md:gap-6">
+              <div className="md:col-span-1">
+                <div className="px-4 sm:px-0">
+                  <h3 className="text-lg font-medium leading-6 text-gray-900">
+                    Oracle Contract
+                  </h3>
+                  <p className="mt-1 text-sm text-gray-600">
+                    Use the Nodeless Oracle for your chain, or deploy your own
+                  </p>
+                </div>
+              </div>
+              <div className="mt-5 md:col-span-2 md:mt-0">
+                <div className="shadow sm:overflow-hidden sm:rounded-md">
+                  <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
+                    <div className="grid grid-cols-3 gap-6">
                       <TextField
                         title="Oracle Address"
                         name="address"
                         subTitle="Optional - we will create the oracle contract for you if not specified. Note: An oracle needs to be valid for our signing identities"
+                      />{" "}
+                      {/* </div> */}
+                      <Chains />
+                      <Checkbox
+                        name="createContract"
+                        title="Create an oracle contract"
+                        subTitle="Create an oracle contract for this job. This is for paid accounts only"
+                        disabled={!!address}
                       />
-                      <fieldset>
-                        <legend className="contents text-sm font-medium text-gray-900">
-                          Chain
-                        </legend>
-                        <p className="text-sm text-gray-500">
-                          The blockchain network on which the oracle exists/will
-                          be created
-                        </p>
-                        <div className="mt-4 space-y-4">
-                          {chains.map(({ name, value }) => (
-                            <div className="flex items-center" key={value}>
-                              <Field
-                                id={name}
-                                name="chainId"
-                                type="radio"
-                                value={value}
-                                className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                              />
-                              <label
-                                htmlFor="{chain.value}"
-                                className="ml-3 block text-sm font-medium text-gray-700 flex flex-start"
-                              >
-                                <TinyChainLogo
-                                  chainId={value}
-                                  chainName={name}
-                                />
-                                {name}
-                              </label>
-                            </div>
-                          ))}
-                        </div>
-                      </fieldset>
                     </div>
                     <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                       <button
@@ -200,11 +256,13 @@ const CreateOracle: FC<{
     </Formik>
   );
 };
-const Checkbox: FC<{ name: string; title: string; subTitle?: string }> = ({
-  name,
-  title,
-  subTitle,
-}) => {
+const Checkbox: FC<{
+  name: string;
+  title: string;
+  subTitle?: string;
+  disabled?: boolean;
+}> = ({ name, title, subTitle, disabled = false }) => {
+  const [{ value }, , { setValue }] = useField(name);
   return (
     <div className="flex items-start col-span-6">
       <div className="flex h-5 items-center">
@@ -213,10 +271,17 @@ const Checkbox: FC<{ name: string; title: string; subTitle?: string }> = ({
           name={name}
           type="checkbox"
           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+          disabled={disabled}
         />
       </div>
       <div className="ml-3 text-sm">
-        <label htmlFor="comments" className="font-medium text-gray-700">
+        <label
+          htmlFor="comments"
+          className="font-medium text-gray-700"
+          onClick={() => {
+            setValue(!value);
+          }}
+        >
           {title}
         </label>
         {subTitle && <p className="text-gray-500 ">{subTitle}</p>}
@@ -258,3 +323,118 @@ const TextField: FC<{ name: string; title: string; subTitle?: string }> = ({
   );
 };
 export default CreateOracle;
+const Chains: FC<{ name?: string }> = ({ name: fieldName = "chainId" }) => {
+  const [{ value }, , { setValue }] = useField(fieldName);
+  return (
+    <div className="col-span-6">
+      <fieldset>
+        <legend className="contents text-sm font-medium text-gray-900">
+          Chain ({value})
+        </legend>
+        <p className="text-sm text-gray-500">
+          The blockchain network on which the oracle exists/will be created
+        </p>
+        <div className="mt-4 space-y-4">
+          {chains.map(({ name, value }) => (
+            <div className="flex items-center" key={value}>
+              <Field
+                id={name}
+                name={fieldName}
+                type="radio"
+                value={value}
+                className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              />
+              <label
+                htmlFor="{chain.value}"
+                className="ml-3 block text-sm font-medium text-gray-700 flex flex-start pointer-cursor hover:text-gray-900"
+                onClick={() => {
+                  console.log("setting value", value);
+                  setValue(value, true);
+                }}
+              >
+                <TinyChainLogo chainId={value} chainName={name} />
+                {name}
+              </label>
+            </div>
+          ))}
+        </div>
+      </fieldset>
+    </div>
+  );
+};
+type OracleInput = {
+  name: string;
+  type: string;
+};
+const inputTypes = [
+  { name: "string", label: "normal text" },
+  { name: "uint256", label: "number" },
+];
+const CodeParameters: FC<{ name: string }> = ({ name: baseName }) => {
+  const { values, setFieldValue } = useFormikContext();
+  console.log("Form parameters", values);
+  return (
+    <FieldArray name={baseName}>
+      {({
+        push,
+        remove,
+        form: {
+          values: { [baseName]: inputs },
+        },
+      }) => (
+        <div>
+          {(inputs as OracleInput[]).map(({ name, type }, index) => (
+            <div key={index} className="flex  w-full space-between">
+              <div className=" items-center">
+                <Field
+                  id={`${baseName}-${index}-name`}
+                  name={`${baseName}.${index}.name`}
+                  type="text"
+                  className="mt-1 w-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+              </div>
+              {inputTypes.map(({ name, label }) => (
+                <div className="flex">
+                  <Field
+                    type="radio"
+                    name={`${baseName}.${index}.type`}
+                    value={name}
+                    className="inline mr-1"
+                  />
+                  <span
+                    className="inline mr-2 text-sm font-medium cursor-pointer"
+                    onClick={() => {
+                      setFieldValue(`inputs.${index}.type`, name);
+                    }}
+                  >
+                    {label}
+                  </span>
+                </div>
+              ))}
+              <button
+                onClick={() => {
+                  remove(index);
+                }}
+                className="text-red-600 hover:text-red-800 text-sm"
+              >
+                <TrashIcon className="h-4 w-4" />
+              </button>
+            </div>
+          ))}
+          <div className="mt-4">
+            <button
+              onClick={() => {
+                console.log("I am pushing");
+                push({ name: "", type: "string" });
+              }}
+              className="text-gray-200 hover:text-white bg-blue-600 hover:bg-blue-700 text-sm font-medium rounded-md px-4 py-1"
+            >
+              <PlusIcon className="h-4 w-4 mr-1 inline" />
+              Add
+            </button>
+          </div>
+        </div>
+      )}
+    </FieldArray>
+  );
+};
