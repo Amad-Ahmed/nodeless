@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 // import { CopyBlock, dracula } from "react-code-blocks";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import copy from "clipboard-copy";
 import { toast } from "react-toastify";
 export const ModalMD: FC<{
@@ -62,7 +62,7 @@ export const ModalMD: FC<{
               <div className="my-auto h-3/4 overflow-scroll relative flex-1 rounded-md">
                 <SyntaxHighlighter
                   language="solidity"
-                  style={docco}
+                  style={dracula}
                   showLineNumbers
                   lineNumberContainerStyle={{ backgroundColor: "#999" }}
                 >
@@ -76,7 +76,7 @@ export const ModalMD: FC<{
                   //   wrapLines
                 /> */}
                 <button
-                  className="h-8 w-8 absolute top-5 right-20 hover:text-gray-800 text-gray-400"
+                  className="h-8 w-8 absolute top-5 right-20 hover:text-gray-200 text-gray-400"
                   title="Copy to Clipboard"
                   onClick={() => {
                     copy(code);
@@ -86,7 +86,7 @@ export const ModalMD: FC<{
                   <DocumentDuplicateIcon />
                 </button>
                 <button
-                  className="h-8 w-8 absolute top-5 right-5 hover:text-gray-800 text-gray-400"
+                  className="h-8 w-8 absolute top-5 right-5 hover:text-gray-200 text-gray-400"
                   title="Closed"
                   onClick={() => {
                     setShow(false);
