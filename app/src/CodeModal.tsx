@@ -59,8 +59,8 @@ export const ModalMD: FC<{
                 {markdown}
                 <ReactMarkdown linkTarget={"_blank"}>{markdown}</ReactMarkdown>
               </article> */}
-              <div>
-                <div className="my-auto h-3/4 overflow-scroll relative flex-1 rounded-md">
+              <div className="my-auto h-3/4 relative">
+                <div className="h-full overflow-scroll relative flex-1 rounded-md">
                   <SyntaxHighlighter
                     language="solidity"
                     style={codeStyle}
@@ -77,25 +77,29 @@ export const ModalMD: FC<{
                   //   wrapLines
                 /> */}
                 </div>
-                <button
-                  className="h-8 w-8 absolute top-5 right-20 hover:text-gray-800 text-gray-400"
-                  title="Copy to Clipboard"
-                  onClick={() => {
-                    copy(code);
-                    toast.success("Copied code to Clipboard");
-                  }}
-                >
-                  <DocumentDuplicateIcon />
-                </button>
-                <button
-                  className="h-8 w-8 absolute top-5 right-5 hover:text-gray-800 text-gray-400"
-                  title="Closed"
-                  onClick={() => {
-                    setShow(false);
-                  }}
-                >
-                  <XCircleIcon />
-                </button>
+                <div className="gap-4 flex top-5 right-5 absolute">
+                  <button
+                    className=" hover:text-gray-800 text-gray-400 flex"
+                    title="Copy to Clipboard"
+                    onClick={() => {
+                      copy(code);
+                      toast.success("Copied code to Clipboard");
+                    }}
+                  >
+                    <DocumentDuplicateIcon className="h-6 w-6" />
+                    Copy
+                  </button>
+                  <button
+                    className=" hover:text-gray-800 text-gray-400 flex"
+                    title="Close the code preview"
+                    onClick={() => {
+                      setShow(false);
+                    }}
+                  >
+                    <XCircleIcon className="h-6 w-6" />
+                    Close
+                  </button>
+                </div>
               </div>
             </Dialog.Panel>
           </div>
