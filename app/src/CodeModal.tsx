@@ -5,7 +5,7 @@ import {
   DocumentDuplicateIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
-import { CopyBlock, dracula } from "react-code-blocks";
+// import { CopyBlock, dracula } from "react-code-blocks";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import copy from "clipboard-copy";
