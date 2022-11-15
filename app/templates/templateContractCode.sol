@@ -1,4 +1,4 @@
-const templateCode = `// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
@@ -51,5 +51,3 @@ contract Template is ChainlinkClient {
     }
 
     // function withdrawLink() external {} - Implement a withdraw function to avoid locking your LINK in the contract
-}`;
-export default templateCode;

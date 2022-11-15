@@ -8,7 +8,11 @@ import {
   useRef,
 } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  ChevronLeftIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import AppRouter from "./AppRouter";
 import { Link } from "react-router-dom";
 import { useAuthentication, useMe } from "./Authenticator";
@@ -19,6 +23,7 @@ const context = createContext({
   setTitle: (title: string) => {},
   pathname: window.location.pathname,
   setPathname: (pathname: string) => {},
+  setShowBack: (showBack: boolean) => {},
 });
 const { Provider } = context;
 const user = {
@@ -58,6 +63,7 @@ export default function Base() {
   const [title, setTitle] = useState("My Oracles");
 
   const [pathname, setPathname] = useState(window.location.pathname);
+  const [showBack, setShowBack] = useState(false);
   const pathnameRef = useRef(pathname);
   pathnameRef.current = pathname;
   useEffect(() => {
@@ -70,8 +76,8 @@ export default function Base() {
     return () => clearInterval(to);
   }, []);
   const value = useMemo(() => {
-    return { title, setTitle, pathname, setPathname };
-  }, [title, setTitle, pathname, setPathname]);
+    return { title, setTitle, pathname, setPathname, setShowBack };
+  }, [title, setTitle, pathname, setPathname, setShowBack]);
   const navigation = [
     {
       name: "Dashboard",
@@ -280,6 +286,16 @@ export default function Base() {
           <header className="py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h1 className="text-3xl font-bold tracking-tight text-white">
+                {showBack && (
+                  <button
+                    className="h-10 w-10 text-gray-400 hover:text-gray-200 mr-2"
+                    onClick={() => {
+                      window.history.back();
+                    }}
+                  >
+                    <ChevronLeftIcon className="h-10 w-10" />
+                  </button>
+                )}
                 {title}
               </h1>
             </div>
