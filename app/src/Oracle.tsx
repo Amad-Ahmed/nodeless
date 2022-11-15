@@ -60,7 +60,7 @@ const Oracle: FC = () => {
               (o, { name, type }) => ({ ...o, [name]: type }),
               {} as Record<string, string>
             ),
-            outputType: oracle.outputType,
+            outputType: values.outputType,
           });
           //   form.resetForm();
 

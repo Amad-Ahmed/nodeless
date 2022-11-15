@@ -22,7 +22,7 @@ contract Template is ChainlinkClient {
      * Create a Chainlink request to retrieve API response, find the target
      * data, then multiply by 1000000000000000000 (to remove decimal places from data).
      */
-    function _oracleRequest(string memory symbol)
+    function _oracleRequest({{{args}}})
         internal
         returns (bytes32 requestId)
     {
@@ -31,8 +31,8 @@ contract Template is ChainlinkClient {
             address(this),
             this.fulfillOracleRequest.selector
         );
-
-        request.add("string_1", symbol);
+        {{{requests}}}
+        
         // Sends the request
         bytes32 _requestId = sendChainlinkRequestTo(oracle, request, fee);
         requests[_requestId] = symbol;
@@ -40,16 +40,14 @@ contract Template is ChainlinkClient {
     }
 
     /**
-     * Receive the response in the form of uint256
+     * Receive the response in the form of {{{returnType}}}
      */
-    function fulfillOracleRequest(bytes32 _requestId, uint256 _returnedValue)
+    function fulfillOracleRequest(bytes32 _requestId, {{{returnType}}} _returnedValue)
         public
         recordChainlinkFulfillment(_requestId)
     {
         string storage _symbol = requests[_requestId];
-
-        // prices[_symbol] = _returnedValue;
-        // blocks[_symbol] = block.number;
+        prices[_symbol] = _returnedValue;
     }
 
     // function withdrawLink() external {} - Implement a withdraw function to avoid locking your LINK in the contract

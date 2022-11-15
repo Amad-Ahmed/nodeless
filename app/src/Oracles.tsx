@@ -50,9 +50,43 @@ const Oracles: FC = () => {
     }
   }, [modalOpen]);
   const makeCode = useCallback((oracle: Oracle) => {
+    const requests = Object.entries(oracle.inputs)
+      .map(([name, type]) => {
+        switch (type) {
+          case "string":
+            return `request.add("${name}", _${name});`;
+          case "uint256":
+            return `request.addUint("${name}", _${name});`;
+        }
+        return "";
+      })
+      .join("\n        ");
+    const args = Object.entries(oracle.inputs)
+      .map(([name, type]) => {
+        switch (type) {
+          case "string":
+            return `string memory _${name}`;
+          case "uint256":
+            return `uint256 _${name}`;
+        }
+        return "";
+      })
+      .join(", ");
+    const returnType = (() => {
+      switch (oracle.outputType) {
+        case "uint256":
+          return "uint256";
+        case "string":
+          return "string memory";
+      }
+    })();
     return mustache.render(templateCode, {
       oracleId: oracle.contractAddress,
       jobId: oracle.jobId,
+      linkAddress: chainSvgs[oracle.chainId].tokenAddress,
+      requests,
+      args,
+      returnType,
     });
   }, []);
   useEffect(() => {
