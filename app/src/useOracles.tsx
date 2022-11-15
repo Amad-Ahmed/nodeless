@@ -11,7 +11,7 @@ export type Oracle = {
   id: number;
   confirmed: boolean;
   inputs: Record<string, string>;
-  outputs: Record<string, string>;
+  outputType: string;
   async: boolean;
 };
 export const useOracles = () => {
@@ -31,6 +31,8 @@ export const useOracles = () => {
       chainId: string;
       fee?: BigNumber;
       confirmed?: boolean;
+      inputs?: Record<string, string>;
+      outputType?: string;
       async?: boolean;
     }) => {
       await createOracle(options);
@@ -85,20 +87,24 @@ export const useCreateOracle = () => {
       fee?: BigNumber;
       confirmed?: boolean;
       inputs?: Record<string, string>;
-      outputs?: Record<string, string>;
+      outputType?: string;
       async?: boolean;
+      createContract?: boolean;
     }) => {
+      if (!options.createContract && !options.address)
+        throw new Error("address or create contract is required");
       const body = {
         name: options.name,
-        address: options.address,
+        contractAddress: options.address,
         webhookUrl: options.webhookUrl,
         chainId: options.chainId,
         async: typeof options.async === "undefined" ? false : options.async,
         confirmed:
           typeof options.confirmed === "undefined" ? false : options.confirmed,
         inputs: options.inputs,
-        outputs: options.outputs,
+        outputType: options.outputType,
         fee: options.fee ? BigNumber.from(options.fee) : undefined,
+        createContract: options.createContract,
       };
       const response = await fetch("/oracles", {
         method: "POST",
@@ -134,6 +140,9 @@ export const useOracle = (id: number) => {
       chainId?: string;
       confirmed?: boolean;
       async?: boolean;
+      inputs?: Record<string, string>;
+      outputType?: string;
+      fee?: BigNumber;
     }) => {
       const response = await fetch(`/oracles/${id}`, {
         method: "POST",

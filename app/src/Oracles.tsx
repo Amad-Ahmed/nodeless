@@ -32,9 +32,7 @@ const Oracles: FC = () => {
   const [createInputs, setCreateInputs] = useState<Record<string, string>>({
     symbol: "string",
   });
-  const [createOutputs, setCreateOutputs] = useState<Record<string, string>>({
-    value: "uint256",
-  });
+  const [createOutputType, setCreateOutputType] = useState<string>("uint256");
   const [showOracle, setShowOracle] = useState(false);
   const { setTitle } = useBase();
   const [code, setCode] = useState("");
@@ -48,7 +46,7 @@ const Oracles: FC = () => {
       setCreateAsync(false);
       setCreateAddress("");
       setCreateInputs({ symbol: "string" });
-      setCreateOutputs({ price: "uint256" });
+      setCreateOutputType("uint256");
     }
   }, [modalOpen]);
   const makeCode = useCallback((oracle: Oracle) => {
@@ -201,7 +199,7 @@ const Oracles: FC = () => {
                     setCreateChainId(oracle.chainId);
                     setCreateWebhookUrl(oracle.webhookUrl);
                     setCreateInputs(oracle.inputs);
-                    setCreateOutputs(oracle.outputs);
+                    setCreateOutputType(oracle.outputType);
                     setShowOracle(true);
                     setTimeout(() => {
                       window.location.href = "#create-oracle-form";
@@ -251,7 +249,7 @@ const Oracles: FC = () => {
             async={createAsync}
             address={createAddress}
             inputs={createInputs}
-            outputs={createOutputs}
+            outputType={createOutputType}
             onCreated={() => {
               setShowOracle(false);
               refresh();

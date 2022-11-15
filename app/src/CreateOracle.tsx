@@ -4,7 +4,6 @@ import {
   ErrorMessage,
   Form,
   FieldArray,
-  useFormikContext,
   useField,
 } from "formik";
 import { FC } from "react";
@@ -23,8 +22,9 @@ const CreateOracle: FC<{
   async?: boolean;
   address?: string;
   inputs?: Record<string, string>;
-  outputs?: Record<string, string>;
+  outputType?: string;
   onCreated?: (oracle?: Oracle) => void;
+  createContract?: boolean;
 }> = ({
   name = "My oracle",
   chainId = "0x13381",
@@ -33,8 +33,9 @@ const CreateOracle: FC<{
   async = false,
   address = "",
   inputs = { symbol: "string" },
-  outputs = { price: "uint256" },
+  outputType = "uint256",
   onCreated,
+  createContract = false,
 }) => {
   const create = useCreateOracle();
   console.log("address", address);
@@ -52,10 +53,8 @@ const CreateOracle: FC<{
           name,
           type: type,
         })),
-        outputs: Object.entries(outputs).map(([name, type]) => ({
-          name,
-          type: type,
-        })),
+        outputType,
+        createContract,
       }}
       onSubmit={async (values, form) => {
         console.log("submitting the form with ", values);
@@ -74,10 +73,8 @@ const CreateOracle: FC<{
               (o, { name, type }) => ({ ...o, [name]: type }),
               {} as Record<string, string>
             ),
-            outputs: values.inputs.reduce(
-              (o, { name, type }) => ({ ...o, [name]: type }),
-              {} as Record<string, string>
-            ),
+            outputType: values.outputType,
+            createContract: values.createContract,
           });
           form.resetForm();
           onCreated && onCreated();
@@ -111,6 +108,9 @@ const CreateOracle: FC<{
         // if (!values.address) {
         //   errors.address = "Required";
         // }
+        if (values.inputs.find(({ name }) => !name)) {
+          errors.inputs = "All input parameters must have a name";
+        }
         console.log("errors be", errors);
         if (Object.keys(errors).length) return errors;
       }}
@@ -167,17 +167,29 @@ const CreateOracle: FC<{
                           subTitle="Run the webhook after the transaction has 30-100 blocks of confirmation. Slower but more reliable."
                         />
                       </div>
-                      <h4 className="text-lg font-medium leading-6 text-gray-900">
-                        Inputs
-                      </h4>
-                      <div className="grid grid-cols-3 gap-6">
-                        <CodeParameters name="inputs" />
+                      <div>
+                        <h4 className="text-sm font-medium leading-6 text-gray-900">
+                          Input Parameters
+                        </h4>
+                        <p className="text-sm text-gray-700 ">
+                          The arguments you expect to send (example: symbol as a
+                          string for an equity price feed)
+                        </p>
+                        <div className="grid grid-cols-3 gap-6">
+                          <CodeParameters name="inputs" />
+                        </div>
                       </div>
-                      <h4 className="text-lg font-medium leading-6 text-gray-900">
-                        Outputs
-                      </h4>
-                      <div className="grid grid-cols-3 gap-6">
-                        <CodeParameters name="outputs" />
+                      <div>
+                        <h4 className="text-sm font-medium  text-gray-900 ">
+                          Output Type
+                        </h4>
+                        <p className="text-sm text-gray-700 ">
+                          What type the function is expected to return (usually
+                          a string or a number)
+                        </p>
+                        <div className="grid grid-cols-3 gap-6">
+                          <OutputType name="outputType" />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -215,6 +227,7 @@ const CreateOracle: FC<{
                     </div>
                     <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                       <button
+                        type="button"
                         disabled={isSubmitting}
                         onClick={() => {
                           if (onCreated) {
@@ -229,7 +242,6 @@ const CreateOracle: FC<{
                       >
                         Cancel
                       </button>
-
                       <button
                         type="submit"
                         onClick={() => {
@@ -367,12 +379,11 @@ type OracleInput = {
   type: string;
 };
 const inputTypes = [
-  { name: "string", label: "normal text" },
-  { name: "uint256", label: "number" },
+  { name: "string", label: "Text" },
+  { name: "uint256", label: "Number (uint256)" },
 ];
 const CodeParameters: FC<{ name: string }> = ({ name: baseName }) => {
-  const { values, setFieldValue } = useFormikContext();
-  console.log("Form parameters", values);
+  const [, , { setValue }] = useField(baseName);
   return (
     <FieldArray name={baseName}>
       {({
@@ -382,7 +393,7 @@ const CodeParameters: FC<{ name: string }> = ({ name: baseName }) => {
           values: { [baseName]: inputs },
         },
       }) => (
-        <div>
+        <div className="col-span-6">
           {(inputs as OracleInput[]).map(({ name, type }, index) => (
             <div key={index} className="flex  w-full space-between">
               <div className=" items-center">
@@ -390,11 +401,11 @@ const CodeParameters: FC<{ name: string }> = ({ name: baseName }) => {
                   id={`${baseName}-${index}-name`}
                   name={`${baseName}.${index}.name`}
                   type="text"
-                  className="mt-1 w-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  className="mr-4 mt-1 w-40 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
               </div>
               {inputTypes.map(({ name, label }) => (
-                <div className="flex">
+                <div className="flex mt-3">
                   <Field
                     type="radio"
                     name={`${baseName}.${index}.type`}
@@ -404,25 +415,33 @@ const CodeParameters: FC<{ name: string }> = ({ name: baseName }) => {
                   <span
                     className="inline mr-2 text-sm font-medium cursor-pointer"
                     onClick={() => {
-                      setFieldValue(`inputs.${index}.type`, name);
+                      setValue(name);
                     }}
                   >
                     {label}
                   </span>
                 </div>
               ))}
+
               <button
+                type="button"
                 onClick={() => {
                   remove(index);
                 }}
-                className="text-red-600 hover:text-red-800 text-sm"
+                className="ml-2 text-red-600 hover:text-red-800 text-sm"
               >
                 <TrashIcon className="h-4 w-4" />
               </button>
             </div>
           ))}
+          <ErrorMessage
+            name={baseName}
+            component="div"
+            className="text-red-600 text-sm font-medium"
+          />
           <div className="mt-4">
             <button
+              type="button"
               onClick={() => {
                 console.log("I am pushing");
                 push({ name: "", type: "string" });
@@ -436,5 +455,34 @@ const CodeParameters: FC<{ name: string }> = ({ name: baseName }) => {
         </div>
       )}
     </FieldArray>
+  );
+};
+const OutputType: FC<{ name: string }> = ({ name: baseName }) => {
+  const [, , { setValue }] = useField(baseName);
+  return (
+    <fieldset>
+      <div className="mt-4 space-y-4">
+        {inputTypes.map(({ name, label }) => (
+          <div className="flex items-center" key={`${baseName}-${name}`}>
+            <Field
+              id={name}
+              name={baseName}
+              type="radio"
+              value={name}
+              className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
+            />
+            <label
+              htmlFor="{chain.value}"
+              className="ml-3 block text-sm font-medium text-gray-700 flex flex-start pointer-cursor hover:text-gray-900"
+              onClick={() => {
+                setValue(name, true);
+              }}
+            >
+              {label}
+            </label>
+          </div>
+        ))}
+      </div>
+    </fieldset>
   );
 };
