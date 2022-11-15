@@ -1,14 +1,18 @@
-import { Formik, Field, ErrorMessage, Form } from "formik";
+import { Formik, Form } from "formik";
 import { FC, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { isWebUri } from "valid-url";
-// import { TinyChainLogo } from "./ChainLogo";
-// import { chains } from "./chains";
 import { useOracle } from "./useOracles";
 import { useBase } from "./Base";
 import { chainSvgs } from "./ChainLogo";
 import { useAlert } from "./Alert";
+import {
+  TextField,
+  Checkbox,
+  CodeParameters,
+  OutputType,
+} from "./OracleComponents";
 const Oracle: FC = () => {
   const alert = useAlert();
   const { id } = useParams();
@@ -35,6 +39,11 @@ const Oracle: FC = () => {
         confirmed: oracle?.confirmed,
         async: oracle.async,
         // address: oracle?.contractAddress,
+        inputs: Object.entries(oracle.inputs).map(([name, type]) => ({
+          name,
+          type: type,
+        })),
+        outputType: oracle.outputType,
       }}
       onSubmit={async (values, form) => {
         console.log("submitting the form with ", values);
@@ -47,6 +56,11 @@ const Oracle: FC = () => {
             // address: values.address,
             confirmed: values.confirmed,
             async: values.async,
+            inputs: values.inputs.reduce(
+              (o, { name, type }) => ({ ...o, [name]: type }),
+              {} as Record<string, string>
+            ),
+            outputType: oracle.outputType,
           });
           //   form.resetForm();
 
@@ -118,6 +132,30 @@ const Oracle: FC = () => {
                           title="Run on Confirmation"
                           subTitle="Run the webhook after the transaction has 30-100 blocks of confirmation. Slower but more reliable."
                         />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-medium leading-6 text-gray-900">
+                          Input Parameters
+                        </h4>
+                        <p className="text-sm text-gray-700 ">
+                          The arguments you expect to send (example: symbol as a
+                          string for an equity price feed)
+                        </p>
+                        <div className="grid grid-cols-3 gap-6">
+                          <CodeParameters name="inputs" />
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-medium  text-gray-900 ">
+                          Output Type
+                        </h4>
+                        <p className="text-sm text-gray-700 ">
+                          What type the function is expected to return (usually
+                          a string or a number)
+                        </p>
+                        <div className="grid grid-cols-3 gap-6">
+                          <OutputType name="outputType" />
+                        </div>
                       </div>
                       {/*                       
                       <TextField
@@ -213,63 +251,6 @@ const Oracle: FC = () => {
         </Form>
       )}
     </Formik>
-  );
-};
-const Checkbox: FC<{ name: string; title: string; subTitle?: string }> = ({
-  name,
-  title,
-  subTitle,
-}) => {
-  return (
-    <div className="flex items-start col-span-6">
-      <div className="flex h-5 items-center">
-        <Field
-          id={name}
-          name={name}
-          type="checkbox"
-          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-        />
-      </div>
-      <div className="ml-3 text-sm">
-        <label htmlFor="comments" className="font-medium text-gray-700">
-          {title}
-        </label>
-        {subTitle && <p className="text-gray-500 ">{subTitle}</p>}
-      </div>
-      <ErrorMessage name={name} />
-    </div>
-  );
-};
-
-const TextField: FC<{ name: string; title: string; subTitle?: string }> = ({
-  name,
-  title,
-  subTitle,
-}) => {
-  return (
-    <div className="col-span-6 text-sm">
-      <label
-        htmlFor="street-address"
-        className="block text-sm font-medium text-gray-700"
-      >
-        {title}
-      </label>
-      {subTitle && <p className="text-gray-500 ">{subTitle}</p>}
-
-      <Field
-        type="text"
-        name={name}
-        id={name}
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-      />
-      <ErrorMessage name={name}>
-        {(message) => (
-          <div className="pl-2 pt-2 text-red-600 font-medium text-sm">
-            {message}
-          </div>
-        )}
-      </ErrorMessage>
-    </div>
   );
 };
 
