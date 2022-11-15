@@ -1,5 +1,5 @@
 {
-  "name": "template",
+  "name": "@nodelesslink/core",
   "private": true,
   "version": "1.0.0",
   "description": "",
@@ -10,31 +10,29 @@
     "pre-commit": "echo hooray",
     "pre-commit_": "(git-branch-is --not main || (set -u && echo $ALLOWMAIN)) && yarn test",
     "test": "tsc --noEmit",
-    "build": "tsc && chmod +x lib/bin.js && yarn pack -f package.tgz",
-    "docs:bin": "mkdir docstemp ; (commanderdoc markdown lib/bin.js -o docstemp/__cli.md --cli-name \"npx `jq -r .name package.json`\") ; ",
+    "build": "tsc &&  yarn pack -f package.tgz",
     "docs:lib": "typedoc --theme markdown --readme none --includeVersion --out docstemp src/ && rm README.md ; mv docstemp/README.md docstemp/_library.md",
     "docs:compile": "mkdir docstemp ; cp TOP.md docstemp/README.md ; concat-md docstemp > README.md && rm -rf docstemp",
-    "docs": "rm -rf docstemp && yarn docs:lib && yarn docs:bin && yarn docs:compile",
+    "docs": "rm -rf docstemp && yarn docs:lib  && yarn docs:compile",
     "prepublishOnly": "yarn build && yarn docs && git commit README.md -m \"docs: updating docs\" && git push",
     "watch": "livelink watch",
     "prepare": "install-peers"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rhdeck/base.git"
+    "url": "git+https://github.com/statechangelabs/chainlinkfall2022.git"
   },
   "author": "Ray Deck",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rhdeck/base/issues"
+    "url": "https://github.com/statechangelabs/chainlinkfall2022/issues"
   },
-  "homepage": "https://github.com/rhdeck/base#readme",
+  "homepage": "https://github.com/statechangelabs/chainlinkfall2022/main/blob/listener#readme",
   "devDependencies": {
     "@commitlint/cli": "^9.1.1",
     "@commitlint/config-conventional": "^9.1.1",
     "@raydeck/livelink": "^1.5.2",
     "@typechain/ethers-v5": "^10.1.0",
-    "@types/inquirer": "^7.3.1",
     "@types/node": "^18.11.7",
     "@types/node-fetch": "^2.6.2",
     "@types/validate-npm-package-name": "^3.0.2",
@@ -59,7 +57,6 @@
     "cbor": "^8.1.0",
     "commander": "^6.2.1",
     "ethers": "^5.7.2",
-    "inquirer": "^7.3.3",
     "node-fetch": "2",
     "yarn": "^1.22.19"
   },
