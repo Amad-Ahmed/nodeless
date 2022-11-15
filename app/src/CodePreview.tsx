@@ -1,7 +1,4 @@
-import {
-  DocumentDuplicateIcon,
-  XCircleIcon,
-} from "@heroicons/react/24/outline";
+import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { FC, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import SyntaxHighlighter from "react-syntax-highlighter";

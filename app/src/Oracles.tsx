@@ -1,4 +1,4 @@
-import { FC, Fragment, useCallback, useEffect, useState } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 import {
   GlobeAmericasIcon,
   LinkIcon,
@@ -10,16 +10,13 @@ import {
   HashtagIcon,
   PencilIcon,
 } from "@heroicons/react/24/outline";
-import { Oracle, useOracles } from "./useOracles";
+import { useOracles } from "./useOracles";
 import { Link } from "react-router-dom";
 import { useBase, useUpdatePath } from "./Base";
 import { ChainLogo, chainSvgs } from "./ChainLogo";
 import CreateOracle from "./CreateOracle";
 import copy from "clipboard-copy";
 import { toast } from "react-toastify";
-import CodeModal from "./CodeModal";
-import templateCode from "./templateCode";
-import mustache from "mustache";
 const Oracles: FC = () => {
   useUpdatePath();
   const { oracles, refresh, loading } = useOracles();
@@ -35,7 +32,7 @@ const Oracles: FC = () => {
   const [createOutputType, setCreateOutputType] = useState<string>("uint256");
   const [showOracle, setShowOracle] = useState(false);
   const { setTitle } = useBase();
-  const [code, setCode] = useState("");
+  // const [code, setCode] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   useEffect(() => {
     if (!modalOpen) {
@@ -49,46 +46,46 @@ const Oracles: FC = () => {
       setCreateOutputType("uint256");
     }
   }, [modalOpen]);
-  const makeCode = useCallback((oracle: Oracle) => {
-    const requests = Object.entries(oracle.inputs)
-      .map(([name, type]) => {
-        switch (type) {
-          case "string":
-            return `request.add("${name}", _${name});`;
-          case "uint256":
-            return `request.addUint("${name}", _${name});`;
-        }
-        return "";
-      })
-      .join("\n        ");
-    const args = Object.entries(oracle.inputs)
-      .map(([name, type]) => {
-        switch (type) {
-          case "string":
-            return `string memory _${name}`;
-          case "uint256":
-            return `uint256 _${name}`;
-        }
-        return "";
-      })
-      .join(", ");
-    const returnType = (() => {
-      switch (oracle.outputType) {
-        case "uint256":
-          return "uint256";
-        case "string":
-          return "string memory";
-      }
-    })();
-    return mustache.render(templateCode, {
-      oracleId: oracle.contractAddress,
-      jobId: oracle.jobId,
-      linkAddress: chainSvgs[oracle.chainId].tokenAddress,
-      requests,
-      args,
-      returnType,
-    });
-  }, []);
+  // const makeCode = useCallback((oracle: Oracle) => {
+  //   const requests = Object.entries(oracle.inputs)
+  //     .map(([name, type]) => {
+  //       switch (type) {
+  //         case "string":
+  //           return `request.add("${name}", _${name});`;
+  //         case "uint256":
+  //           return `request.addUint("${name}", _${name});`;
+  //       }
+  //       return "";
+  //     })
+  //     .join("\n        ");
+  //   const args = Object.entries(oracle.inputs)
+  //     .map(([name, type]) => {
+  //       switch (type) {
+  //         case "string":
+  //           return `string memory _${name}`;
+  //         case "uint256":
+  //           return `uint256 _${name}`;
+  //       }
+  //       return "";
+  //     })
+  //     .join(", ");
+  //   const returnType = (() => {
+  //     switch (oracle.outputType) {
+  //       case "uint256":
+  //         return "uint256";
+  //       case "string":
+  //         return "string memory";
+  //     }
+  //   })();
+  //   return mustache.render(templateCode, {
+  //     oracleId: oracle.contractAddress,
+  //     jobId: oracle.jobId,
+  //     linkAddress: chainSvgs[oracle.chainId].tokenAddress,
+  //     requests,
+  //     args,
+  //     returnType,
+  //   });
+  // }, []);
   useEffect(() => {
     if (loading) {
       setTitle("Loading...");
@@ -210,17 +207,18 @@ const Oracles: FC = () => {
                     </div> */}
                   </div>
                 </div>
-                <button
+                <Link
                   title="Show Code"
                   className="mx-4 p-2 hover:text-black text-gray-400 flex"
-                  onClick={() => {
-                    setCode(makeCode(oracle));
-                    setModalOpen(true);
-                  }}
+                  // onClick={() => {
+                  //   setCode(makeCode(oracle));
+                  //   setModalOpen(true);
+                  // }}
+                  to={`/code/${oracle.id}`}
                 >
                   <CodeBracketIcon className="h-5 w-5" />
                   <span className="hidden md:inline ml-2">Code</span>
-                </button>
+                </Link>
                 <button
                   title="Make a duplicate contract"
                   className="mx-4 p-2 hover:text-black text-gray-400 flex"
@@ -291,7 +289,7 @@ const Oracles: FC = () => {
           />
         </Fragment>
       )}
-      <CodeModal show={modalOpen} setShow={setModalOpen} code={code} />
+      {/* <CodeModal show={modalOpen} setShow={setModalOpen} code={code} /> */}
     </Fragment>
   );
 };
