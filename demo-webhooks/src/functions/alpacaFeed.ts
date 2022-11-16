@@ -13,11 +13,10 @@ const handler: Handler = async (event, context) => {
   //Like, make a request to get the current price of the symbol
   const symbol: string = parsed.decodedData.string_1;
   const Header = {
-    "APCA-API-KEY-ID": process.env.ALPACA_KEY,
-    "APCA-API-SECRET-KEY": process.env.ALPACA_SECRET,
+    "APCA-API-KEY-ID": process.env.ALPACA_KEY || "",
+    "APCA-API-SECRET-KEY": process.env.ALPACA_SECRET || "",
   };
   const url = `https://data.alpaca.markets/v2/stocks/${symbol}/quotes/latest`;
-  //const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/${startDate}/${endDate}?apiKey=${polygonKey}`;
   const response = await fetch(url, {
     headers: Header,
   });
