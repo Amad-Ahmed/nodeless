@@ -12,10 +12,9 @@ const handler: Handler = async (event, context) => {
   //Do things based on the webhook object.
   //Like, make a request to get the current price of the symbol
   const symbol: string = parsed.decodedData.string_1;
-  //   const polygonKey = "kTQbYuAtj_P5xdAuDhzRtAfirmuRm8br";
   const Header = {
-    "APCA-API-KEY-ID": "PKIKYC0IWKVRTLYLBQ22",
-    "APCA-API-SECRET-KEY": "M3mGd7FWqkftgXlom3usORD6wSGmQRBhfgkY12oA",
+    "APCA-API-KEY-ID": process.env.ALPACA_KEY,
+    "APCA-API-SECRET-KEY": process.env.ALPACA_SECRET,
   };
   const url = `https://data.alpaca.markets/v2/stocks/${symbol}/quotes/latest`;
   //const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/${startDate}/${endDate}?apiKey=${polygonKey}`;

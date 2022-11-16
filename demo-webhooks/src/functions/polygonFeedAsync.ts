@@ -6,7 +6,7 @@ const handler: Handler = async (event, context) => {
   if (!parsed) return { statusCode: 400, body: "Bad Request" };
   console.log("Webhook object is ", parsed);
   const symbol: string = parsed.decodedData.string_1;
-  const polygonKey = "kTQbYuAtj_P5xdAuDhzRtAfirmuRm8br";
+  const polygonKey = process.env.POLYGON_KEY;
   const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/prev?adjusted=true&apiKey=${polygonKey}`;
   const response = await fetch(url);
 
