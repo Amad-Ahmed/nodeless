@@ -6,11 +6,11 @@ files.forEach((file) => {
   const fullPath = join(myPath, file);
   console.log(fullPath);
   const content = readFileSync(fullPath, "utf8");
-  const jsonContent = JSON.stringify(content);
+  //   const jsonContent = JSON.stringify(content);
   const output =
-    "// eslint-disable-next-line\nconst output = JSON.parse('" +
-    jsonContent +
-    "'); export default output;";
+    '// eslint-disable-next-line\nconst output = atob("' +
+    btoa(content) +
+    '"); export default output;';
   const outputFileName = join(
     __dirname,
     "src",
