@@ -247,7 +247,6 @@ const Oracles: FC = () => {
           />
         </Fragment>
       )}
-      {/* <CodeModal show={modalOpen} setShow={setModalOpen} code={code} /> */}
     </Fragment>
   );
 };
