@@ -1,7 +1,7 @@
 {
   "name": "@nodelesslink/core",
-  "private": true,
-  "version": "1.0.0",
+  "private": false,
+  "version": "1.0.2",
   "description": "",
   "main": "lib/index.js",
   "bin": "lib/bin.js",
@@ -54,11 +54,9 @@
     "lib"
   ],
   "dependencies": {
-    "cbor": "^8.1.0",
     "commander": "^6.2.1",
     "ethers": "^5.7.2",
-    "node-fetch": "2",
-    "yarn": "^1.22.19"
+    "node-fetch": "2"
   },
   "liveLink": {
     "ignoreMasks": [

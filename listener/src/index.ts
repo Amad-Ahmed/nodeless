@@ -1,5 +1,7 @@
 import fetch from "node-fetch";
 
+const baseUrl = "https://xw8v-tcfi-85ay.n7.xano.io/api:58vCnoV0";
+
 export function parseRequestBody(body: string | null | undefined) {
   const parsed =
     body &&
@@ -18,7 +20,7 @@ export async function sendResult(
   data: any,
   { id, key }: { id: number; key: string }
 ) {
-  fetch(`https://xw8v-tcfi-85ay.n7.xano.io/api:58vCnoV0/requests/${id}`, {
+  fetch(`${baseUrl}/requests/${id}`, {
     method: "POST",
     body: JSON.stringify({
       key,
@@ -56,24 +58,4 @@ export function parseWebhook(body: string | null | undefined) {
     });
   if (!parsed) return undefined;
   return parsed;
-}
-
-const remitterUri =
-  "https://rainbow-syrniki-b0e87c.netlify.app/.netlify/functions/remitter";
-
-export async function remitToChain(
-  data: any,
-  originalBody: string | null | undefined
-) {
-  const parsed = parseWebhook(originalBody);
-  if (!parsed) throw new Error("Body was not parsable");
-  fetch(remitterUri, {
-    body: JSON.stringify({ ...parsed, data }),
-    method: "POST",
-  });
-  await new Promise<void>((r) => {
-    setTimeout(() => {
-      r();
-    }, 1000);
-  });
 }
