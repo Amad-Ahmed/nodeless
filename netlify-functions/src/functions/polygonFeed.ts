@@ -1,6 +1,6 @@
 import { Handler } from "@netlify/functions";
 import fetch from "node-fetch";
-import { parseRequestBody, sendResult } from "../functions";
+import { parseRequestBody } from "@nodelesslink/core";
 const handler: Handler = async (event, context) => {
   const parsed = parseRequestBody(event.body);
   if (!parsed) return { statusCode: 400, body: "Bad Request" };
@@ -13,16 +13,6 @@ const handler: Handler = async (event, context) => {
   });
   const json = (await response.json()) as { results: { c: number }[] };
   const lastPrice = Math.floor((json.results.pop()?.c || 0) * 100);
-  // await new Promise((r) => setTimeout(r, 20000));
-  // const { id, key } = parsed;
-  // await sendResult(lastPrice, { id, key });
   return { statusCode: 200, body: lastPrice.toString() };
 };
 export { handler };
-
-/*
-Emitter -> Xano
-Xano saves the request payload to db and sends to polygonFeed, marking request as in process
-Polygonfeed replies with the answer. 
-Xano sends the data to the remitter, who sends it to the proper oracle using the right account. 
-*/

@@ -1,6 +1,6 @@
 import { Handler } from "@netlify/functions";
 import fetch from "node-fetch";
-import { parseRequestBody, sendResult } from "../functions";
+import { parseRequestBody, sendResult } from "@nodelesslink/core";
 const handler: Handler = async (event, context) => {
   const parsed = parseRequestBody(event.body);
   if (!parsed) return { statusCode: 400, body: "Bad Request" };
@@ -9,7 +9,7 @@ const handler: Handler = async (event, context) => {
   const polygonKey = "kTQbYuAtj_P5xdAuDhzRtAfirmuRm8br";
   const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/prev?adjusted=true&apiKey=${polygonKey}`;
   const response = await fetch(url);
-    
+
   if (parsed.jobId == "volume") {
     const json = (await response.json()) as { results: { v: number }[] };
     console.log("My json is ", json, url);
@@ -25,8 +25,7 @@ const handler: Handler = async (event, context) => {
     const json = (await response.json()) as { results: { c: number }[] };
     const lastPrice = Math.floor((json.results.pop()?.c || 0) * 100);
     // await new Promise((r) => setTimeout(r, 20000));
-    const { id, key } = parsed;
-    await sendResult(lastPrice, { id, key });
+    await sendResult(lastPrice, parsed);
     return { statusCode: 200 };
   }
 };
