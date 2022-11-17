@@ -35,7 +35,6 @@ const CreateOracle: FC<{
   createContract = false,
 }) => {
   const create = useCreateOracle();
-  console.log("address", address);
 
   return (
     <Formik
@@ -86,7 +85,6 @@ const CreateOracle: FC<{
       }}
       enableReinitialize
       validate={(values) => {
-        console.log("Validating me");
         const errors: any = {};
         if (!values.name) {
           errors.name = "Required";
@@ -97,10 +95,8 @@ const CreateOracle: FC<{
         if (!values.webhookUrl) {
           errors.webhookUrl = "Required";
         } else if (!isWebUri(values.webhookUrl)) {
-          console.log("Bad url");
           errors.webhookUrl = "Invalid URL";
         } else {
-          console.log("a ok");
         }
         // if (!values.address) {
         //   errors.address = "Required";
@@ -242,7 +238,6 @@ const CreateOracle: FC<{
                       <button
                         type="submit"
                         onClick={() => {
-                          console.log("submitting from button");
                           submitForm();
                         }}
                         disabled={!isValid || !dirty || isSubmitting}

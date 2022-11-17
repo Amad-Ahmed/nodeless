@@ -83,7 +83,7 @@ export const CodeParameters: FC<{ name: string }> = ({ name: baseName }) => {
                 />
               </div>
               {inputTypes.map(({ name, label }) => (
-                <div className="flex mt-3">
+                <div className="flex mt-3" key={name}>
                   <Field
                     type="radio"
                     name={`${baseName}.${index}.type`}
