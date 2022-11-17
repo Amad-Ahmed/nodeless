@@ -62,6 +62,17 @@ const CodePreview: FC = () => {
           return "string memory";
       }
     })();
+    const returnTypeForMapping = (() => {
+      switch (oracle.outputType) {
+        case "uint256":
+          return "uint256";
+        case "string":
+          return "string";
+      }
+    })();
+    const key =
+      Object.entries(oracle.inputs).find(([key, type]) => type === "string") ||
+      Object.entries(oracle.inputs)[0];
     return mustache.render(solidityTemplateCode, {
       oracleId: oracle.contractAddress,
       jobId: oracle.jobId,
@@ -69,6 +80,8 @@ const CodePreview: FC = () => {
       requests,
       args,
       returnType,
+      returnTypeForMapping,
+      key,
     });
   }, [oracle]);
   const jsCode = useMemo(() => {
@@ -116,7 +129,7 @@ const CodePreview: FC = () => {
         title="Solidity Template"
         code={solidityCode}
         codeStyle={codeStyle}
-        language="solidity"
+        language="javascript"
       />
       <CodeSection
         language="javascript"
@@ -161,9 +174,7 @@ const CodeSection: FC<{
                   title="Copy to Clipboard"
                   onClick={(e) => {
                     copy(code);
-                    toast.success(
-                      `Copied ${language} code snippet to Clipboard`
-                    );
+                    toast.success(`Copied ${title} code snippet to Clipboard`);
                     e.preventDefault();
                   }}
                 >
