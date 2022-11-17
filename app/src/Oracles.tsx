@@ -31,7 +31,8 @@ const Oracles: FC = () => {
   });
   const [createOutputType, setCreateOutputType] = useState<string>("uint256");
   const [showOracle, setShowOracle] = useState(false);
-  const { setTitle } = useBase();
+  const { setTitle, setShowBack } = useBase();
+  setShowBack(false);
   useEffect(() => {
     if (!showOracle) {
       setCreateName("My First Oracle");
