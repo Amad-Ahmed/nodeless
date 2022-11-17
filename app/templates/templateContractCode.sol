@@ -12,7 +12,8 @@ contract Template is ChainlinkClient {
     address private oracle = {{{oracleId}}};
     bytes32 private jobId = "{{{jobId}}}";
     uint256 private fee = 0.1 * 10**18;
-    mapping(bytes32 => string) public requests;
+    mapping(bytes32 => string)  requests;
+    mapping(bytes32 => {{{returnTypeForMapping}}})  values;
 
     constructor() {
         setChainlinkToken({{{linkAddress}}}); // for mumbai network
@@ -35,7 +36,7 @@ contract Template is ChainlinkClient {
         
         // Sends the request
         bytes32 _requestId = sendChainlinkRequestTo(oracle, request, fee);
-        requests[_requestId] = symbol;
+        requests[_requestId] = {{{key}}};
         return _requestId;
     }
 
@@ -46,8 +47,8 @@ contract Template is ChainlinkClient {
         public
         recordChainlinkFulfillment(_requestId)
     {
-        string storage _symbol = requests[_requestId];
-        prices[_symbol] = _returnedValue;
+        string storage _key = requests[_requestId];
+        values[_key] = _returnedValue;
     }
 
     // function withdrawLink() external {} - Implement a withdraw function to avoid locking your LINK in the contract
