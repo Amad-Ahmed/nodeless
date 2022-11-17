@@ -9,6 +9,7 @@ import optimism from "./assets/optimism-ethereum-op-logo.svg";
 import rsk from "./assets/rsk-infrastructure-framework-rif-logo.svg";
 import klaytn from "./assets/klaytn-klay-logo.svg";
 import gnosis from "./assets/gnosis-gno-gno-logo.svg";
+import arbitrum from "./assets/arbitrum-logo.png";
 // import rsk from "./assets/rsk-infrastructure-framework-rif-logo.svg";
 export const chainSvgs: Record<
   string,
@@ -127,7 +128,7 @@ export const chainSvgs: Record<
   },
   "0xA4B1": {
     name: "Arbitrum Mainnet",
-    svg: bnb,
+    svg: arbitrum,
     testnet: false,
     blockExplorer: "https://arbiscan.io/address/",
     transactionExplorer: "https://arbiscan.io/tx/",
@@ -135,7 +136,7 @@ export const chainSvgs: Record<
   },
   "0x66EED": {
     name: "Arbitrum Goerli Testnet",
-    svg: bnb,
+    svg: arbitrum,
     testnet: true,
     blockExplorer: "https://goerli.arbiscan.io/address/",
     transactionExplorer: "https://goerli.arbiscan.io/tx/",
