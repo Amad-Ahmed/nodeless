@@ -79,7 +79,7 @@ export const chainSvgs: Record<
     tokenAddress: "0x5947BB275c521040051D82396192181b413227A3",
   },
   "0x89": {
-    name: "Polygon",
+    name: "Polygon Mainnet",
     svg: polygon,
     testnet: false,
     blockExplorer: "https://polygonscan.com/address/",
