@@ -14,7 +14,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import AppRouter from "./AppRouter";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuthentication, useMe } from "./Authenticator";
 import { Helmet } from "react-helmet";
 import Logo from "./Logo";
@@ -63,7 +63,7 @@ export default function Base() {
   const [title, setTitle] = useState("My Oracles");
 
   const [pathname, setPathname] = useState(window.location.pathname);
-  const [showBack, setShowBack] = useState(false);
+  const [showBack, setShowBack] = useState(true);
   const pathnameRef = useRef(pathname);
   pathnameRef.current = pathname;
   useEffect(() => {
@@ -79,11 +79,11 @@ export default function Base() {
     return { title, setTitle, pathname, setPathname, setShowBack };
   }, [title, setTitle, pathname, setPathname, setShowBack]);
   const navigation = [
-    {
-      name: "Dashboard",
-      href: "/dashboard",
-      current: pathname.endsWith("/dashboard"),
-    },
+    // {
+    //   name: "Dashboard",
+    //   href: "/dashboard",
+    //   current: pathname.endsWith("/dashboard"),
+    // },
     {
       name: "Oracles",
       href: "/oracles",
@@ -285,15 +285,15 @@ export default function Base() {
           </Disclosure>
           <header className="py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold tracking-tight text-white">
+              <h1 className="text-3xl flex font-bold tracking-tight text-white">
                 {showBack && (
                   <button
-                    className="h-10 w-10 text-gray-400 hover:text-gray-200 mr-2"
+                    className="h-6 w-8 text-gray-400 hover:text-gray-200 mr-2"
                     onClick={() => {
                       window.history.back();
                     }}
                   >
-                    <ChevronLeftIcon className="h-10 w-10" />
+                    <ChevronLeftIcon className="h-8 w-8" />
                   </button>
                 )}
                 {title}
@@ -318,7 +318,12 @@ export default function Base() {
   );
 }
 export const useBase = () => {
+  const { pathname } = useLocation();
   const baseContext = useContext(context);
+  const { setShowBack } = baseContext;
+  useEffect(() => {
+    setShowBack(true);
+  }, [pathname, setShowBack]);
   return baseContext;
 };
 export const useUpdatePath = () => {
