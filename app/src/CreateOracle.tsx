@@ -1,4 +1,4 @@
-import { Formik, Form, validateYupSchema } from "formik";
+import { Formik, Form } from "formik";
 import { FC } from "react";
 import { Oracle, useCreateOracle } from "./useOracles";
 import { isWebUri } from "valid-url";
