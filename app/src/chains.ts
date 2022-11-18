@@ -1,8 +1,8 @@
 import { chainSvgs } from "./ChainLogo";
 
 export const chains = [
-  // { ...chainSvgs["0x01"], value: "0x01" },
-  { ...chainSvgs["0x05"], value: "0x05" },
+  // { ...chainSvgs["0x1"], value: "0x1" },
+  { ...chainSvgs["0x5"], value: "0x5" },
   // { ...chainSvgs["0x38"], value: "0x38" },
   { ...chainSvgs["0x89"], value: "0x89" },
   { ...chainSvgs["0x13881"], value: "0x13881" },

@@ -46,7 +46,7 @@ export const chainSvgs: Record<
     transactionExplorer: "https://bscscan.com/tx/",
     tokenAddress: "0x404460C6A5EdE2D891e8297795264fDe62ADBB75",
   },
-  "0x01": {
+  "0x1": {
     name: "Ethereum Mainnet",
     svg: eth,
     testnet: false,
@@ -86,7 +86,7 @@ export const chainSvgs: Record<
     transactionExplorer: "https://polygonscan.com/tx/",
     tokenAddress: "0xb0897686c545045aFc77CF20eC7A532E3120E0F1",
   },
-  "0x05": {
+  "0x5": {
     name: "Ethereum Goerli Testnet",
     svg: eth,
     testnet: true,
