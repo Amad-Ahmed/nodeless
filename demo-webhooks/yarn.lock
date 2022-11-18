@@ -451,10 +451,10 @@
   resolved "https://registry.yarnpkg.com/@noble/secp256k1/-/secp256k1-1.7.0.tgz#d15357f7c227e751d90aa06b05a0e5cf993ba8c1"
   integrity sha512-kbacwGSsH/CTout0ZnZWxnW1B+jH/7r/WAAKLBtrRJ/+CUH7lgmQzl3GTrQua3SGKWNSDsS6lmjnDpIJ5Dxyaw==
 
-"@nodelesslink/core@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@nodelesslink/core/-/core-1.0.2.tgz#cd296bbd593ae39e3c006eafe8d1f65b52331c74"
-  integrity sha512-hg3kxQuO320FIlGZsJUr5gsM3N4R2PEikvS/sq1eKgt5oE+wPeie074K+8MLevSsqD2pNerQmkexdXV/t3wLjw==
+"@nodelesslink/core@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@nodelesslink/core/-/core-1.0.3.tgz#c2a7a93e58c30dccf6e489a393de0fad6781efd9"
+  integrity sha512-rJFfygSm5NXOX/UJ1UXgWdxYO/Z8DIDTi0e2sBmYq1hFD9P4QIRnwZqgaSGT7nWd72ImM6+EcrhdnHJWXqmomQ==
   dependencies:
     commander "^6.2.1"
     ethers "^5.7.2"
