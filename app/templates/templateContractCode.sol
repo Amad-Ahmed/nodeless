@@ -13,7 +13,7 @@ contract Template is ChainlinkClient {
     bytes32 private jobId = "{{{jobId}}}";
     uint256 private fee = 0.1 * 10**18;
     mapping(bytes32 => string)  requests;
-    mapping(bytes32 => {{{returnTypeForMapping}}})  values;
+    mapping(string => {{{returnTypeForMapping}}})  values;
 
     constructor() {
         setChainlinkToken({{{linkAddress}}}); // for mumbai network

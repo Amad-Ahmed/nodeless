@@ -9,10 +9,10 @@ import { parseRequestBody, sendResult } from "@nodelesslink/core";
 const handler: Handler = async (event, context) => {
   const parsed = parseRequestBody(event.body);
   if (!parsed) return { statusCode: 400, body: "Bad Request" };
-  if(parsed.jobId !== {{{jobId}}}) return { statusCode: 400, body: "Bad Request" };
+  if(parsed.jobId.toLowerCase() !== "{{{jobId}}}".toLowerCase()) return { statusCode: 400, body: "Bad Request" };
   
-  const {{{{decodedKeys}}}} = decodedData as {{{{decodedTypes}}}};
-  let returnValue:{{{returnType}}};    
+  const { {{{decodedKeys}}} } = decodedData as { {{{decodedTypes}}} };
+  let returnValue: {{{returnType}}};    
   /**
      * This is where you put in your code to retrieve your value
      * Confirm the returnvalue got set

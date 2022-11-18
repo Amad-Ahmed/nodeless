@@ -73,9 +73,10 @@ const CodePreview: FC = () => {
           return "string";
       }
     })();
-    const key =
-      Object.entries(oracle.inputs).find(([key, type]) => type === "string") ||
-      Object.entries(oracle.inputs)[0];
+    const found = Object.entries(oracle.inputs).find(
+      ([key, type]) => type === "string"
+    );
+    const key = found ? found[0] : Object.entries(oracle.inputs)[0][0];
     return mustache.render(solidityTemplateCode, {
       oracleId: ethers.utils.getAddress(oracle.contractAddress),
       jobId: oracle.jobId,
@@ -91,11 +92,32 @@ const CodePreview: FC = () => {
   }, [oracle]);
   const jsCode = useMemo(() => {
     const template = oracle?.async ? templateJsAsync : templateJs;
-    return mustache.render(template, {});
+    const margs = {
+      decodedKeys: oracle && Object.keys(oracle.inputs).join(", "),
+      jobId: oracle?.jobId,
+    };
+    return mustache.render(template, margs);
   }, [oracle]);
   const tsCode = useMemo(() => {
     const template = oracle?.async ? templateTsAsync : templateTs;
-    return mustache.render(template, {});
+    const margs = {
+      decodedKeys: oracle && Object.keys(oracle.inputs).join(", "),
+      jobId: oracle?.jobId,
+      decodedTypes:
+        oracle &&
+        Object.entries(oracle.inputs)
+          .map(([key, type]) => {
+            switch (type) {
+              case "string":
+                return `${key}:string`;
+              case "uint256":
+                return `${key}:number`;
+            }
+          })
+          .join(", "),
+      returnType: oracle?.outputType === "uint256" ? "number" : "string",
+    };
+    return mustache.render(template, margs);
   }, [oracle]);
   const { setTitle } = useBase();
   useEffect(() => {
@@ -117,7 +139,7 @@ const CodePreview: FC = () => {
               All Templates are customized to the particular chain and oracle
               information associated with <b>{oracle?.name}</b>
             </p>
-            <p className="mt-3 text-sm md:mt-0 md:ml-6">
+            {/* <p className="mt-3 text-sm md:mt-0 md:ml-6">
               <a
                 href="#"
                 className="whitespace-nowrap font-medium text-blue-700 hover:text-blue-600"
@@ -125,36 +147,38 @@ const CodePreview: FC = () => {
                 Details
                 <span aria-hidden="true"> &rarr;</span>
               </a>
-            </p>
+            </p> */}
           </div>
         </div>
       </div>{" "}
-      <button
-        disabled={codeStyle === docco}
-        className={
-          "animated transition duration-250 mr-2 " +
-          (codeStyle === docco
-            ? "text-gray-600"
-            : "text-blue-600 hover:text-blue-800")
-        }
-        onClick={() => setCodeStyle(docco)}
-      >
-        {codeStyle === docco && <CheckIcon className="h-4 w-4 inline" />}
-        Light Theme
-      </button>
-      <button
-        disabled={codeStyle === dracula}
-        className={
-          "animated transition duration-250 mr-2 " +
-          (codeStyle === dracula
-            ? "text-gray-600"
-            : "text-blue-600 hover:text-blue-800")
-        }
-        onClick={() => setCodeStyle(dracula)}
-      >
-        {codeStyle === dracula && <CheckIcon className="h-4 w-4 inline" />}
-        Dark Theme
-      </button>
+      <div className="p-4">
+        <button
+          disabled={codeStyle === docco}
+          className={
+            "animated transition duration-250 mr-2 p-2 rounded-full " +
+            (codeStyle === docco
+              ? "text-gray-200 bg-blue-500"
+              : "text-blue-600 hover:text-blue-800")
+          }
+          onClick={() => setCodeStyle(docco)}
+        >
+          {codeStyle === docco && <CheckIcon className="h-4 w-4 inline" />}
+          Light Theme
+        </button>
+        <button
+          disabled={codeStyle === dracula}
+          className={
+            "animated transition duration-250 mr-2 p-2 rounded-full " +
+            (codeStyle === dracula
+              ? "text-gray-200 bg-blue-500"
+              : "text-blue-600 hover:text-blue-800")
+          }
+          onClick={() => setCodeStyle(dracula)}
+        >
+          {codeStyle === dracula && <CheckIcon className="h-4 w-4 inline" />}
+          Dark Theme
+        </button>
+      </div>
       <CodeSection
         title="Solidity Template"
         code={solidityCode}

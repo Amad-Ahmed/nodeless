@@ -7,9 +7,9 @@ Note: Add @nodelesslink/core to your project via
 const handler = async (event, context) => {
   const parsed = JSON.parse(event.body);
   if (!parsed) return { statusCode: 400, body: "Bad Request" };
-  if(parsed.jobId !== {{{jobId}}}) return { statusCode: 400, body: "Bad Request" };
+  if(parsed.jobId.toLowerCase() !== "{{{jobId}}}".toLowerCase()) return { statusCode: 400, body: "Bad Request" };
   // This is where the arguments from Solidity come in
-  const {{{{decodedKeys}}}} = decodedData;
+  const { {{{decodedKeys}}} } = decodedData;
   let returnValue;
 
 /**
