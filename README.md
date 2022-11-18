@@ -1,4 +1,5 @@
 # Nodeless Link
+![image](assets/thumbnail.png)
 Submission for [Chainlink Hackathon Fall 2022](https://chainlinkfall2022.devpost.com/)
 ## Inspiration
 
