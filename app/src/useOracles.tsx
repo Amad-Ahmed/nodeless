@@ -186,7 +186,7 @@ export type Request = {
 export const useRequests = (id?: number) => {
   const fetch = useAuthenticatedFetch();
   const { data, error, loading, refresh } = useAuthenticatedQuery<Request[]>(
-    `/requests?oracleId=${id}`
+    `/requests?oracleId=${id || 0}`
   );
   const remove = useCallback(
     async (id: number) => {
