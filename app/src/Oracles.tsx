@@ -113,7 +113,7 @@ const Oracles: FC = () => {
                         className="truncate flex text-sm font-medium text-blue-600 cursor-pointer group"
                         onClick={() => {
                           console.log("Hello");
-                          copy(oracle.contractAddress);
+                          copy(ethers.utils.getAddress(oracle.contractAddress));
                           toast.success("Copied address to clipboard");
                         }}
                       >
