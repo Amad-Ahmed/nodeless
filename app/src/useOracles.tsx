@@ -91,8 +91,8 @@ export const useCreateOracle = () => {
       async?: boolean;
       createContract?: boolean;
     }) => {
-      if (!options.createContract && !options.address)
-        throw new Error("address or create contract is required");
+      // if (!options.createContract && !options.address)
+      //   throw new Error("address or create contract is required");
       const body = {
         name: options.name,
         contractAddress: options.address,
