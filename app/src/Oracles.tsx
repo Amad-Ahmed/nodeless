@@ -57,6 +57,20 @@ const Oracles: FC = () => {
     <Fragment>
       <div className="overflow-hidden bg-white shadow sm:rounded-md">
         <ul className="divide-y divide-gray-200">
+          {!oracles.length && !showOracle && (
+            <button
+              type="button"
+              onClick={() => setShowOracle(true)}
+              className="group  transition-all duration-250 hover:bg-blue-400 relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            >
+              <LinkIcon className="mx-auto h-12 w-12 text-gray-400 group-hover:text-blue-100" />
+
+              <span className="mt-2 block text-sm font-medium text-gray-900">
+                Create a new Nodeless Oracle
+              </span>
+            </button>
+          )}
+
           {oracles.map((oracle) => (
             <li key={oracle.id}>
               <div className="flex items-center">
@@ -224,7 +238,7 @@ const Oracles: FC = () => {
           ))}
         </ul>
       </div>
-      {!showOracle && (
+      {!showOracle && !!oracles.length && (
         <button
           onClick={() => {
             setShowOracle(true);
