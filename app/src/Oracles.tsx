@@ -113,7 +113,11 @@ const Oracles: FC = () => {
                         className="truncate flex text-sm font-medium text-blue-600 cursor-pointer group"
                         onClick={() => {
                           console.log("Hello");
-                          copy(ethers.utils.getAddress(oracle.contractAddress));
+                          copy(
+                            oracle.contractAddress.startsWith("0x")
+                              ? ethers.utils.getAddress(oracle.contractAddress)
+                              : ""
+                          );
                           toast.success("Copied address to clipboard");
                         }}
                       >
@@ -123,7 +127,9 @@ const Oracles: FC = () => {
                         />
                         <span className="truncate">
                           Oracle Contract Addr:{" "}
-                          {ethers.utils.getAddress(oracle.contractAddress)}
+                          {oracle.contractAddress.startsWith("0x")
+                            ? ethers.utils.getAddress(oracle.contractAddress)
+                            : ""}
                         </span>
                         <SmallDocumentDuplicateIcon
                           className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-800"
