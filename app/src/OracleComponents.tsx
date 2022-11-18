@@ -220,6 +220,40 @@ export const TextField: FC<{
         id={name}
         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
       />
+
+      <ErrorMessage name={name}>
+        {(message) => (
+          <div className="pl-2 pt-2 text-red-600 font-medium text-sm">
+            {message}
+          </div>
+        )}
+      </ErrorMessage>
+    </div>
+  );
+};
+
+export const PasswordField: FC<{
+  name: string;
+  title: string;
+  subTitle?: string | ReactNode;
+}> = ({ name, title, subTitle }) => {
+  return (
+    <div className="col-span-6 text-sm">
+      <label
+        htmlFor="street-address"
+        className="block text-sm font-medium text-gray-700"
+      >
+        {title}
+      </label>
+      {subTitle && <p className="text-gray-500 ">{subTitle}</p>}
+
+      <Field
+        type="password"
+        name={name}
+        id={name}
+        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+      />
+
       <ErrorMessage name={name}>
         {(message) => (
           <div className="pl-2 pt-2 text-red-600 font-medium text-sm">
