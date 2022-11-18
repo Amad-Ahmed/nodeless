@@ -6,7 +6,7 @@ import {
   ErrorMessage,
   useFormikContext,
 } from "formik";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { TinyChainLogo } from "./ChainLogo";
 import { chains } from "./chains";
 
@@ -202,7 +202,7 @@ export const Checkbox: FC<{
 export const TextField: FC<{
   name: string;
   title: string;
-  subTitle?: string;
+  subTitle?: string | ReactNode;
 }> = ({ name, title, subTitle }) => {
   return (
     <div className="col-span-6 text-sm">

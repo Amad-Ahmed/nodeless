@@ -1,4 +1,4 @@
-import { Formik, Form } from "formik";
+import { Formik, Form, validateYupSchema } from "formik";
 import { FC } from "react";
 import { Oracle, useCreateOracle } from "./useOracles";
 import { isWebUri } from "valid-url";
@@ -10,6 +10,7 @@ import {
   Checkbox,
   TextField,
 } from "./OracleComponents";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
 const CreateOracle: FC<{
   name?: string;
@@ -108,7 +109,7 @@ const CreateOracle: FC<{
         if (Object.keys(errors).length) return errors;
       }}
     >
-      {({ submitForm, isSubmitting, isValid, dirty, isValidating }) => (
+      {({ submitForm, isSubmitting, isValid, dirty, isValidating, values }) => (
         <Form id="create-oracle-form">
           <div className="p-4">
             <div>
@@ -204,19 +205,73 @@ const CreateOracle: FC<{
                 <div className="shadow sm:overflow-hidden sm:rounded-md">
                   <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
                     <div className="grid grid-cols-3 gap-6">
-                      <TextField
-                        title="Oracle Address"
-                        name="address"
-                        subTitle="Optional - we will create the oracle contract for you if not specified. Note: An oracle needs to be valid for our signing identities"
-                      />{" "}
-                      {/* </div> */}
                       <Chains />
-                      <Checkbox
+                      <TextField
+                        title="Use This Oracle Address (advanced)"
+                        name="address"
+                      />
+
+                      {values.address ? (
+                        <div className="rounded-md bg-blue-50 p-4 col-span-3">
+                          <div className="flex">
+                            <div className="flex-shrink-0">
+                              <InformationCircleIcon
+                                className="h-5 w-5 text-blue-400"
+                                aria-hidden="true"
+                              />
+                            </div>
+                            <div className="ml-3 flex-1 md:flex md:justify-between">
+                              <p className="text-sm text-blue-700">
+                                Note: An oracle needs to be valid for
+                                Nodeless.link signing identities
+                              </p>
+                              {/* <p className="mt-3 text-sm md:mt-0 md:ml-6">
+                                <a
+                                  href="#"
+                                  className="whitespace-nowrap font-medium text-blue-700 hover:text-blue-600"
+                                >
+                                  Details
+                                  <span aria-hidden="true"> &rarr;</span>
+                                </a>
+                              </p> */}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="rounded-md bg-blue-50 p-4 col-span-3">
+                          <div className="flex">
+                            <div className="flex-shrink-0">
+                              <InformationCircleIcon
+                                className="h-5 w-5 text-blue-400"
+                                aria-hidden="true"
+                              />
+                            </div>
+                            <div className="ml-3 flex-1 md:flex md:justify-between">
+                              <p className="text-sm text-blue-700">
+                                This job will use the Nodeless.link
+                                decentralized oracle contract on this chain.
+                                Fees are <b>0.1 LINK</b> per call
+                              </p>
+                              {/* <p className="mt-3 text-sm md:mt-0 md:ml-6">
+                                <a
+                                  href="#"
+                                  className="whitespace-nowrap font-medium text-blue-700 hover:text-blue-600"
+                                >
+                                  Details
+                                  <span aria-hidden="true"> &rarr;</span>
+                                </a>
+                              </p> */}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* <Checkbox
                         name="createContract"
-                        title="Create an oracle contract"
+                        title="Create an oracle contract (advanced)"
                         subTitle="Create an oracle contract for this job. This is for paid accounts only"
                         disabled={!!address}
-                      />
+                      /> */}
                     </div>
                     <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                       <button
