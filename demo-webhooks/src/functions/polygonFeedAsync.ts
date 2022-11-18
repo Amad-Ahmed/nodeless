@@ -24,6 +24,8 @@ const handler: Handler = async (event, context) => {
     // });
     const json = (await response.json()) as { results: { c: number }[] };
     const lastPrice = Math.floor((json.results.pop()?.c || 0) * 100);
+    console.log("My last price is ", lastPrice);
+    console.log("env variable is ", process.env.POLYGON_KEY);
     // await new Promise((r) => setTimeout(r, 20000));
     await sendResult(lastPrice, parsed);
     return { statusCode: 200 };
