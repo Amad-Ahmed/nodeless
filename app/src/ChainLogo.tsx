@@ -30,7 +30,7 @@ export const chainSvgs: Record<
     transactionExplorer: "https://mumbai.polygonscan.com/tx/",
     tokenAddress: "0x326C977E6efc84E512bB9C30f76E30c160eD06FB",
   },
-  "0xA869": {
+  "0xa869": {
     name: "Avalanche Fuji Testnet",
     svg: avalanche,
     testnet: true,
@@ -54,7 +54,7 @@ export const chainSvgs: Record<
     transactionExplorer: "https://etherscan.io/tx/",
     tokenAddress: "0x514910771AF9Ca656af840dff83E8264EcF986CA",
   },
-  "0xFA": {
+  "0xfa": {
     name: "Fantom Mainnet",
     svg: fantom,
     testnet: false,
@@ -62,7 +62,7 @@ export const chainSvgs: Record<
     transactionExplorer: "https://ftmscan.com/tx/",
     tokenAddress: "0x6F43FF82CCA38001B6699a8AC47A2d0E66939407",
   },
-  "0x63564C40": {
+  "0x63564c40": {
     name: "Harmony Mainnet",
     svg: harmony,
     testnet: false,
@@ -70,7 +70,7 @@ export const chainSvgs: Record<
     transactionExplorer: "https://explorer.harmony.one/tx/",
     tokenAddress: "0x218532a12a389a4a92fC0C5Fb22901D1c19198aA",
   },
-  "0xA86A": {
+  "0xa86a": {
     name: "Avalanche Mainnet",
     svg: avalanche,
     testnet: false,
@@ -102,7 +102,7 @@ export const chainSvgs: Record<
     transactionExplorer: "https://testnet.bscscan.com/tx/",
     tokenAddress: "0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06",
   },
-  "0x1E": {
+  "0x1e": {
     name: "RSK mainnet",
     svg: rsk,
     testnet: false,
@@ -118,7 +118,7 @@ export const chainSvgs: Record<
     transactionExplorer: "https://gnosisscan.io/tx/",
     tokenAddress: "0xE2e73A1c69ecF83F464EFCE6A5be353a37cA09b2",
   },
-  "0xFA2": {
+  "0xfa2": {
     name: "Fantom testnet",
     svg: fantom,
     testnet: true,
@@ -126,7 +126,7 @@ export const chainSvgs: Record<
     transactionExplorer: "https://testnet.ftmscan.com/tx/",
     tokenAddress: "0xfaFedb041c0DD4fA2Dc0d87a6B0979Ee6FA7af5F",
   },
-  "0xA4B1": {
+  "0xa4b1": {
     name: "Arbitrum Mainnet",
     svg: arbitrum,
     testnet: false,
@@ -134,7 +134,7 @@ export const chainSvgs: Record<
     transactionExplorer: "https://arbiscan.io/tx/",
     tokenAddress: "0xf97f4df75117a78c1A5a0DBb814Af92458539FB4",
   },
-  "0x66EED": {
+  "0x66eed": {
     name: "Arbitrum Goerli Testnet",
     svg: arbitrum,
     testnet: true,
@@ -150,7 +150,7 @@ export const chainSvgs: Record<
     transactionExplorer: "https://www.hecoinfo.com/en-us/tx/",
     tokenAddress: "0x9e004545c59D359F6B7BFB06a26390b087717b42",
   },
-  "0xA": {
+  "0xa": {
     name: "Optimism Mainnet",
     svg: optimism,
     testnet: false,
@@ -158,7 +158,7 @@ export const chainSvgs: Record<
     transactionExplorer: "https://optimistic.etherscan.io/tx/",
     tokenAddress: "0x350a791Bfc2C21F9Ed5d10980Dad2e2638ffa7f6",
   },
-  "0x1A4": {
+  "0x1a4": {
     name: "Optimism Goerli Testnet",
     svg: optimism,
     testnet: true,
@@ -182,7 +182,7 @@ export const chainSvgs: Record<
     transactionExplorer: "https://moonscan.io/tx/",
     tokenAddress: "0x012414A392F9FA442a3109f1320c439C45518aC3",
   },
-  "0x3E9": {
+  "0x3e9": {
     name: "Klatyn Baobab Testnet",
     svg: klaytn,
     testnet: true,
