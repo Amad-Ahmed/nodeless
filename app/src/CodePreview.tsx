@@ -113,6 +113,7 @@ const CodePreview: FC = () => {
               case "uint256":
                 return `${key}:number`;
             }
+            return "";
           })
           .join(", "),
       returnType: oracle?.outputType === "uint256" ? "number" : "string",
