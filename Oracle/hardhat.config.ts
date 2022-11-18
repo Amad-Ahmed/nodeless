@@ -39,6 +39,7 @@ const hh_config: HardhatUserConfig = {
       polygonMumbai: process.env.POLYGON_API || "",
       avalancheFujiTestnet: process.env.AVAX_API || "",
       goerli: process.env.ETH_API || "",
+      polygon: process.env.POLYGON_API || "",
     },
   }
 };
