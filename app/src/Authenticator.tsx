@@ -19,7 +19,7 @@ const context = createContext({
   loginWithPassword: async (email: string, password: string) => {},
   loginWithWallet: async () => {},
   signupWithPassword: async (email: string, password: string) => {},
-  signupWithWallet: async () => {},
+  signupWithWallet: async (email: string) => {},
   logout: () => {},
 });
 const { Provider } = context;
@@ -117,13 +117,17 @@ const Authenticator: FC<{
     },
     []
   );
-  const signupWithWallet = useCallback(async () => {
+  const signupWithWallet = useCallback(async (emailAddress: string) => {
     //Make sure the wallet is connected
     await eth_requestAccounts();
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
     const address = await signer.getAddress();
-    const message = "Authenticate me to Nodeless";
+    const message = JSON.stringify(
+      { message: `Sign up ${emailAddress} to Nodeless` },
+      null,
+      2
+    );
     const signature = await signer.signMessage(message);
     const obj = { message, signature, address };
     const response = await fetch(`${baseUrl}/auth/walletsignup`, {
@@ -131,7 +135,10 @@ const Authenticator: FC<{
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ token: window.btoa(JSON.stringify(obj)) }),
+      body: JSON.stringify({
+        email: emailAddress,
+        token: window.btoa(JSON.stringify(obj)),
+      }),
     });
     if (response.status === 200) {
       const { authToken } = await response.json();

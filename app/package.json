@@ -25,6 +25,7 @@
     "autoprefixer": "^10.4.13",
     "clipboard-copy": "^4.0.1",
     "dotenv": "^16.0.3",
+    "email-validator": "^2.0.4",
     "ethers": "^5.7.2",
     "formik": "^2.2.9",
     "inter-ui": "^3.19.3",

@@ -1,8 +1,9 @@
 import { FC } from "react";
 import { useAuthentication } from "./Authenticator";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
+import { validate as validateEmail } from "email-validator";
 const Login: FC = () => {
   const { signupWithPassword, signupWithWallet } = useAuthentication();
   return (
@@ -12,8 +13,30 @@ const Login: FC = () => {
         // console.log("I be submitting good sir");
         await signupWithPassword(email, password);
       }}
+      validate={(values) => {
+        const errors: Record<string, string> = {};
+        if (!validateEmail(values.email)) {
+          errors["email"] = "Invalid email";
+        }
+        if (values.password.length < 8) {
+          errors["password"] = "Password must be at least 8 characters";
+        }
+        if (Object.entries(errors).length > 0) {
+          return errors;
+        }
+      }}
     >
-      {({ values, handleChange, handleBlur, submitForm }) => (
+      {({
+        values,
+        handleChange,
+        handleBlur,
+        submitForm,
+        errors,
+        isValid,
+        isValidating,
+        isSubmitting,
+        dirty,
+      }) => (
         <Form>
           <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -53,6 +76,11 @@ const Login: FC = () => {
                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                       />
                     </div>
+                    <ErrorMessage
+                      component="div"
+                      name="email"
+                      className="text-sm text-red-600 mt-2 ml-2 font-medium"
+                    />
                   </div>
 
                   <div>
@@ -72,6 +100,11 @@ const Login: FC = () => {
                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                       />
                     </div>
+                    <ErrorMessage
+                      component="div"
+                      name="password"
+                      className="text-sm text-red-600 mt-2 ml-2 font-medium"
+                    />
                   </div>
 
                   <div className="flex items-center justify-between">
@@ -87,9 +120,15 @@ const Login: FC = () => {
 
                   <div>
                     <button
+                      disabled={!dirty || !isValid || isSubmitting}
                       type="button"
                       onClick={submitForm}
-                      className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      className={
+                        "flex w-full justify-center rounded-md border border-transparent " +
+                        (!isValid || isSubmitting || !dirty
+                          ? " bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm "
+                          : " bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2")
+                      }
                     >
                       Sign Up with Email and Password
                     </button>
@@ -110,8 +149,14 @@ const Login: FC = () => {
                   <div>
                     <button
                       type="button"
-                      onClick={signupWithWallet}
-                      className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      disabled={!!errors.email || isSubmitting || !dirty}
+                      onClick={() => signupWithWallet(values.email)}
+                      className={
+                        "flex w-full justify-center rounded-md border border-transparent " +
+                        (!!errors.email || isSubmitting || !dirty
+                          ? " bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm "
+                          : " bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2")
+                      }
                     >
                       Sign Up with Wallet
                     </button>
