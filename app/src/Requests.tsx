@@ -2,7 +2,7 @@ import { FC, useEffect } from "react";
 import { useRequests, Request as OracleRequest } from "./useOracles";
 import { DateTime } from "luxon";
 import { useBase, useUpdatePath } from "./Base";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { chainSvgs } from "./ChainLogo";
 import { GlobeAltIcon, TrashIcon } from "@heroicons/react/24/outline";
 import copy from "clipboard-copy";
@@ -15,9 +15,12 @@ const statusStrings: Record<OracleRequest["status"], string> = {
   remitting: "Remitting",
 };
 const Requests: FC = () => {
+  const { id: oracleId } = useParams();
   const alert = useAlert();
   useUpdatePath();
-  const { data, loading, refresh, remove } = useRequests();
+  const { data, loading, refresh, remove } = useRequests(
+    oracleId ? parseInt(oracleId) : undefined
+  );
   useEffect(() => {
     const interval = setInterval(() => {
       refresh();

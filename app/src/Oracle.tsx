@@ -1,6 +1,6 @@
 import { Formik, Form } from "formik";
 import { FC, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { isWebUri } from "valid-url";
 import { useOracle } from "./useOracles";
@@ -13,6 +13,7 @@ import {
   CodeParameters,
   OutputType,
 } from "./OracleComponents";
+import { ClockIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
 const Oracle: FC = () => {
   const alert = useAlert();
   const { id } = useParams();
@@ -113,6 +114,26 @@ const Oracle: FC = () => {
                       functionality will not create a new oracle contract for
                       you.
                     </p>
+                    <div className="block clear-both my-4">
+                      <div className="my-6">
+                        <Link
+                          className=" p-2  bg-blue-500 hover:bg-blue-800 text-gray-200 rounded-md"
+                          to={`/code/${id}`}
+                        >
+                          <CodeBracketIcon className="h-6 w-6 inline mr-2" />
+                          See Code Templates
+                        </Link>
+                      </div>
+                      <div className="my-6">
+                        <Link
+                          className=" p-2  bg-blue-500 hover:bg-blue-800 text-gray-200 rounded-md"
+                          to={`/requests/${id}`}
+                        >
+                          <ClockIcon className="h-6 w-6 inline mr-2" />
+                          See Requests
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="mt-5 md:col-span-2 md:mt-0">

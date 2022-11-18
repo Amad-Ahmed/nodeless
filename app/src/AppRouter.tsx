@@ -12,6 +12,7 @@ const AppRouter: FC = () => {
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/requests" element={<Requests />} />
+      <Route path="/requests/:id" element={<Requests />} />
       <Route path="/oracles" element={<Oracles />} />
       <Route path="/oracle/:id" element={<Oracle />} />
       <Route path="/code/:id" element={<CodePreview />} />

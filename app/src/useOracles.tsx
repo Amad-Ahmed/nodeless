@@ -183,10 +183,11 @@ export type Request = {
   created_at: number;
   transaction: string;
 };
-export const useRequests = () => {
+export const useRequests = (id?: number) => {
   const fetch = useAuthenticatedFetch();
-  const { data, error, loading, refresh } =
-    useAuthenticatedQuery<Request[]>("/requests");
+  const { data, error, loading, refresh } = useAuthenticatedQuery<Request[]>(
+    `/requests?oracleId=${id}`
+  );
   const remove = useCallback(
     async (id: number) => {
       await fetch(`/requests/${id}`, {

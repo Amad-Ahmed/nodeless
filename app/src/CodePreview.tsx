@@ -35,28 +35,32 @@ const CodePreview: FC = () => {
   const [codeStyle, setCodeStyle] = useState(docco);
   const solidityCode = useMemo(() => {
     if (!oracle) return "";
-    const requests = Object.entries(oracle.inputs)
-      .map(([name, type]) => {
-        switch (type) {
-          case "string":
-            return `request.add("${name}", _${name});`;
-          case "uint256":
-            return `request.addUint("${name}", _${name});`;
-        }
-        return "";
-      })
-      .join("\n        ");
-    const args = Object.entries(oracle.inputs)
-      .map(([name, type]) => {
-        switch (type) {
-          case "string":
-            return `string memory _${name}`;
-          case "uint256":
-            return `uint256 _${name}`;
-        }
-        return "";
-      })
-      .join(", ");
+    const requests = oracle.inputs
+      ? Object.entries(oracle.inputs)
+          .map(([name, type]) => {
+            switch (type) {
+              case "string":
+                return `request.add("${name}", _${name});`;
+              case "uint256":
+                return `request.addUint("${name}", _${name});`;
+            }
+            return "";
+          })
+          .join("\n        ")
+      : "";
+    const args = oracle.inputs
+      ? Object.entries(oracle.inputs)
+          .map(([name, type]) => {
+            switch (type) {
+              case "string":
+                return `string memory _${name}`;
+              case "uint256":
+                return `uint256 _${name}`;
+            }
+            return "";
+          })
+          .join(", ")
+      : "";
     const returnType = (() => {
       switch (oracle.outputType) {
         case "uint256":
@@ -72,17 +76,28 @@ const CodePreview: FC = () => {
         case "string":
           return "string";
       }
+      return "";
     })();
-    const found = Object.entries(oracle.inputs).find(
-      ([key, type]) => type === "string"
-    );
-    const key = found ? found[0] : Object.entries(oracle.inputs)[0][0];
+    const found = oracle.inputs
+      ? Object.entries(oracle.inputs).find(([key, type]) => type === "string")
+      : "";
+    const key = found
+      ? found[0]
+      : oracle.inputs
+      ? Object.entries(oracle.inputs)[0][0]
+      : "";
     return mustache.render(solidityTemplateCode, {
-      oracleId: ethers.utils.getAddress(oracle.contractAddress),
+      oracleId:
+        oracle.contractAddress &&
+        oracle.contractAddress.startsWith("0x") &&
+        ethers.utils.getAddress(oracle.contractAddress),
       jobId: oracle.jobId,
-      linkAddress: ethers.utils.getAddress(
-        chainSvgs[oracle.chainId].tokenAddress || ""
-      ),
+      linkAddress:
+        chainSvgs[oracle.chainId] && chainSvgs[oracle.chainId].tokenAddress
+          ? ethers.utils.getAddress(
+              chainSvgs[oracle.chainId].tokenAddress || ""
+            )
+          : "",
       requests,
       args,
       returnType,
@@ -93,7 +108,8 @@ const CodePreview: FC = () => {
   const jsCode = useMemo(() => {
     const template = oracle?.async ? templateJsAsync : templateJs;
     const margs = {
-      decodedKeys: oracle && Object.keys(oracle.inputs).join(", "),
+      decodedKeys:
+        oracle && oracle.inputs && Object.keys(oracle.inputs).join(", "),
       jobId: oracle?.jobId,
     };
     return mustache.render(template, margs);
@@ -101,10 +117,12 @@ const CodePreview: FC = () => {
   const tsCode = useMemo(() => {
     const template = oracle?.async ? templateTsAsync : templateTs;
     const margs = {
-      decodedKeys: oracle && Object.keys(oracle.inputs).join(", "),
+      decodedKeys:
+        oracle && oracle.inputs && Object.keys(oracle.inputs).join(", "),
       jobId: oracle?.jobId,
       decodedTypes:
         oracle &&
+        oracle.inputs &&
         Object.entries(oracle.inputs)
           .map(([key, type]) => {
             switch (type) {
