@@ -2,6 +2,8 @@ import {
   ChevronRightIcon,
   DocumentDuplicateIcon,
 } from "@heroicons/react/24/outline";
+import { InformationCircleIcon } from "@heroicons/react/20/solid";
+
 import {
   CSSProperties,
   FC,
@@ -26,6 +28,7 @@ import templateJs from "./templateJs";
 import templateTs from "./templateTs";
 import { Disclosure } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/20/solid";
+import { ethers } from "ethers";
 const CodePreview: FC = () => {
   const { id } = useParams();
   const { oracle } = useOracle(id ? parseInt(id) : 0);
@@ -74,9 +77,11 @@ const CodePreview: FC = () => {
       Object.entries(oracle.inputs).find(([key, type]) => type === "string") ||
       Object.entries(oracle.inputs)[0];
     return mustache.render(solidityTemplateCode, {
-      oracleId: oracle.contractAddress,
+      oracleId: ethers.utils.getAddress(oracle.contractAddress),
       jobId: oracle.jobId,
-      linkAddress: chainSvgs[oracle.chainId].tokenAddress,
+      linkAddress: ethers.utils.getAddress(
+        chainSvgs[oracle.chainId].tokenAddress || ""
+      ),
       requests,
       args,
       returnType,
@@ -99,6 +104,31 @@ const CodePreview: FC = () => {
   }, [setTitle, oracle]);
   return (
     <Fragment>
+      <div className="rounded-md bg-blue-50 p-4">
+        <div className="flex">
+          <div className="flex-shrink-0">
+            <InformationCircleIcon
+              className="h-5 w-5 text-blue-400"
+              aria-hidden="true"
+            />
+          </div>
+          <div className="ml-3 flex-1 md:flex md:justify-between">
+            <p className="text-sm text-blue-700">
+              All Templates are customized to the particular chain and oracle
+              information associated with <b>{oracle?.name}</b>
+            </p>
+            <p className="mt-3 text-sm md:mt-0 md:ml-6">
+              <a
+                href="#"
+                className="whitespace-nowrap font-medium text-blue-700 hover:text-blue-600"
+              >
+                Details
+                <span aria-hidden="true"> &rarr;</span>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>{" "}
       <button
         disabled={codeStyle === docco}
         className={

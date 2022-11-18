@@ -17,6 +17,7 @@ import { ChainLogo, chainSvgs } from "./ChainLogo";
 import CreateOracle from "./CreateOracle";
 import copy from "clipboard-copy";
 import { toast } from "react-toastify";
+import { ethers } from "ethers";
 const Oracles: FC = () => {
   useUpdatePath();
   const { oracles, refresh, loading } = useOracles();
@@ -92,7 +93,7 @@ const Oracles: FC = () => {
                             aria-hidden="true"
                           />
                           <span className="truncate">
-                            {oracle.jobId || "[All Jobids]"}
+                            {"JobId: " + oracle.jobId || "[All Jobids]"}
                           </span>
                           <SmallDocumentDuplicateIcon
                             className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-800"
@@ -121,7 +122,8 @@ const Oracles: FC = () => {
                           aria-hidden="true"
                         />
                         <span className="truncate">
-                          {oracle.contractAddress}
+                          Oracle Contract Addr:{" "}
+                          {ethers.utils.getAddress(oracle.contractAddress)}
                         </span>
                         <SmallDocumentDuplicateIcon
                           className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-800"
