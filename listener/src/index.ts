@@ -23,6 +23,7 @@ export async function sendResult(
   fetch(`${baseUrl}/requests/${id}`, {
     method: "POST",
     body: JSON.stringify({
+      id,
       key,
       data,
     }),
