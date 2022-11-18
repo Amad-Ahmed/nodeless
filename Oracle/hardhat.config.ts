@@ -16,11 +16,29 @@ const hh_config: HardhatUserConfig = {
     polygonMumbai: {
       url: process.env.ALCHEMY_MUMBAI || "",
       accounts: [process.env.PK || ""],
-    }
+    },
+    polygon: {
+      url: process.env.ALCHEMY_POLYGON || "",
+      accounts: [process.env.PK || ""],
+    },
+    avalancheFujiTestnet: {
+      url: process.env.FUJI || "",
+      accounts: [process.env.PK || ""],
+    },
+    arbitrumGoerli: {
+      url: process.env.ARB_GOERLI || "",
+      accounts: [process.env.PK || ""],
+    },
+    goerli: {
+      url: process.env.ETH_GOERLI || "",
+      accounts: [process.env.PK || ""],
+    },
   },
   etherscan: {
     apiKey: {
       polygonMumbai: process.env.POLYGON_API || "",
+      avalancheFujiTestnet: process.env.AVAX_API || "",
+      goerli: process.env.ETH_API || "",
     },
   }
 };
