@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+const fetch = require("node-fetch");
 /*
 Note: Add @nodelesslink/core to your project via
   `yarn add @nodelesslink/core` or 
@@ -28,4 +28,4 @@ const handler = async (event, context) => {
     await sendResult(returnValue, parsed);
     return { statusCode: 200 };
 };
-export { handler };
+module.exports= { handler };
