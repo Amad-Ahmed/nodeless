@@ -11,6 +11,7 @@ import {
 } from "react";
 import { eth_requestAccounts } from "@raydeck/metamask-ts";
 import { ethers } from "ethers";
+import { toast } from "react-toastify";
 const ethereum = (window as unknown as { ethereum: any }).ethereum;
 const baseUrl = "https://xw8v-tcfi-85ay.n7.xano.io/api:58vCnoV0";
 const context = createContext({
@@ -60,6 +61,7 @@ const Authenticator: FC<{
         localStorage.setItem("xano-token", authToken);
       } else {
         const body = await response.text();
+        toast.error("Could not log in with these credentials");
         throw new Error(body);
       }
     },
@@ -92,6 +94,7 @@ const Authenticator: FC<{
       localStorage.setItem("xano-token", authToken);
     } else {
       const body = await response.text();
+      toast.error("Could not log in with these credentials");
       throw new Error(body);
     }
   }, []);
@@ -239,6 +242,29 @@ export type User = {
   address: string;
 };
 export const useMe = () => {
-  return useAuthenticatedQuery<User>(`/auth/me`);
+  const fetch = useAuthenticatedFetch();
+  const { data, loading, refresh } = useAuthenticatedQuery<User>(`/auth/me`);
+  const update = useCallback(
+    async (options: { name: string; password?: string }) => {
+      const response = await fetch("/auth/me", {
+        method: "POST",
+        body: JSON.stringify({
+          name: options.name,
+          password: options.password || "",
+        }),
+      });
+      if (response.status === 200) {
+        refresh();
+        const json = (await response.json()) as User;
+        return json;
+      } else throw new Error(response.statusText);
+    },
+    [fetch, refresh]
+  );
+
+  return useMemo(
+    () => ({ data, loading, refresh, update }),
+    [data, loading, refresh, update]
+  );
 };
 export default Authenticator;
