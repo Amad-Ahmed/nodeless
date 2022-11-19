@@ -30,7 +30,6 @@ const Authenticator: FC<{
 }> = ({ children, fallback }) => {
   const [token, setToken] = useState<string>("");
   useEffect(() => {
-    console.log("Authenticator useEffect");
     //lets get my xano token from the localStorage
     const token = localStorage.getItem("xano-token");
     if (token) {
@@ -46,7 +45,6 @@ const Authenticator: FC<{
   const loginWithPassword = useCallback(
     async (email: string, password: string) => {
       //reach out to the server for a login
-      console.log("I will post to ", `${baseUrl}/auth/login`);
       const response = await fetch(`${baseUrl}/auth/login`, {
         method: "POST",
         headers: {

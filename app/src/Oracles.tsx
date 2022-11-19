@@ -126,7 +126,6 @@ const Oracles: FC = () => {
                       <p
                         className="truncate flex text-sm font-medium text-blue-600 cursor-pointer group"
                         onClick={() => {
-                          console.log("Hello");
                           copy(
                             oracle.contractAddress.startsWith("0x")
                               ? ethers.utils.getAddress(oracle.contractAddress)
@@ -153,7 +152,6 @@ const Oracles: FC = () => {
                       <p
                         className="mt-2 flex items-center text-sm text-gray-500 cursor-pointer group"
                         onClick={() => {
-                          console.log("Hello");
                           copy(oracle.webhookUrl);
                           toast.success("Copied URL to clipboard");
                         }}
@@ -204,8 +202,12 @@ const Oracles: FC = () => {
                   title="Make a duplicate contract"
                   className="mx-4 p-2 hover:text-black text-gray-400 flex"
                   onClick={() => {
-                    console.log(oracle.contractAddress);
-                    setCreateAddress(oracle.contractAddress);
+                    setCreateAddress(
+                      chainSvgs[oracle.chainId].defaultOracleAddress ===
+                        oracle.contractAddress
+                        ? ""
+                        : oracle.contractAddress
+                    );
                     setCreateName(oracle.name + " copy");
                     setCreateConfirmed(oracle.confirmed);
                     setCreateAsync(oracle.async);

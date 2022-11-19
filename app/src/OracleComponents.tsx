@@ -37,7 +37,6 @@ export const Chains: FC<{ name?: string }> = ({
                 htmlFor="{chain.value}"
                 className="ml-3 block text-sm font-medium text-gray-700 flex flex-start pointer-cursor hover:text-gray-900"
                 onClick={() => {
-                  console.log("setting value", value);
                   setValue(value, true);
                 }}
               >
@@ -121,7 +120,6 @@ export const CodeParameters: FC<{ name: string }> = ({ name: baseName }) => {
             <button
               type="button"
               onClick={() => {
-                console.log("I am pushing");
                 push({ name: "", type: "string" });
               }}
               className="text-gray-200 hover:text-white bg-blue-600 hover:bg-blue-700 text-sm font-medium rounded-md px-4 py-1"

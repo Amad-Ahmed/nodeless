@@ -226,7 +226,6 @@ export const TinyChainLogo: FC<{
   chainName?: string;
 }> = ({ chainId, chainName }) => {
   const source = chainSvgs[chainId];
-  // console.log("Got from chainid", chainId, source);
   return (
     <Fragment>
       <div className="h-5-w-5 rounded-full bg-gray-100 flex items-center justify-center">

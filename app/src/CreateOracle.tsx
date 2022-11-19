@@ -54,7 +54,6 @@ const CreateOracle: FC<{
         createContract,
       }}
       onSubmit={async (values, form) => {
-        console.log("submitting the form with ", values);
         const id = toast.info("Requesting the oracle (can take up to 30s)...", {
           autoClose: false,
         });
@@ -105,7 +104,6 @@ const CreateOracle: FC<{
         if (values.inputs.find(({ name }) => !name)) {
           errors.inputs = "All input parameters must have a name";
         }
-        console.log("errors be", errors);
         if (Object.keys(errors).length) return errors;
       }}
     >

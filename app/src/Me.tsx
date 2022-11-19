@@ -24,7 +24,6 @@ const Oracle: FC = () => {
         password2: "",
       }}
       onSubmit={async (values, form) => {
-        console.log("submitting the form with ", values);
         const id = toast.info("Updating the oracle...", { autoClose: false });
         try {
           await update({
@@ -48,19 +47,12 @@ const Oracle: FC = () => {
         if (!values.name) {
           errors.name = "Required";
         }
-        // if (!values.chainId) {
-        //   errors.chainId = "Required";
-        // }
         if (
           values.password2 &&
           (values.password1.length < 8 || values.password2 !== values.password1)
         ) {
           errors.password2 = "Password must be at least 8 characters and match";
         }
-        // if (!values.address) {
-        //   errors.address = "Required";
-        // }
-        console.log("errors be", errors);
         if (Object.keys(errors).length) return errors;
       }}
     >
@@ -102,7 +94,6 @@ const Oracle: FC = () => {
                       <button
                         type="submit"
                         onClick={() => {
-                          console.log("submitting from button");
                           submitForm();
                         }}
                         disabled={!isValid || !dirty || isSubmitting}

@@ -10,7 +10,6 @@ const Login: FC = () => {
     <Formik
       initialValues={{ email: "", password: "" }}
       onSubmit={async ({ email, password }) => {
-        // console.log("I be submitting good sir");
         await signupWithPassword(email, password);
       }}
       validate={(values) => {

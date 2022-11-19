@@ -47,7 +47,6 @@ const Oracle: FC = () => {
         outputType: oracle.outputType,
       }}
       onSubmit={async (values, form) => {
-        console.log("submitting the form with ", values);
         const id = toast.info("Updating the oracle...", { autoClose: false });
         try {
           await update({
@@ -76,7 +75,6 @@ const Oracle: FC = () => {
       }}
       enableReinitialize
       validate={(values) => {
-        console.log("Validating me");
         const errors: any = {};
         if (!values.name) {
           errors.name = "Required";
@@ -87,15 +85,9 @@ const Oracle: FC = () => {
         if (!values.webhookUrl) {
           errors.webhookUrl = "Required";
         } else if (!isWebUri(values.webhookUrl)) {
-          console.log("Bad url");
           errors.webhookUrl = "Invalid URL";
         } else {
-          console.log("a ok");
         }
-        // if (!values.address) {
-        //   errors.address = "Required";
-        // }
-        console.log("errors be", errors);
         if (Object.keys(errors).length) return errors;
       }}
     >
@@ -251,7 +243,6 @@ const Oracle: FC = () => {
                       <button
                         type="submit"
                         onClick={() => {
-                          console.log("submitting from button");
                           submitForm();
                         }}
                         disabled={!isValid || !dirty || isSubmitting}
