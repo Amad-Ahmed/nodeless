@@ -13,7 +13,15 @@ const Login: FC = () => {
         await loginWithPassword(email, password);
       }}
     >
-      {({ values, handleChange, handleBlur, submitForm }) => (
+      {({
+        values,
+        handleChange,
+        handleBlur,
+        submitForm,
+        isValid,
+        dirty,
+        isSubmitting,
+      }) => (
         <Form>
           <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -101,9 +109,14 @@ const Login: FC = () => {
 
                   <div>
                     <button
+                      disabled={isSubmitting || !isValid || !dirty}
                       type="button"
                       onClick={submitForm}
-                      className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      className={
+                        isSubmitting || !isValid || !dirty
+                          ? "flex w-full justify-center rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm"
+                          : "flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      }
                     >
                       Sign in with Email and Password
                     </button>
