@@ -10,7 +10,7 @@ const handler = async (event, context) => {
   if (!parsed) return { statusCode: 400, body: "Bad Request" };
   if(parsed.jobId.toLowerCase() !== "{{{jobId}}}".toLowerCase()) return { statusCode: 400, body: "Bad Request" };
  
-  const { {{{decodedKeys}}} } = decodedData;
+  const { {{{decodedKeys}}} } = parsed.decodedData;
   let returnValue;    
   /**
      * This is where you put in your code to retrieve your value

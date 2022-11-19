@@ -9,7 +9,7 @@ const handler = async (event, context) => {
   if (!parsed) return { statusCode: 400, body: "Bad Request" };
   if(parsed.jobId.toLowerCase() !== "{{{jobId}}}".toLowerCase()) return { statusCode: 400, body: "Bad Request" };
   // This is where the arguments from Solidity come in
-  const { {{{decodedKeys}}} } = decodedData;
+  const { {{{decodedKeys}}} } = parsed.decodedData;
   let returnValue;
 
 /**
@@ -27,4 +27,4 @@ const handler = async (event, context) => {
  */
   return { statusCode: 200, body: returnValue.toString() };
 };
-export { handler };
+module.exports= { handler };
