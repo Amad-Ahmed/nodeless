@@ -22,8 +22,8 @@ const handler = async (event, context) => {
         const response = await fetch(url, {
             headers: { Authentication: `Bearer ${polygonKey}` },
         });
-        const json = (await response.json()) as { results: { c: number }[] };
-        const returnValue = Math.floor((json.results.pop()?.c || 0) * 100);
+        const json = await response.json();
+        const returnValue = Math.floor((json.results.pop().c || 0) * 100);
     */
     await sendResult(returnValue, parsed);
     return { statusCode: 200 };
