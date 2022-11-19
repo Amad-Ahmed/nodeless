@@ -1,22 +1,13 @@
 import { Formik, Form } from "formik";
 import { FC, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useBase } from "./Base";
-import { useAlert } from "./Alert";
-import {
-  TextField,
-  Checkbox,
-  CodeParameters,
-  OutputType,
-  PasswordField,
-} from "./OracleComponents";
-import { ClockIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
+import { TextField, PasswordField } from "./OracleComponents";
 import { useMe } from "./Authenticator";
 const Oracle: FC = () => {
-  const alert = useAlert();
   const navigate = useNavigate();
-  const { data, loading, refresh, update } = useMe();
+  const { data, refresh, update } = useMe();
   const { setTitle } = useBase();
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
