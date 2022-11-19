@@ -1,10 +1,9 @@
 {
   "name": "@nodelesslink/core",
   "private": false,
-  "version": "1.0.3",
+  "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
-  "bin": "lib/bin.js",
   "scripts": {
     "setup": "./init-template.js",
     "pre-commit": "echo hooray",
