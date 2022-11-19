@@ -206,7 +206,7 @@ const Oracles: FC = () => {
                       chainSvgs[oracle.chainId].defaultOracleAddress &&
                         chainSvgs[
                           oracle.chainId
-                        ].defaultOracleAddress?.toLowerCase() ==
+                        ].defaultOracleAddress?.toLowerCase() ===
                           oracle.contractAddress.toLowerCase()
                         ? ""
                         : oracle.contractAddress
