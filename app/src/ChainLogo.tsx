@@ -20,6 +20,7 @@ export const chainSvgs: Record<
     blockExplorer?: string;
     transactionExplorer?: string;
     tokenAddress?: string;
+    defaultOracleAddress?: string;
   }
 > = {
   "0x13881": {
