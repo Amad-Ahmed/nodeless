@@ -203,8 +203,11 @@ const Oracles: FC = () => {
                   className="mx-4 p-2 hover:text-black text-gray-400 flex"
                   onClick={() => {
                     setCreateAddress(
-                      chainSvgs[oracle.chainId].defaultOracleAddress ===
-                        oracle.contractAddress
+                      chainSvgs[oracle.chainId].defaultOracleAddress &&
+                        chainSvgs[
+                          oracle.chainId
+                        ].defaultOracleAddress?.toLowerCase() ==
+                          oracle.contractAddress.toLowerCase()
                         ? ""
                         : oracle.contractAddress
                     );

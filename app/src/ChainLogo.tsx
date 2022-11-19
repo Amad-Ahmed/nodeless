@@ -30,6 +30,7 @@ export const chainSvgs: Record<
     blockExplorer: "https://mumbai.polygonscan.com/address/",
     transactionExplorer: "https://mumbai.polygonscan.com/tx/",
     tokenAddress: "0x326C977E6efc84E512bB9C30f76E30c160eD06FB",
+    defaultOracleAddress: "0x447aeB2B1067d0df1157d63457A1509aB0772022",
   },
   "0xa869": {
     name: "Avalanche Fuji Testnet",
@@ -38,6 +39,7 @@ export const chainSvgs: Record<
     blockExplorer: "https://testnet.snowtrace.io/address/",
     transactionExplorer: "https://testnet.snowtrace.io/tx/",
     tokenAddress: "0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846",
+    defaultOracleAddress: "0x447aeB2B1067d0df1157d63457A1509aB0772022",
   },
   "0x38": {
     name: "Binance Smart Chain",
@@ -86,6 +88,7 @@ export const chainSvgs: Record<
     blockExplorer: "https://polygonscan.com/address/",
     transactionExplorer: "https://polygonscan.com/tx/",
     tokenAddress: "0xb0897686c545045aFc77CF20eC7A532E3120E0F1",
+    defaultOracleAddress: "0x5bB7369e4410bD93F69A717aD41c6102f02B6df4",
   },
   "0x5": {
     name: "Ethereum Goerli Testnet",
@@ -94,6 +97,7 @@ export const chainSvgs: Record<
     blockExplorer: "https://goerli.etherscan.io/address/",
     transactionExplorer: "https://goerli.etherscan.io/tx/",
     tokenAddress: "0x326C977E6efc84E512bB9C30f76E30c160eD06FB",
+    defaultOracleAddress: "0xdeEF0aC21d89307e5e8ba6E1B38d78c32Ea71868",
   },
   "0x61": {
     name: "Binance Smart Chain Testnet",
@@ -142,6 +146,7 @@ export const chainSvgs: Record<
     blockExplorer: "https://goerli.arbiscan.io/address/",
     transactionExplorer: "https://goerli.arbiscan.io/tx/",
     tokenAddress: "0xd14838a68e8afbade5efb411d5871ea0011afd28",
+    defaultOracleAddress: "0x447aeB2B1067d0df1157d63457A1509aB0772022",
   },
   "0x80": {
     name: "Heco Mainnet",
