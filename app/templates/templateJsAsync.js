@@ -23,7 +23,7 @@ const handler = async (event, context) => {
             headers: { Authentication: `Bearer ${polygonKey}` },
         });
         const json = await response.json();
-        const returnValue = Math.floor((json.results.pop().c || 0) * 100);
+        returnValue = Math.floor((json.results.pop().c || 0) * 100);
     */
     await sendResult(returnValue, parsed);
     return { statusCode: 200 };

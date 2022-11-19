@@ -82,9 +82,9 @@ const CodePreview: FC = () => {
       ? Object.entries(oracle.inputs).find(([key, type]) => type === "string")
       : "";
     const key = found
-      ? found[0]
+      ? "_" + found[0]
       : oracle.inputs
-      ? Object.entries(oracle.inputs)[0][0]
+      ? "_" + Object.entries(oracle.inputs)[0][0]
       : "";
     return mustache.render(solidityTemplateCode, {
       oracleId:

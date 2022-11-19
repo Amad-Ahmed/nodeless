@@ -52,3 +52,4 @@ contract Template is ChainlinkClient {
     }
 
     // function withdrawLink() external {} - Implement a withdraw function to avoid locking your LINK in the contract
+}
