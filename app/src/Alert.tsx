@@ -19,10 +19,10 @@ const context = createContext({
   setTitle: (message: string) => {},
   message: "Are you sure you want to do this?",
   setMessage: (message: string) => {},
-  actionLabel: "Confirm",
-  setActionLabel: (label: string) => {},
-  cancelLabel: "Cancel",
-  setCancelLabel: (label: string) => {},
+  actionLabel: "Confirm" as string | undefined,
+  setActionLabel: (label?: string) => {},
+  cancelLabel: "Cancel" as string | undefined,
+  setCancelLabel: (label?: string) => {},
   setAction: (action: string) => {},
   action: "cancel",
   onFinalize: (state: string) => {},
@@ -35,8 +35,8 @@ const AlertProvider: FC<{ children: ReactElement }> = ({ children }) => {
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
-  const [actionLabel, setActionLabel] = useState("Confirm");
-  const [cancelLabel, setCancelLabel] = useState("Cancel");
+  const [actionLabel, setActionLabel] = useState<string | undefined>("Confirm");
+  const [cancelLabel, setCancelLabel] = useState<string | undefined>("Cancel");
   const [action, setAction] = useState("cancel");
   const [onFinalize, setOnFinalize] = useState(() => (state: string) => {});
   const value = useMemo(
@@ -129,27 +129,31 @@ const AlertProvider: FC<{ children: ReactElement }> = ({ children }) => {
                     </div>
                   </div>
                   <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                    <button
-                      type="button"
-                      className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                      onClick={() => {
-                        setAction("accept");
-                        onFinalize("accept");
-                      }}
-                    >
-                      {actionLabel}
-                    </button>
-                    <button
-                      type="button"
-                      className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
-                      onClick={() => {
-                        setAction("cancel");
-                        onFinalize("cancel");
-                      }}
-                      ref={cancelButtonRef}
-                    >
-                      {cancelLabel}
-                    </button>
+                    {actionLabel && (
+                      <button
+                        type="button"
+                        className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                        onClick={() => {
+                          setAction("accept");
+                          onFinalize("accept");
+                        }}
+                      >
+                        {actionLabel}
+                      </button>
+                    )}
+                    {cancelLabel && (
+                      <button
+                        type="button"
+                        className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
+                        onClick={() => {
+                          setAction("cancel");
+                          onFinalize("cancel");
+                        }}
+                        ref={cancelButtonRef}
+                      >
+                        {cancelLabel}
+                      </button>
+                    )}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -163,14 +167,30 @@ const AlertProvider: FC<{ children: ReactElement }> = ({ children }) => {
 export default AlertProvider;
 
 export const useAlert = () => {
-  const { setTitle, setMessage, setOnFinalize, setShow, show } =
-    useContext(context);
+  const {
+    setTitle,
+    setMessage,
+    setOnFinalize,
+    setShow,
+    show,
+    setActionLabel,
+    setCancelLabel,
+  } = useContext(context);
+
   const alert = useCallback(
-    async (title: string, message: string) => {
+    async (options: {
+      title: string;
+      message: string;
+      actionLabel?: string;
+      cancelLabel?: string;
+    }) => {
+      const { title, message, actionLabel, cancelLabel } = options;
       if (show) throw new Error("Cannot show an alert when other is displayed");
       setTitle(title);
       setMessage(message);
       setShow(true);
+      setCancelLabel(cancelLabel);
+      setActionLabel(actionLabel);
       const p = new Promise<string>((resolve) => {
         setOnFinalize(() => resolve);
       });
@@ -178,7 +198,31 @@ export const useAlert = () => {
       setShow(false);
       return result;
     },
-    [setMessage, setOnFinalize, setTitle, show, setShow]
+    [
+      setMessage,
+      setOnFinalize,
+      setTitle,
+      show,
+      setShow,
+      setActionLabel,
+      setCancelLabel,
+    ]
   );
-  return alert;
+  const confirm = useCallback(
+    async (options: {
+      title: string;
+      message: string;
+      acceptLabel?: string;
+      cancelLabel?: string;
+    }) => {
+      alert({
+        title: options.title,
+        message: options.message,
+        actionLabel: options.acceptLabel || "Confirm",
+        cancelLabel: options.cancelLabel || "Cancel",
+      });
+    },
+    [alert]
+  );
+  return { confirm, alert };
 };

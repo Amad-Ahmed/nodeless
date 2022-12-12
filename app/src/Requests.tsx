@@ -16,7 +16,7 @@ const statusStrings: Record<OracleRequest["status"], string> = {
 };
 const Requests: FC = () => {
   const { id: oracleId } = useParams();
-  const alert = useAlert();
+  const { confirm: alert } = useAlert();
   useUpdatePath();
   const { data, loading, refresh, remove } = useRequests(
     oracleId ? parseInt(oracleId) : undefined

@@ -15,7 +15,7 @@ import {
 } from "./OracleComponents";
 import { ClockIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
 const Oracle: FC = () => {
-  const alert = useAlert();
+  const { confirm: alert } = useAlert();
   const { id } = useParams();
   const navigate = useNavigate();
   const { oracle, loading, refresh, remove, update } = useOracle(
