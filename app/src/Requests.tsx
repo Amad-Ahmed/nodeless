@@ -109,14 +109,13 @@ const Requests: FC = () => {
                       <td className="whitespace-nowrap py-4 text-sm font-medium text-gray-900 sm:pl-2">
                         <button
                           onClick={() => {
-                            alert(
-                              "Remove this request?",
-                              "This just removes the log. The actual transaction remains on-chain. This action cannot be undone"
-                            ).then((result) => {
-                              if (result === "accept") {
-                                remove(request.id);
-                                toast.success("Removed request log");
-                              }
+                            alert({
+                              title: "Remove this request?",
+                              message:
+                                "This just removes the log. The actual transaction remains on-chain. This action cannot be undone",
+                            }).then(() => {
+                              remove(request.id);
+                              toast.success("Removed request log");
                             });
                           }}
                           className="text-red-400 hover:text-red-800 inline mr-2 h-4 w-4"
